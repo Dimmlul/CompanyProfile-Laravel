@@ -1,11 +1,46 @@
 @import 'tailwindcss';
 
+/* ------------------------------------------------------------------
+| Sources (Laravel + Vite)
+------------------------------------------------------------------ */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* ------------------------------------------------------------------
+| Theme (Tailwind v4 – CSS First)
+------------------------------------------------------------------ */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* === FONT === */
+    --font-sans: 'Instrument Sans',
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    /* === APP LEVEL === */
+    --color-app-bg: #111827;          /* gray-900 */
+    --color-app-text: #111827;        /* gray-900 */
+    --color-app-muted: #6b7280;       /* gray-500 */
+
+    /* === CARD / SURFACE === */
+    --color-card: #ffffff;            /* white */
+    --color-card-border: #e5e7eb;     /* gray-200 */
+
+    /* === INPUT === */
+    --color-input-bg: #ffffff;
+    --color-input-border: #d1d5db;    /* gray-300 */
+    --color-input-placeholder: #9ca3af; /* gray-400 */
+
+    /* === BUTTON === */
+    --color-btn-primary: #111827;     /* gray-900 */
+    --color-btn-primary-hover: #1f2937; /* gray-800 */
+    --color-btn-text: #ffffff;
+
+    /* === STATE === */
+    --color-danger: #ef4444;          /* red-500 */
 }

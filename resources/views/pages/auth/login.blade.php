@@ -1,16 +1,49 @@
-<!-- resources/views/auth/login.blade.php -->
-@extends('layouts.admin')
+<!-- resources/views/pages/auth/login.blade.php -->
+@extends('layouts.auth')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
-</head>
-<body>
-    @csrf
-</body>
-</html>
+@section('title', 'Login')
+
+@section('content')
+
+<x-auth.back-button href="/" />
+
+<div class="flex min-h-screen items-center justify-center px-6">
+    <x-auth.card>
+
+        <x-auth.card-header
+            title="Sign In"
+            subtitle="Enter your email and password to sign in!"
+        />
+
+        <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
+
+            <div class="space-y-5">
+
+                <x-auth.form-input
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="admin@example.com"
+                    required
+                />
+
+                <x-auth.form-input
+                    label="Password"
+                    name="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    required
+                />
+
+                <x-auth.submit-button>
+                    Sign In
+                </x-auth.submit-button>
+
+            </div>
+        </form>
+
+    </x-auth.card>
+</div>
+
+@endsection
