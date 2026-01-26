@@ -13,8 +13,19 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('image')->nullable();
+            $table->string('location')->nullable();
+            $table->timestamp('start_date');
+            $table->timestamp('end_date')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            // $table->softDeletes();
         });
+
     }
 
     /**

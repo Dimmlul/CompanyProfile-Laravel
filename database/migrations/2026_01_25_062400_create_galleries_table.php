@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
+            $table->string('image');
+            $table->text('caption')->nullable();
+            $table->string('category')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
+            // $table->softDeletes();
         });
+
     }
 
     /**

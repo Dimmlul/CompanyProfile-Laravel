@@ -13,8 +13,17 @@ return new class extends Migration
     {
         Schema::create('company_profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('company_name');
+            $table->text('about');
+            $table->text('vision');
+            $table->text('mission');
+            $table->string('address');
+            $table->string('phone');
+            $table->string('email');
             $table->timestamps();
+            // $table->softDeletes();
         });
+
     }
 
     /**
