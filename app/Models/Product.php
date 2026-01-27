@@ -28,6 +28,14 @@ class Product extends Model
         'order'     => 'integer',
     ];
 
+     /**
+     * Use slug instead of id for route model binding.
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     /**
      * Automatically handle slug generation for products.
      * Slugs are used instead of numeric IDs to create

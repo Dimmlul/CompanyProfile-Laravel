@@ -24,7 +24,7 @@
 
     /* === APP LEVEL === */
     --color-app-bg: #111827;          /* gray-900 */
-    --color-app-text: #111827;        /* gray-900 */
+    --color-app-text: #6b7280;        /* gray-500 */
     --color-app-muted: #6b7280;       /* gray-500 */
 
     /* === CARD / SURFACE === */
@@ -43,4 +43,10 @@
 
     /* === STATE === */
     --color-danger: #ef4444;          /* red-500 */
+
+    /* === DASHBOARD CARD === */
+    --color-dashboard-card: #1f2937;        /* gray-800 */
+    --color-dashboard-card-border: #374151; /* gray-700 */
+    --color-dashboard-card-text: #ffffff;  /* white */
+    --color-dashboard-card-muted: #9ca3af; /* gray-400 */
 }

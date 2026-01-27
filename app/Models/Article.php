@@ -28,6 +28,17 @@ class Article extends Model
     ];
 
     /**
+     * Use slug instead of id for route model binding.
+     *
+     *  URL to slugged article:
+     * /admin/articles/slug-judul/edit
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
      * The booted method listens to model lifecycle events.
      * It is used here to automatically manage slug and excerpt
      * without placing logic inside controllers.

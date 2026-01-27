@@ -3,63 +3,104 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return view('pages.admin.events.index', [
+            'events' => Event::latest()->paginate(10),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('pages.admin.events.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'content'     => 'required|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'location'    => 'nullable|string|max:255',
+            'start_date'  => 'required|date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
+            'is_active'   => 'required|in:0,1', // ✅ FIX
+        ]);
+
+        // slug
+        $validated['slug'] = Str::slug($validated['title']);
+
+        // cast boolean (WAJIB)
+        $validated['is_active'] = (int) $validated['is_active'];
+
+        // upload image
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')
+                ->store('events', 'public');
+        }
+
+        Event::create($validated);
+
+        return redirect()
+            ->route('admin.events.index')
+            ->with('success', 'Event created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Event $event)
     {
-        //
+        return view('pages.admin.events.edit', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'content'     => 'required|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'location'    => 'nullable|string|max:255',
+            'start_date'  => 'required|date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
+            'is_active'   => 'required|in:0,1',
+        ]);
+
+        $validated['slug'] = Str::slug($validated['title']);
+        $validated['is_active'] = (int) $validated['is_active'];
+
+        if ($request->hasFile('image')) {
+            if ($event->image && Storage::disk('public')->exists($event->image)) {
+                Storage::disk('public')->delete($event->image);
+            }
+
+            $validated['image'] = $request->file('image')
+                ->store('events', 'public');
+        }
+
+        $event->update($validated);
+
+        return redirect()
+            ->route('admin.events.index')
+            ->with('success', 'Event updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Event $event)
     {
-        //
-    }
+        if ($event->image && Storage::disk('public')->exists($event->image)) {
+            Storage::disk('public')->delete($event->image);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $event->delete();
+
+        return redirect()
+            ->route('admin.events.index')
+            ->with('success', 'Event deleted successfully.');
     }
 }

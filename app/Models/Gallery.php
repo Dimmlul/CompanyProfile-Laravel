@@ -10,15 +10,23 @@ class Gallery extends Model
 {
     use HasFactory;
 
+    protected $table = 'galleries';
     protected $fillable = [
         'title',
         'image',
         'caption',
         'category',
         'order',
+        'is_active',
     ];
 
     protected $casts = [
-        'order' => 'integer',
+        'order'     => 'integer',
+        'is_active' => 'boolean',
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }
