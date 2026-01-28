@@ -1,6 +1,4 @@
 <!-- resources/views/pages/admin/company-profile/index.blade.php -->
-<!-- Vision Mission, About Us, Address, Etc -->
-
 @extends('layouts.admin')
 
 @section('title', 'Company Profile')
@@ -9,7 +7,10 @@
 
 <x-common.component-card title="Company Profile">
 
-    <form method="POST" action="{{ route('admin.company-profile.store') }}">
+    <form
+        method="POST"
+        action="{{ route('admin.company-profile.store') }}"
+    >
         @csrf
 
         <div class="grid grid-cols-1 gap-5">
@@ -23,13 +24,12 @@
                     type="text"
                     name="company_name"
                     value="{{ old('company_name', $companyProfile->company_name ?? '') }}"
-                    placeholder="PT Contoh Sejahtera"
                     class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
                            border border-gray-300 bg-transparent px-4 py-2.5 text-sm
                            focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
                            focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
                            dark:text-white/90 dark:placeholder:text-white/30"
-                />
+                >
             </div>
 
             <!-- About -->
@@ -39,13 +39,12 @@
                 </label>
                 <textarea
                     name="about"
-                    rows="4"
-                    placeholder="Deskripsi singkat tentang perusahaan..."
+                    rows="5"
                     class="dark:bg-dark-900 shadow-theme-xs w-full rounded-lg
                            border border-gray-300 bg-transparent px-4 py-3 text-sm
                            focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
                            focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
+                           dark:text-white/90"
                 >{{ old('about', $companyProfile->about ?? '') }}</textarea>
             </div>
 
@@ -56,13 +55,12 @@
                 </label>
                 <textarea
                     name="vision"
-                    rows="3"
-                    placeholder="Visi perusahaan"
+                    rows="4"
                     class="dark:bg-dark-900 shadow-theme-xs w-full rounded-lg
                            border border-gray-300 bg-transparent px-4 py-3 text-sm
                            focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
                            focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
+                           dark:text-white/90"
                 >{{ old('vision', $companyProfile->vision ?? '') }}</textarea>
             </div>
 
@@ -73,13 +71,12 @@
                 </label>
                 <textarea
                     name="mission"
-                    rows="3"
-                    placeholder="Misi perusahaan"
+                    rows="4"
                     class="dark:bg-dark-900 shadow-theme-xs w-full rounded-lg
                            border border-gray-300 bg-transparent px-4 py-3 text-sm
                            focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
                            focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
+                           dark:text-white/90"
                 >{{ old('mission', $companyProfile->mission ?? '') }}</textarea>
             </div>
 
@@ -90,50 +87,69 @@
                 </label>
                 <textarea
                     name="address"
-                    rows="2"
-                    placeholder="Alamat lengkap perusahaan"
+                    rows="3"
                     class="dark:bg-dark-900 shadow-theme-xs w-full rounded-lg
                            border border-gray-300 bg-transparent px-4 py-3 text-sm
                            focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
                            focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
+                           dark:text-white/90"
                 >{{ old('address', $companyProfile->address ?? '') }}</textarea>
             </div>
 
-            <!-- Phone -->
-            <div>
-                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                    Phone Number
-                </label>
-                <input
-                    type="text"
-                    name="phone"
-                    value="{{ old('phone', $companyProfile->phone ?? '') }}"
-                    placeholder="+62 812 xxxx xxxx"
-                    class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
-                           border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                           focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
-                           focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
-                />
-            </div>
+            <!-- Contact Info -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-            <!-- Email -->
-            <div>
-                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email', $companyProfile->email ?? '') }}"
-                    placeholder="info@company.com"
-                    class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
-                           border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                           focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
-                           focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
-                           dark:text-white/90 dark:placeholder:text-white/30"
-                />
+                <!-- Phone -->
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Phone
+                    </label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value="{{ old('phone', $companyProfile->phone ?? '') }}"
+                        class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
+                               border border-gray-300 bg-transparent px-4 py-2.5 text-sm
+                               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
+                               focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
+                               dark:text-white/90"
+                    >
+                </div>
+
+                <!-- Fax -->
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Fax
+                    </label>
+                    <input
+                        type="text"
+                        name="fax"
+                        value="{{ old('fax', $companyProfile->fax ?? '') }}"
+                        class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
+                               border border-gray-300 bg-transparent px-4 py-2.5 text-sm
+                               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
+                               focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
+                               dark:text-white/90"
+                    >
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ old('email', $companyProfile->email ?? '') }}"
+                        class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
+                               border border-gray-300 bg-transparent px-4 py-2.5 text-sm
+                               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
+                               focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
+                               dark:text-white/90"
+                    >
+                </div>
+
             </div>
 
             <!-- Submit -->

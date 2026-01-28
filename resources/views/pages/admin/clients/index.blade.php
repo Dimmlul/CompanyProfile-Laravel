@@ -1,4 +1,4 @@
-<!-- resources/views/pages/admin/clients/index.blade.php -->
+{{-- FILE: admin/clients/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Clients')
@@ -8,76 +8,67 @@
 <x-common.component-card title="Clients">
 
     <div class="mb-4 flex items-center justify-between">
-        <span class="text-sm text-gray-500 dark:text-gray-400">
+        <p class="text-sm text-text-muted">
             Manage clients
-        </span>
+        </p>
 
         <a href="{{ route('admin.clients.create') }}"
-           class="inline-flex items-center gap-2
-                  rounded-lg bg-btn-primary px-4 py-2
-                  text-sm font-medium text-btn-text
-                  hover:bg-btn-primary-hover transition">
+           class="btn-primary">
             + New Client
         </a>
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="admin-table">
+
             <thead>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <th class="px-4 py-3 text-left">Logo</th>
-                    <th class="px-4 py-3 text-left">Name</th>
-                    <th class="px-4 py-3 text-left">Website</th>
-                    <th class="px-4 py-3 text-left">Status</th>
-                    <th class="px-4 py-3 text-left">Order</th>
-                    <th class="px-4 py-3 text-right">Action</th>
+                <tr>
+                    <th>Logo</th>
+                    <th>Name</th>
+                    <th>Website</th>
+                    <th>Status</th>
+                    <th>Order</th>
+                    <th class="text-right">Action</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse ($clients as $client)
-                    <tr class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
 
-                        <td class="px-4 py-3">
+                        <td>
                             @if ($client->logo)
                                 <img src="{{ asset('storage/'.$client->logo) }}"
                                      class="h-10 w-20 object-contain">
                             @else
-                                <span class="text-xs text-gray-400">No logo</span>
+                                <span class="text-text-muted text-xs">No logo</span>
                             @endif
                         </td>
 
-                        <td class="px-4 py-3 font-medium">
+                        <td class="font-medium">
                             {{ $client->name }}
                         </td>
 
-                        <td class="px-4 py-3 text-gray-500">
+                        <td class="text-text-muted">
                             {{ $client->website ?? '-' }}
                         </td>
 
-                        <td class="px-4 py-3">
+                        <td>
                             @if ($client->is_active)
-                                <span class="rounded bg-green-100 px-2 py-1 text-xs text-green-700">
-                                    Active
-                                </span>
+                                <span class="badge badge-success">Active</span>
                             @else
-                                <span class="rounded bg-gray-200 px-2 py-1 text-xs text-gray-700">
-                                    Inactive
-                                </span>
+                                <span class="badge badge-muted">Inactive</span>
                             @endif
                         </td>
 
-                        <td class="px-4 py-3">
+                        <td>
                             {{ $client->order }}
                         </td>
 
-                        <td class="px-4 py-3 text-right">
+                        <td class="text-right">
                             <div class="inline-flex gap-2">
-
                                 <a href="{{ route('admin.clients.edit', $client) }}"
-                                   class="rounded-md bg-btn-primary px-3 py-1.5
-                                          text-xs font-medium text-btn-text
-                                          hover:bg-btn-primary-hover">
+                                   class="btn-admin">
                                     Edit
                                 </a>
 
@@ -87,27 +78,23 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <button
-                                        class="rounded-md bg-danger px-3 py-1.5
-                                               text-xs font-medium text-white
-                                               hover:bg-danger/90">
+                                    <button class="btn-danger">
                                         Delete
                                     </button>
                                 </form>
-
                             </div>
                         </td>
 
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6"
-                            class="px-4 py-6 text-center text-gray-500">
+                        <td colspan="6" class="admin-table-empty">
                             No clients found
                         </td>
                     </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
 

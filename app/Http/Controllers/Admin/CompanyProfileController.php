@@ -32,6 +32,7 @@ class CompanyProfileController extends Controller
             'mission'      => 'nullable|string',
             'address'      => 'nullable|string',
             'phone'        => 'nullable|string|max:50',
+            'fax'          => 'nullable|string|max:50',
             'email'        => 'nullable|email|max:255',
         ]);
 

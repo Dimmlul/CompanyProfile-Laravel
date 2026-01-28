@@ -1,4 +1,4 @@
-<!-- resources/views/pages/admin/products/index.blade.php -->
+{{-- FILE: resources/views/pages/admin/products/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Products')
@@ -7,69 +7,71 @@
 
 <x-common.component-card title="Products">
 
+    {{-- HEADER --}}
     <div class="mb-4 flex items-center justify-between">
-        <span class="text-sm text-gray-500">Manage products</span>
+        <p class="text-sm text-text-muted">
+            Manage products
+        </p>
 
         <a href="{{ route('admin.products.create') }}"
-           class="rounded-lg bg-btn-primary px-4 py-2 text-sm font-medium text-btn-text hover:bg-btn-primary-hover">
+           class="btn-primary">
             + New Product
         </a>
     </div>
 
+    {{-- TABLE --}}
     <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="admin-table">
+
             <thead>
-                <tr class="border-b">
-                    <th class="px-4 py-3 text-left">Image</th>
-                    <th class="px-4 py-3 text-left">Name</th>
-                    <th class="px-4 py-3 text-left">Price</th>
-                    <th class="px-4 py-3 text-left">Order</th>
-                    <th class="px-4 py-3 text-left">Status</th>
-                    <th class="px-4 py-3 text-right">Action</th>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse ($products as $product)
-                    <tr class="border-b align-top">
+                    <tr>
 
-                        <td class="px-4 py-3">
+                        <td>
                             @if ($product->image)
                                 <img src="{{ asset('storage/'.$product->image) }}"
                                      class="h-12 w-16 rounded object-cover">
                             @else
-                                <span class="text-xs text-gray-400">No image</span>
+                                <span class="text-text-muted text-xs">No image</span>
                             @endif
                         </td>
 
-                        <td class="px-4 py-3 font-medium">
+                        <td class="font-medium">
                             {{ $product->name }}
                         </td>
 
-                        <td class="px-4 py-3">
+                        <td class="text-text-muted">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </td>
 
-                        <td class="px-4 py-3">
+                        <td class="text-text-muted">
                             {{ $product->order ?? '-' }}
                         </td>
 
-                        <td class="px-4 py-3">
+                        <td>
                             @if ($product->is_active)
-                                <span class="rounded bg-green-100 px-2 py-1 text-xs text-green-700">
-                                    Active
-                                </span>
+                                <span class="badge badge-success">Active</span>
                             @else
-                                <span class="rounded bg-gray-200 px-2 py-1 text-xs text-gray-700">
-                                    Inactive
-                                </span>
+                                <span class="badge badge-muted">Inactive</span>
                             @endif
                         </td>
 
-                        <td class="px-4 py-3 text-right">
+                        <td class="text-right">
                             <div class="inline-flex gap-2">
+
                                 <a href="{{ route('admin.products.edit', $product) }}"
-                                   class="rounded-md bg-btn-primary px-3 py-1.5 text-xs text-btn-text">
+                                   class="btn-admin">
                                     Edit
                                 </a>
 
@@ -78,22 +80,25 @@
                                       onsubmit="return confirm('Delete this product?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="rounded-md bg-danger px-3 py-1.5 text-xs text-white">
+
+                                    <button class="btn-danger">
                                         Delete
                                     </button>
                                 </form>
+
                             </div>
                         </td>
 
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                        <td colspan="6" class="admin-table-empty">
                             No products found
                         </td>
                     </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
 

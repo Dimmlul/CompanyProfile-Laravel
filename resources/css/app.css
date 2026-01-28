@@ -1,52 +1,396 @@
+/* ===================================================================
+| FILE: resources/css/app.css
+| PROJECT: Company Profile / Admin Panel
+| PURPOSE:
+| - Single source of truth for colors & UI styles
+| - No hardcoded colors in Blade
+| - Ready for Dark / Light mode
+=================================================================== */
+
 @import 'tailwindcss';
 
-/* ------------------------------------------------------------------
-| Sources (Laravel + Vite)
------------------------------------------------------------------- */
+/* ===================================================================
+| SOURCE PATHS (Tailwind v4 – CSS First)
+| Used by Tailwind to scan class usage
+=================================================================== */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-/* ------------------------------------------------------------------
-| Theme (Tailwind v4 – CSS First)
------------------------------------------------------------------- */
+
+/* ===================================================================
+| DESIGN TOKENS / THEME SYSTEM
+| -------------------------------------------------------------------
+| RULES:
+| - ALL colors & core styles live here
+| - NEVER hardcode colors in Blade
+| - New color? → ADD TOKEN HERE
+=================================================================== */
 @theme {
-    /* === FONT === */
-    --font-sans: 'Instrument Sans',
-        ui-sans-serif,
-        system-ui,
-        sans-serif,
-        'Apple Color Emoji',
-        'Segoe UI Emoji',
-        'Segoe UI Symbol',
-        'Noto Color Emoji';
 
-    /* === APP LEVEL === */
-    --color-app-bg: #111827;          /* gray-900 */
-    --color-app-text: #6b7280;        /* gray-500 */
-    --color-app-muted: #6b7280;       /* gray-500 */
+    /* ===============================================================
+    | TYPOGRAPHY
+    ============================================================== */
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
-    /* === CARD / SURFACE === */
-    --color-card: #ffffff;            /* white */
-    --color-card-border: #e5e7eb;     /* gray-200 */
 
-    /* === INPUT === */
+    /* ===============================================================
+    | BASE COLORS – APPLICATION
+    ============================================================== */
+    --color-bg-main: #111827;            /* Client background (gray-900) */
+    --color-bg-surface: #020617;         /* Admin background (slate-950) */
+
+    --color-text-main: #e5e7eb;          /* Primary text */
+    --color-text-muted: #9ca3af;         /* Muted text */
+    --color-text-inverse: #020617;       /* Text on light surface */
+
+
+    /* ===============================================================
+    | BRAND / PRIMARY COLOR SYSTEM
+    ============================================================== */
+    --color-brand-main: #4f46e5;          /* Indigo 600 */
+    --color-brand-hover: #4338ca;         /* Indigo 700 */
+    --color-brand-soft: rgba(79,70,229,0.15);
+    --color-brand-text: #ffffff;
+
+
+    /* ===============================================================
+    | SURFACE / CARD
+    ============================================================== */
+    --color-card-bg: #ffffff;
+    --color-card-text: #020617;
+    --color-card-border: rgba(0,0,0,0.08);
+
+
+    /* ===============================================================
+    | FORM INPUT
+    ============================================================== */
     --color-input-bg: #ffffff;
-    --color-input-border: #d1d5db;    /* gray-300 */
-    --color-input-placeholder: #9ca3af; /* gray-400 */
+    --color-input-border: #d1d5db;
+    --color-input-placeholder: #9ca3af;
+    --color-input-focus: #4f46e5;
 
-    /* === BUTTON === */
-    --color-btn-primary: #111827;     /* gray-900 */
-    --color-btn-primary-hover: #1f2937; /* gray-800 */
-    --color-btn-text: #ffffff;
 
-    /* === STATE === */
-    --color-danger: #ef4444;          /* red-500 */
+    /* ===============================================================
+    | BORDER / DIVIDER (ADMIN)
+    ============================================================== */
+    --color-border-soft: rgba(255,255,255,0.08);
+    --color-border-strong: rgba(255,255,255,0.16);
 
-    /* === DASHBOARD CARD === */
-    --color-dashboard-card: #1f2937;        /* gray-800 */
-    --color-dashboard-card-border: #374151; /* gray-700 */
-    --color-dashboard-card-text: #ffffff;  /* white */
-    --color-dashboard-card-muted: #9ca3af; /* gray-400 */
+
+    /* ===============================================================
+    | STATE COLORS
+    ============================================================== */
+    --color-success: #22c55e;             /* green-500 */
+    --color-danger: #ef4444;              /* red-500 */
+    --color-danger-hover: #dc2626;        /* red-600 */
+}
+
+
+/* ===================================================================
+| BASE STYLES
+=================================================================== */
+@layer base {
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--color-bg-main);
+        color: var(--color-text-main);
+    }
+
+    ::selection {
+        background-color: var(--color-brand-soft);
+    }
+}
+
+
+/* ===================================================================
+| COMPONENTS
+=================================================================== */
+@layer components {
+
+    .hero-section {
+        min-height: 60vh;
+    }
+
+    @media (min-width: 1280px) {
+    .hero-section {
+        min-height: 75vh;
+    }
+    }
+
+
+    /* ===============================================================
+    | GALLERY MARQUEE (AUTO HORIZONTAL LOOP)
+    ============================================================== */
+    .gallery-marquee {
+        position: relative;
+        width: 100%;
+        overflow: hidden; /* 🔥 HILANGKAN SCROLLBAR */
+    }
+
+    .gallery-track {
+        display: flex;
+        gap: 3rem;
+        width: max-content;
+        animation: gallery-scroll 35s linear infinite;
+    }
+
+    .gallery-marquee:hover .gallery-track {
+        animation-play-state: paused; /* pause on hover */
+    }
+
+    .gallery-item {
+        min-width: 280px;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+    }
+
+    .gallery-item p {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+    }
+
+
+    /* ===============================================================
+    | NAVIGATION LINK (CLIENT HEADER)
+    ============================================================== */
+    .nav-link {
+        @apply relative text-sm font-medium transition;
+        color: var(--color-text-muted);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        height: 2px;
+        width: 0;
+        background-color: var(--color-brand-main);
+        transition: width 0.25s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--color-text-main);
+    }
+
+    .nav-link:hover::after,
+    .nav-link-active::after {
+        width: 100%;
+    }
+
+    .nav-link-active {
+        color: var(--color-text-main);
+    }
+
+
+        /* ===============================================================
+    | FOOTER LINK (CLIENT)
+    =============================================================== */
+    .footer-link {
+        @apply relative inline-flex items-center gap-3
+            text-app-muted transition;
+    }
+
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        height: 1px;
+        width: 0;
+        background-color: var(--color-brand-main);
+        transition: width 0.25s ease;
+    }
+
+    .footer-link:hover {
+        color: #ffffff;
+    }
+
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+
+
+    /* ===============================================================
+    | BUTTON — PRIMARY (MAIN CTA)
+    ============================================================== */
+    .btn-primary {
+        @apply inline-flex items-center justify-center
+               rounded-lg px-6 py-3
+               text-sm font-semibold transition;
+        background-color: var(--color-brand-main);
+        color: var(--color-brand-text);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-brand-hover);
+    }
+
+
+    /* ===============================================================
+    | BUTTON — SECONDARY (TEXT / GHOST)
+    ============================================================== */
+    .btn-secondary {
+        @apply inline-flex items-center gap-2
+               text-sm font-medium transition;
+        color: var(--color-text-muted);
+    }
+
+    .btn-secondary:hover {
+        color: var(--color-text-main);
+    }
+
+
+    /* ===============================================================
+    | CARD (CLIENT & AUTH)
+    ============================================================== */
+    .card {
+        background-color: var(--color-card-bg);
+        color: var(--color-card-text);
+        border: 1px solid var(--color-card-border);
+        @apply rounded-xl shadow-lg;
+    }
+
+
+    /* ===============================================================
+    | FORM INPUT
+    ============================================================== */
+    .form-input {
+        @apply h-11 w-full rounded-lg px-4 text-sm transition;
+        background-color: var(--color-input-bg);
+        border: 1px solid var(--color-input-border);
+        color: var(--color-card-text);
+    }
+
+    .form-input::placeholder {
+        color: var(--color-input-placeholder);
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--color-input-focus);
+        box-shadow: 0 0 0 3px rgba(79,70,229,0.25);
+    }
+
+
+    /* ===============================================================
+    | ADMIN SCOPE & SURFACE
+    ============================================================== */
+    .admin-scope {
+        background-color: var(--color-bg-surface);
+        color: var(--color-text-main);
+    }
+
+    .admin-card {
+        background: linear-gradient(
+            to bottom,
+            rgba(15,23,42,0.9),
+            rgba(2,6,23,0.95)
+        );
+        border: 1px solid var(--color-border-soft);
+        @apply rounded-2xl shadow-xl;
+    }
+
+
+    /* ===============================================================
+    | ADMIN TABLE
+    ============================================================== */
+    .admin-table {
+        @apply w-full text-sm border-collapse;
+    }
+
+    .admin-table thead th {
+        @apply px-4 py-3 text-left font-medium;
+        color: var(--color-text-muted);
+        border-bottom: 1px solid var(--color-border-soft);
+    }
+
+    .admin-table tbody td {
+        @apply px-4 py-3 align-top;
+        color: var(--color-text-main);
+        border-bottom: 1px solid var(--color-border-soft);
+    }
+
+    .admin-table-empty {
+        @apply px-4 py-6 text-center text-sm;
+        color: var(--color-text-muted);
+    }
+
+
+    /* ===============================================================
+    | BADGE
+    ============================================================== */
+    .badge {
+        @apply inline-flex items-center rounded-md
+               px-2 py-1 text-xs font-medium;
+    }
+
+    .badge-success {
+        background-color: rgba(34,197,94,0.15);
+        color: var(--color-success);
+    }
+
+    .badge-muted {
+        background-color: rgba(148,163,184,0.15);
+        color: var(--color-text-muted);
+    }
+
+
+    /* ===============================================================
+    | ADMIN BUTTONS
+    ============================================================== */
+    .btn-admin {
+        @apply inline-flex items-center justify-center
+               rounded-lg px-4 py-2
+               text-sm font-medium transition;
+        background-color: rgba(255,255,255,0.06);
+        border: 1px solid var(--color-border-soft);
+        color: var(--color-text-main);
+    }
+
+    .btn-admin:hover {
+        background-color: rgba(255,255,255,0.12);
+    }
+
+    .btn-danger {
+        @apply inline-flex items-center justify-center
+               rounded-lg px-4 py-2
+               text-sm font-semibold transition;
+        background-color: var(--color-danger);
+        color: #ffffff;
+    }
+
+    .btn-danger:hover {
+        background-color: var(--color-danger-hover);
+    }
+    .btn-admin-icon {
+    background-color: rgba(255,255,255,0.08);
+    }
+
+    .btn-admin-icon:hover {
+    background-color: rgba(255,255,255,0.16);
+    }
+}
+/* ===============================================================
+| KEYFRAMES
+============================================================== */
+@keyframes gallery-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }

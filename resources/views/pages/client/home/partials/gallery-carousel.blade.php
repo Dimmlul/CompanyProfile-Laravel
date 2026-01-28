@@ -1,32 +1,31 @@
-<section class="py-16 bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6">
+<!-- Gallery Section -->
+<section class="py-20 overflow-hidden">
+    <h2 class="mb-12 text-center text-2xl font-semibold">
+        Gallery
+    </h2>
 
-        <h2 class="mb-6 text-2xl font-bold text-app-text text-center">
-            Gallery
-        </h2>
-
-        <div class="flex gap-6 overflow-x-auto pb-2">
-
+    <div class="gallery-marquee">
+        <div class="gallery-track">
             @foreach ($galleries as $gallery)
-                <div class="min-w-[260px] rounded-xl overflow-hidden
-                            border border-card-border bg-card">
-
+                <div class="gallery-item">
                     <img
-                        src="{{ asset('storage/'.$gallery->image) }}"
-                        class="h-44 w-full object-cover"
+                        src="{{ asset('storage/' . $gallery->image) }}"
                         alt="{{ $gallery->title }}"
                     >
-
-                    <div class="p-4">
-                        <h3 class="font-semibold text-app-text">
-                            {{ $gallery->title }}
-                        </h3>
-                    </div>
-
+                    <p>{{ $gallery->title }}</p>
                 </div>
             @endforeach
 
+            {{-- DUPLICATE ITEMS FOR SMOOTH LOOP --}}
+            @foreach ($galleries as $gallery)
+                <div class="gallery-item">
+                    <img
+                        src="{{ asset('storage/' . $gallery->image) }}"
+                        alt="{{ $gallery->title }}"
+                    >
+                    <p>{{ $gallery->title }}</p>
+                </div>
+            @endforeach
         </div>
-
     </div>
 </section>

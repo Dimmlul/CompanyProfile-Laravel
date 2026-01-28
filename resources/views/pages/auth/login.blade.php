@@ -1,4 +1,3 @@
-<!-- resources/views/pages/auth/login.blade.php -->
 @extends('layouts.auth')
 
 @section('title', 'Login')
@@ -12,7 +11,7 @@
 
         <x-auth.card-header
             title="Sign In"
-            subtitle="Enter your email and password to sign in!"
+            subtitle="Enter your email and password to continue"
         />
 
         <form method="POST" action="{{ route('login.submit') }}">

@@ -17,6 +17,7 @@ class CompanyProfile extends Model
         'mission',
         'address',
         'phone',
+        'fax',
         'email'
     ];
 }

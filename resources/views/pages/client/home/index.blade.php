@@ -7,6 +7,9 @@
     {{-- HERO --}}
     @include('pages.client.home.partials.hero')
 
+    {{-- VISION & MISSION --}}
+    @include('pages.client.home.partials.vision-mission')
+
     {{-- GALLERY CAROUSEL --}}
     @include('pages.client.home.partials.gallery-carousel', [
         'galleries' => $galleries
@@ -22,8 +25,6 @@
         'clients' => $clients
     ])
 
-    {{-- VISION & MISSION --}}
-    @include('pages.client.home.partials.vision-mission')
 
     {{-- CONTACT --}}
     @include('pages.client.home.partials.contact')

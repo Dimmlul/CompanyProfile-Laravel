@@ -7,27 +7,31 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    /**
-     * Display active products only.
-     */
     public function index()
     {
+        // ===============================
+        // NEWEST PRODUCTS
+        // ===============================
+        $newestProducts = Product::query()
+            ->where('is_active', true)
+            ->latest()
+            ->limit(3)
+            ->get();
+
+        // ===============================
+        // ALL PRODUCTS (PAGINATED)
+        // ===============================
         $products = Product::query()
             ->where('is_active', true)
             ->orderBy('order')
             ->latest()
-            ->get();
+            ->paginate(6);
 
-        return view('pages.client.products.index', compact('products'));
+        return view(
+            'pages.client.products.index',
+            compact('newestProducts', 'products')
+        );
     }
 
-    /**
-     * Show single active product.
-     */
-    public function show(Product $product)
-    {
-        abort_if(!$product->is_active, 404);
 
-        return view('pages.client.products.show', compact('product'));
-    }
 }

@@ -136,5 +136,5 @@ Route::get('/clients', [ClientClientController::class, 'index'])
 
 /* Contact */
 Route::get('/contact', function () {
-    return view('client.contact.index');
+    return view('pages.client.contact.index');
 })->name('contact');

@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
     public function index()
     {
         return view('pages.admin.events.index', [
-            'events' => Event::latest()->paginate(10),
+            'events' => Event::orderByDesc('start_date')->paginate(10),
         ]);
     }
 
@@ -28,20 +27,15 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
             'content'     => 'required|string',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'location'    => 'nullable|string|max:255',
             'start_date'  => 'required|date',
             'end_date'    => 'nullable|date|after_or_equal:start_date',
-            'is_active'   => 'required|in:0,1', // ✅ FIX
+            'is_active'   => 'required|in:0,1',
+            'image'       => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
 
-        // slug
-        $validated['slug'] = Str::slug($validated['title']);
+        $validated['is_active'] = (bool) $validated['is_active'];
 
-        // cast boolean (WAJIB)
-        $validated['is_active'] = (int) $validated['is_active'];
-
-        // upload image
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')
                 ->store('events', 'public');
@@ -65,17 +59,17 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
             'content'     => 'required|string',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'location'    => 'nullable|string|max:255',
             'start_date'  => 'required|date',
             'end_date'    => 'nullable|date|after_or_equal:start_date',
             'is_active'   => 'required|in:0,1',
+            'image'       => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-        $validated['is_active'] = (int) $validated['is_active'];
+        $validated['is_active'] = (bool) $validated['is_active'];
 
         if ($request->hasFile('image')) {
+
             if ($event->image && Storage::disk('public')->exists($event->image)) {
                 Storage::disk('public')->delete($event->image);
             }

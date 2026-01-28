@@ -1,90 +1,118 @@
+<!-- resources/views/pages/admin/partials/sidebar.blade.php -->
+<!-- Admin Sidebar Navigation -->
+
 <aside
     x-data="{ openContent: false }"
     class="fixed top-0 left-0 z-50 h-screen
-           bg-app-bg text-app-text
-           border-r border-gray-700
+           admin-scope
+           border-r border-[var(--color-border-soft)]
            transition-all duration-300
            xl:translate-x-0"
     :class="{
-        /* DESKTOP */
+        /* DESKTOP WIDTH */
         'xl:w-[290px]': $store.sidebar.isExpanded,
         'xl:w-[90px]': !$store.sidebar.isExpanded,
 
-        /* MOBILE */
+        /* MOBILE BEHAVIOR */
         'w-[290px] translate-x-0': $store.sidebar.isMobileOpen,
         '-translate-x-full': !$store.sidebar.isMobileOpen
     }"
 >
 
-<!-- LOGO -->
-<div class="flex h-16 items-center gap-3 px-6 border-b border-gray-700">
-    <div class="flex h-9 w-9 items-center justify-center rounded-lg overflow-hidden bg-white">
-        <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXVc_Rr-sZWO7462pa4SOJT4jillPGMXFPpw&s"
-            alt="Logo"
-            class="h-full w-full object-cover"
+    <!-- ==========================================================
+    | LOGO AREA
+    ========================================================== -->
+    <div
+        class="flex h-16 items-center gap-3 px-6
+               border-b border-[var(--color-border-soft)]"
+    >
+        <div class="flex h-9 w-9 items-center justify-center
+                    rounded-lg overflow-hidden bg-white">
+            <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXVc_Rr-sZWO7462pa4SOJT4jillPGMXFPpw&s"
+                alt="Logo"
+                class="h-full w-full object-cover"
+            >
+        </div>
+
+        <span
+            x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+            class="text-lg font-semibold tracking-wide"
         >
+            Admin Panel
+        </span>
     </div>
 
-    <span
-        x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-        class="text-lg font-semibold tracking-wide">
-        Admin Panel
-    </span>
-</div>
-
-    <!-- NAV -->
+    <!-- ==========================================================
+    | NAVIGATION
+    ========================================================== -->
     <nav class="mt-6 px-4 text-sm">
 
-        <!-- SECTION -->
+        <!-- SECTION LABEL -->
         <p
             x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            class="mb-3 px-3 text-xs uppercase tracking-widest text-app-muted">
+            class="mb-3 px-3 text-xs uppercase tracking-widest
+                   text-[var(--color-text-muted)]"
+        >
             Menu
         </p>
 
-        <!-- Dashboard -->
-        <a href="{{ route('admin.dashboard') }}"
-           class="group flex items-center gap-3 rounded-lg px-3 py-2.5 mb-1 transition"
-           :class="isActive('/admin/dashboard')
-                ? 'bg-btn-primary text-btn-text'
-                : 'text-app-text/70 hover:bg-gray-800 hover:text-app-text'">
+        @php
+            $itemBase = "group flex items-center gap-3 rounded-lg px-3 py-2.5 transition";
+            $itemInactive = "text-[var(--color-text-muted)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[var(--color-text-main)]";
+            $itemActive = "bg-[var(--color-brand-soft)] text-[var(--color-text-main)]";
+        @endphp
 
+        <!-- DASHBOARD -->
+        <a href="{{ route('admin.dashboard') }}"
+           class="{{ $itemBase }} mb-1"
+           :class="isActive('/admin/dashboard')
+                ? '{{ $itemActive }}'
+                : '{{ $itemInactive }}'">
+
+            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M3 12h7V3H3v9zm11 9h7v-7h-7v7zM3 21h7v-7H3v7zm11-9h7V3h-7v9z"/>
             </svg>
 
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  class="font-medium">
+            <span
+                x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+                class="font-medium"
+            >
                 Dashboard
             </span>
         </a>
 
-        <!-- Company Profile -->
+        <!-- COMPANY PROFILE -->
         <a href="{{ route('admin.company-profile.index') }}"
-           class="group flex items-center gap-3 rounded-lg px-3 py-2.5 mb-4 transition"
+           class="{{ $itemBase }} mb-4"
            :class="isActive('/admin/company-profile')
-                ? 'bg-btn-primary text-btn-text'
-                : 'text-app-text/70 hover:bg-gray-800 hover:text-app-text'">
+                ? '{{ $itemActive }}'
+                : '{{ $itemInactive }}'">
 
+            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M3 21h18M9 8h1m4 0h1M4 21V4a1 1 0 011-1h14a1 1 0 011 1v17"/>
             </svg>
 
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  class="font-medium">
+            <span
+                x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+                class="font-medium"
+            >
                 Company Profile
             </span>
         </a>
 
-        <!-- SECTION -->
+        <!-- SECTION LABEL -->
         <p
             x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            class="mb-3 px-3 text-xs uppercase tracking-widest text-app-muted">
+            class="mb-3 px-3 text-xs uppercase tracking-widest
+                   text-[var(--color-text-muted)]"
+        >
             Content
         </p>
 
@@ -92,20 +120,23 @@
         <button
             type="button"
             @click="openContent = !openContent"
-            class="group flex w-full items-center gap-3 rounded-lg px-3 py-2.5
-                   text-app-text/70 hover:bg-gray-800 hover:text-app-text transition">
-
+            class="{{ $itemBase }} w-full {{ $itemInactive }}"
+        >
+            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0l-4 6H8l-4-6m16 0H4"/>
             </svg>
 
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  class="font-medium">
+            <span
+                x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+                class="font-medium"
+            >
                 Content
             </span>
 
+            <!-- arrow icon unchanged -->
             <svg
                 x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
                 class="ml-auto h-4 w-4 transition-transform"
@@ -117,24 +148,24 @@
             </svg>
         </button>
 
-        <!-- SUB MENU -->
+        <!-- ======================================================
+        | SUB MENU
+        ====================================================== -->
         <div
             x-cloak
             x-show="openContent && ($store.sidebar.isExpanded || $store.sidebar.isMobileOpen)"
             x-transition
-            class="mt-2 ml-6 pl-4 border-l border-gray-700 space-y-1">
+            class="mt-2 ml-6 pl-4
+                   border-l border-[var(--color-border-soft)]
+                   space-y-1"
+        >
 
-            @php
-                $item = "group flex items-center gap-3 rounded-md px-3 py-2 transition text-sm";
-                $inactive = "text-app-text/70 hover:bg-gray-800 hover:text-app-text";
-            @endphp
-
-            <!-- Articles -->
+            <!-- ARTICLES -->
             <a href="{{ route('admin.articles.index') }}"
-               class="{{ $item }}"
+               class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/articles')
-                    ? 'bg-btn-primary text-btn-text'
-                    : '{{ $inactive }}'">
+                    ? '{{ $itemActive }}'
+                    : '{{ $itemInactive }}'">
 
                 <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
@@ -145,12 +176,12 @@
                 <span>Articles</span>
             </a>
 
-            <!-- Products -->
+            <!-- PRODUCTS -->
             <a href="{{ route('admin.products.index') }}"
-               class="{{ $item }}"
+               class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/products')
-                    ? 'bg-btn-primary text-btn-text'
-                    : '{{ $inactive }}'">
+                    ? '{{ $itemActive }}'
+                    : '{{ $itemInactive }}'">
 
                 <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
@@ -161,12 +192,12 @@
                 <span>Products</span>
             </a>
 
-            <!-- Events -->
+            <!-- EVENTS -->
             <a href="{{ route('admin.events.index') }}"
-               class="{{ $item }}"
+               class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/events')
-                    ? 'bg-btn-primary text-btn-text'
-                    : '{{ $inactive }}'">
+                    ? '{{ $itemActive }}'
+                    : '{{ $itemInactive }}'">
 
                 <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
@@ -177,12 +208,12 @@
                 <span>Events</span>
             </a>
 
-            <!-- Gallery -->
+            <!-- GALLERY -->
             <a href="{{ route('admin.gallery.index') }}"
-               class="{{ $item }}"
+               class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/gallery')
-                    ? 'bg-btn-primary text-btn-text'
-                    : '{{ $inactive }}'">
+                    ? '{{ $itemActive }}'
+                    : '{{ $itemInactive }}'">
 
                 <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
@@ -193,12 +224,12 @@
                 <span>Gallery</span>
             </a>
 
-            <!-- Clients -->
+            <!-- CLIENTS -->
             <a href="{{ route('admin.clients.index') }}"
-               class="{{ $item }}"
+               class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/clients')
-                    ? 'bg-btn-primary text-btn-text'
-                    : '{{ $inactive }}'">
+                    ? '{{ $itemActive }}'
+                    : '{{ $itemInactive }}'">
 
                 <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">

@@ -13,6 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'emailjs' => [
+    'service_id'  => env('EMAILJS_SERVICE_ID'),
+    'template_id' => env('EMAILJS_TEMPLATE_ID'),
+    'public_key'  => env('EMAILJS_PUBLIC_KEY'),
+    ],
 
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),

@@ -1,4 +1,3 @@
-<!-- resources/views/components/auth/form-input.blade.php -->
 @props([
     'label',
     'name',
@@ -7,7 +6,7 @@
 ])
 
 <div>
-    <label class="mb-1 block text-sm font-medium text-app-text">
+    <label class="mb-1.5 block text-sm font-medium text-app-text">
         {{ $label }}
         <span class="text-danger">*</span>
     </label>
@@ -20,12 +19,14 @@
         {{ $attributes->merge([
             'class' => '
                 h-11 w-full rounded-lg
-                bg-input-bg
-                border border-input-border
+                bg-slate-900/60
+                border border-white/10
                 px-4 text-app-text
-                placeholder:text-input-placeholder
-                focus:border-btn-primary
-                focus:ring-btn-primary
+                placeholder:text-app-muted
+                outline-none
+                focus:border-brand
+                focus:ring-2 focus:ring-brand/40
+                transition
             '
         ]) }}
     />

@@ -15,151 +15,105 @@
 
     {{-- TITLE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             Title
         </label>
-        <input
-            type="text"
-            name="title"
-            value="{{ old('title') }}"
-            required
-            class="shadow-theme-xs h-11 w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+        <input type="text" name="title" required
+               class="h-11 w-full rounded-lg
+                      border border-card-border
+                      bg-input-bg px-4 text-sm text-app-text">
     </div>
 
     {{-- DESCRIPTION --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             Short Description
         </label>
-        <textarea
-            name="description"
-            rows="3"
-            class="shadow-theme-xs w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-3 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-        >{{ old('description') }}</textarea>
+        <textarea name="description" rows="3"
+                  class="w-full rounded-lg
+                         border border-card-border
+                         bg-input-bg px-4 py-3 text-sm text-app-text"></textarea>
     </div>
 
     {{-- CONTENT --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             Content
         </label>
-        <textarea
-            name="content"
-            rows="6"
-            required
-            class="shadow-theme-xs w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-3 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-        >{{ old('content') }}</textarea>
+        <textarea name="content" rows="6" required
+                  class="w-full rounded-lg
+                         border border-card-border
+                         bg-input-bg px-4 py-3 text-sm text-app-text"></textarea>
     </div>
 
     {{-- IMAGE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-            Event Image
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+            Image
         </label>
-        <input
-            type="file"
-            name="image"
-            accept="image/*"
-            class="block w-full text-sm
-                   file:mr-4 file:rounded-lg
-                   file:border-0
-                   file:bg-btn-primary
-                   file:px-4 file:py-2
-                   file:text-sm file:font-medium
-                   file:text-btn-text
-                   hover:file:bg-btn-primary-hover">
+        <input type="file" name="image"
+               class="block w-full text-sm
+                      file:rounded-lg file:bg-btn-primary
+                      file:px-4 file:py-2 file:text-btn-text">
     </div>
 
     {{-- LOCATION --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             Location
         </label>
-        <input
-            type="text"
-            name="location"
-            value="{{ old('location') }}"
-            class="shadow-theme-xs h-11 w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+        <input type="text" name="location"
+               class="h-11 w-full rounded-lg
+                      border border-card-border
+                      bg-input-bg px-4 text-sm text-app-text">
     </div>
 
     {{-- START DATE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             Start Date
         </label>
-        <input
-            type="datetime-local"
-            name="start_date"
-            value="{{ old('start_date') }}"
-            required
-            class="shadow-theme-xs h-11 w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+        <input type="datetime-local" name="start_date" required
+               class="h-11 w-full rounded-lg
+                      border border-card-border
+                      bg-input-bg px-4 text-sm text-app-text">
     </div>
 
     {{-- END DATE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-1.5 block text-sm font-medium text-text-muted">
             End Date
         </label>
-        <input
-            type="datetime-local"
-            name="end_date"
-            value="{{ old('end_date') }}"
-            class="shadow-theme-xs h-11 w-full rounded-lg
-                   border border-gray-300 bg-transparent px-4 py-2.5 text-sm
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+        <input type="datetime-local" name="end_date"
+               class="h-11 w-full rounded-lg
+                      border border-card-border
+                      bg-input-bg px-4 text-sm text-app-text">
     </div>
 
-    {{-- STATUS (INI KRUSIAL) --}}
+    {{-- STATUS --}}
     <div>
-        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        <label class="mb-2 block text-sm font-medium text-text-muted">
             Status
         </label>
 
-        {{-- fallback agar SELALU terkirim --}}
         <input type="hidden" name="is_active" value="0">
 
-        <div class="flex gap-6 text-sm">
+        <div class="flex gap-6 text-sm text-app-text">
             <label class="flex items-center gap-2">
-                <input
-                    type="radio"
-                    name="is_active"
-                    value="1"
-                    {{ old('is_active', '1') === '1' ? 'checked' : '' }}>
+                <input type="radio" name="is_active" value="1" checked>
                 Active
             </label>
-
             <label class="flex items-center gap-2">
-                <input
-                    type="radio"
-                    name="is_active"
-                    value="0"
-                    {{ old('is_active') === '0' ? 'checked' : '' }}>
+                <input type="radio" name="is_active" value="0">
                 Inactive
             </label>
         </div>
     </div>
 
     {{-- SUBMIT --}}
-    <div class="pt-3">
-        <button
-            type="submit"
-            class="inline-flex items-center gap-2
-                   rounded-lg bg-btn-primary px-5 py-2.5
-                   text-sm font-medium text-btn-text
-                   hover:bg-btn-primary-hover transition">
-            Save Event
-        </button>
-    </div>
+    <button class="btn-primary w-fit">
+        Save Event
+    </button>
 
 </div>
 </form>
