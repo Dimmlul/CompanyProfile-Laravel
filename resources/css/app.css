@@ -198,8 +198,8 @@
     | FOOTER LINK (CLIENT)
     =============================================================== */
     .footer-link {
-        @apply relative inline-flex items-center gap-3
-            text-app-muted transition;
+        @apply relative inline-flex items-center gap-3 transition;
+        color: var(--color-text-muted);
     }
 
     .footer-link::after {

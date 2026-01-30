@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| AUTH CONTROLLERS
+| AUTH CONTROLLER
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Auth\AuthController;
@@ -24,7 +24,7 @@ use App\Http\Controllers\Admin\ClientController;
 
 /*
 |--------------------------------------------------------------------------
-| CLIENT CONTROLLERS
+| CLIENT CONTROLLERS (PUBLIC WEBSITE)
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Client\HomeController;
@@ -35,10 +35,19 @@ use App\Http\Controllers\Client\EventController as ClientEventController;
 use App\Http\Controllers\Client\GalleryController as ClientGalleryController;
 use App\Http\Controllers\Client\ClientController as ClientClientController;
 
+/*
+|--------------------------------------------------------------------------
+| USER / SHOP CONTROLLERS (ALIAS)
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\User\CartController as UserCartController;
+use App\Http\Controllers\User\CheckoutController as UserCheckoutController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\User\ProfileController as UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
-| AUTH
+| AUTH ROUTES
 |--------------------------------------------------------------------------
 */
 Route::get('/login', [AuthController::class, 'showLoginForm'])
@@ -47,9 +56,14 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.submit');
 
+Route::get('/register', [AuthController::class, 'showRegisterForm'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.submit');
+
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -71,26 +85,23 @@ Route::middleware('auth')
             ->names('company-profile');
 
         /* Content Management */
-        Route::resource('articles', ArticleController::class)
-            ->names('articles');
+        Route::resource('articles', ArticleController::class);
+        Route::resource('products', ProductController::class);
+        Route::resource('events', EventController::class);
+        Route::resource('gallery', GalleryController::class);
+        Route::resource('clients', ClientController::class);
 
-        Route::resource('products', ProductController::class)
-            ->names('products');
+        /* Orders (ADMIN) */
+        Route::get('/orders', [UserOrderController::class, 'adminIndex'])
+            ->name('orders.index');
 
-        Route::resource('events', EventController::class)
-            ->names('events');
-
-        Route::resource('gallery', GalleryController::class)
-            ->names('gallery');
-
-        Route::resource('clients', ClientController::class)
-            ->names('clients');
+        Route::get('/orders/{order}', [UserOrderController::class, 'adminShow'])
+            ->name('orders.show');
     });
-
 
 /*
 |--------------------------------------------------------------------------
-| CLIENT / FRONTEND
+| CLIENT / PUBLIC WEBSITE
 |--------------------------------------------------------------------------
 */
 
@@ -138,3 +149,66 @@ Route::get('/clients', [ClientClientController::class, 'index'])
 Route::get('/contact', function () {
     return view('pages.client.contact.index');
 })->name('contact');
+
+/*
+|--------------------------------------------------------------------------
+| USER / SHOP (CART, CHECKOUT, ORDER)
+|--------------------------------------------------------------------------
+| - USER = authenticated
+| - CLIENT (guest) diarahkan login/register
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+
+    /* CART */
+    Route::get('/cart', [UserCartController::class, 'index'])
+        ->name('cart.index');
+
+    Route::post('/cart', [UserCartController::class, 'store'])
+        ->name('cart.store');
+
+    Route::patch('/cart/{cart}', [UserCartController::class, 'update'])
+        ->name('cart.update');
+
+    Route::delete('/cart/{cart}', [UserCartController::class, 'destroy'])
+        ->name('cart.destroy');
+
+    /* CART */
+        Route::get('/cart', [UserCartController::class, 'index'])
+            ->name('cart.index');
+
+        Route::post('/cart', [UserCartController::class, 'store'])
+            ->name('cart.store');
+
+        Route::patch('/cart/{cart}', [UserCartController::class, 'update'])
+            ->name('cart.update');
+
+        Route::delete('/cart/{cart}', [UserCartController::class, 'destroy'])
+            ->name('cart.destroy');
+
+        Route::post('/cart/buy-now', [UserCartController::class, 'buyNow'])
+        ->name('cart.buyNow');
+
+
+        /* CHECKOUT */
+        Route::get('/checkout', [UserCheckoutController::class, 'index'])
+            ->name('checkout.index');
+
+        Route::post('/checkout', [UserCheckoutController::class, 'process'])
+            ->name('checkout.process');
+
+    });
+
+    /* ORDERS (USER) */
+    Route::get('/orders', [UserOrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::get('/orders/{order}', [UserOrderController::class, 'show'])
+        ->name('orders.show');
+
+    /* PROFILE */
+    Route::get('/profile', [UserProfileController::class, 'index'])
+        ->name('profile.index');
+
+    Route::post('/profile', [UserProfileController::class, 'update'])
+        ->name('profile.update');

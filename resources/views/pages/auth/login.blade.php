@@ -39,6 +39,15 @@
                     Sign In
                 </x-auth.submit-button>
 
+                <p class="text-center text-sm text-app-muted">
+                            Don’t have an account?
+                            <a href="{{ route('register') }}"
+                            class="text-btn-primary hover:underline">
+                                Register
+                            </a>
+                        </p>
+
+
             </div>
         </form>
 

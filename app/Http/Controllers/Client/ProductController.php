@@ -33,5 +33,21 @@ class ProductController extends Controller
         );
     }
 
+    /**
+     * ===============================
+     * PRODUCT DETAIL
+     * ===============================
+     */
+    public function show(Product $product)
+    {
+        // pastikan hanya produk aktif yang bisa diakses
+        if (! $product->is_active) {
+            abort(404);
+        }
 
+        return view(
+            'pages.client.products.show',
+            compact('product')
+        );
+    }
 }
