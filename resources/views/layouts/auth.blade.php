@@ -9,5 +9,6 @@
 </head>
 <body class="bg-app-bg text-app-text">
     @yield('content')
+    <div class="h-24"></div>
 </body>
 </html>

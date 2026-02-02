@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
-| AUTH CONTROLLER
+| AUTH
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Auth\AuthController;
@@ -22,10 +22,11 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 /*
 |--------------------------------------------------------------------------
-| CLIENT CONTROLLERS (PUBLIC WEBSITE)
+| CLIENT / PUBLIC
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Client\HomeController;
@@ -38,12 +39,12 @@ use App\Http\Controllers\Client\ClientController as ClientClientController;
 
 /*
 |--------------------------------------------------------------------------
-| USER / SHOP CONTROLLERS
+| USER / SHOP
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
-use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
 
 /*
@@ -53,10 +54,8 @@ use App\Http\Controllers\User\ProfileController;
 */
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
@@ -64,31 +63,33 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | ADMIN PANEL
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
-    Route::resource('company-profile', CompanyProfileController::class)
-        ->only(['index', 'store', 'update'])
-        ->names('company-profile');
+        Route::resource('company-profile', CompanyProfileController::class)
+            ->only(['index', 'store', 'update']);
 
-    Route::resource('articles', ArticleController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('events', EventController::class);
-    Route::resource('gallery', GalleryController::class);
-    Route::resource('clients', ClientController::class);
+        Route::resource('articles', ArticleController::class);
+        Route::resource('products', ProductController::class);
+        Route::resource('events', EventController::class);
+        Route::resource('gallery', GalleryController::class);
+        Route::resource('clients', ClientController::class);
 
-    Route::get('/orders', [OrderController::class, 'adminIndex'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'adminShow'])->name('orders.show');
-});
+        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    });
 
 /*
 |--------------------------------------------------------------------------
-| CLIENT / PUBLIC WEBSITE
+| PUBLIC WEBSITE
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::get('/about', [ClientCompanyProfileController::class, 'about'])->name('about');
 Route::get('/vision-mission', [ClientCompanyProfileController::class, 'visionMission'])->name('vision-mission');
 
@@ -103,9 +104,7 @@ Route::get('/events/{event:slug}', [ClientEventController::class, 'show'])->name
 
 Route::get('/gallery', [ClientGalleryController::class, 'index'])->name('gallery');
 Route::get('/clients', [ClientClientController::class, 'index'])->name('clients');
-
 Route::get('/contact', fn () => view('pages.client.contact.index'))->name('contact');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -119,25 +118,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
-    Route::post('/cart/buy-now', [CartController::class, 'buyNow'])
-    ->name('cart.buyNow');
-
+    Route::post('/cart/buy-now', [CartController::class, 'buyNow'])->name('cart.buyNow');
 
     // CHECKOUT
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])->name('checkout.payment');
 
-    Route::get('/checkout', [CheckoutController::class, 'index'])
-        ->name('checkout.index');
+   
+    Route::get('/orders', [UserOrderController::class, 'index'])
+        ->name('orders.index');
 
-    Route::post('/checkout', [CheckoutController::class, 'process'])
-        ->name('checkout.process');
-
-    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])
-        ->name('checkout.payment');
-
-
-    // ORDERS
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}', [UserOrderController::class, 'show'])
+        ->name('orders.show');
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

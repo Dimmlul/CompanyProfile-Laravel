@@ -1,63 +1,61 @@
 @extends('layouts.app')
 
+@section('title','Complete Payment')
+
 @section('content')
-<section class="py-20 bg-app-bg text-center">
-    <h1 class="text-2xl font-semibold text-white mb-6">
-        Complete Payment
-    </h1>
+<section class="py-24 bg-app-bg">
+    <div class="max-w-xl mx-auto px-6">
 
-    <button
-        id="pay-button"
-        class="px-6 py-3 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600">
-        Pay with Midtrans
-    </button>
+        <div class="bg-card border border-card-border rounded-2xl p-8 text-center">
 
-    {{-- DEBUG (hapus nanti) --}}
-    <p class="mt-4 text-sm text-red-400">
-        Token: {{ $order->payment_token ?? 'NULL' }}
-    </p>
+            <h1 class="text-2xl font-semibold text-white mb-2">
+                Complete Your Payment
+            </h1>
+
+            <p class="text-app-muted mb-6">
+                Order ID: <span class="text-white">{{ $order->order_number }}</span>
+            </p>
+
+            <div class="bg-app-bg rounded-xl p-5 mb-6">
+                <p class="text-sm text-app-muted">Total Payment</p>
+                <p class="text-3xl font-bold text-white">
+                    Rp {{ number_format($order->total) }}
+                </p>
+            </div>
+
+            <button
+                id="pay-button"
+                class="w-full py-3 rounded-xl bg-indigo-500 text-white
+                       hover:bg-indigo-600 transition font-medium">
+                Pay with Midtrans
+            </button>
+
+            <p class="text-xs text-app-muted mt-4">
+                Secure payment powered by Midtrans
+            </p>
+
+        </div>
+    </div>
 </section>
 
-{{-- MIDTRANS SNAP --}}
 <script
     src="https://app.sandbox.midtrans.com/snap/snap.js"
     data-client-key="{{ config('midtrans.client_key') }}">
 </script>
 
 <script>
-document.getElementById('pay-button').addEventListener('click', function () {
-
-    const token = @json($order->payment_token);
-
-    console.log('MIDTRANS TOKEN:', token);
-
-    // 🔴 GUARD 1: token kosong
-    if (!token) {
-        alert('Payment token is missing. Checkout belum memanggil Midtrans.');
-        return;
-    }
-
-    // 🔴 GUARD 2: snap.js tidak terload
-    if (typeof snap === 'undefined') {
-        alert('Midtrans Snap gagal dimuat.');
-        return;
-    }
-
-    // ✅ SNAP PAY
-    snap.pay(token, {
-        onSuccess: function (result) {
-            console.log('SUCCESS', result);
+document.getElementById('pay-button').onclick = function () {
+    snap.pay('{{ $order->payment_token }}', {
+        onSuccess: function () {
             window.location.href = "{{ route('orders.index') }}";
         },
-        onPending: function (result) {
-            console.log('PENDING', result);
+        onPending: function () {
             window.location.href = "{{ route('orders.index') }}";
         },
-        onError: function (result) {
-            console.error('ERROR', result);
+        onError: function () {
             alert('Payment failed');
         }
     });
-});
+};
 </script>
 @endsection

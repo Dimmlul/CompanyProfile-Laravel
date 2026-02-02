@@ -22,11 +22,14 @@
     </script>
 </head>
 
-<body class="bg-app-bg text-app-text">
+<body class="bg-app-bg text-app-text min-h-screen flex flex-col">
 
+    {{-- HEADER --}}
     @include('pages.client.partials.header')
 
+    {{-- MAIN CONTENT --}}
     <main
+        class="flex-1"
         x-data="pageTransition"
         x-show="show"
         x-transition:enter="transition ease-out duration-500"
@@ -36,6 +39,7 @@
         @yield('content')
     </main>
 
+    {{-- FOOTER --}}
     @include('pages.client.partials.footer')
 
     @stack('scripts')
