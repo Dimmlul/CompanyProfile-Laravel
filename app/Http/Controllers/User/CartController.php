@@ -4,9 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -72,25 +72,32 @@ class CartController extends Controller
         return back()->with('success', 'Item removed');
     }
 
+    /**
+     * BUY NOW → langsung ke checkout
+     */
     public function buyNow(Request $request)
     {
-    $request->validate([
-        'product_id' => ['required', 'exists:products,id'],
-    ]);
+        $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+        ]);
 
-    Cart::updateOrCreate(
-        [
-            'user_id'    => Auth::id(),
-            'product_id' => $request->product_id,
-        ],
-        [
-            'qty' => DB::raw('qty + 1'),
-        ]
-    );
+        Cart::updateOrCreate(
+            [
+                'user_id'    => Auth::id(),
+                'product_id' => $request->product_id,
+            ],
+            [
+                'qty' => 1,
+            ]
+        );
 
-    return redirect()
-        ->route('cart.index')
-        ->with('success', 'Product added to cart.');
+        return redirect()->route('checkout.index');
+    }
+
+    public function payment(Order $order)
+{
+    abort_if($order->user_id !== Auth::id(), 403);
+    return view('pages.user.checkout.payment', compact('order'));
 }
 
 }

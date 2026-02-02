@@ -5,10 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
-    protected $fillable = ['user_id', 'total_price', 'status'];
+    protected $fillable = [
+        'user_id',
+        'order_number',
+        'total',
+        'payment_status',
+        'payment_token',
+        'payment_method',
+        'midtrans_transaction_id',
+        'midtrans_response',
+    ];
 
     protected $casts = [
-    'total_price' => 'decimal:2',
+    'total' => 'integer',
+    'midtrans_response' => 'array',
     ];
 
     public function calculateTotal()
