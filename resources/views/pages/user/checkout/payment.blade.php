@@ -25,6 +25,7 @@
 
             <button
                 id="pay-button"
+                type="button"
                 class="w-full py-3 rounded-xl bg-indigo-500 text-white
                        hover:bg-indigo-600 transition font-medium">
                 Pay with Midtrans
@@ -37,25 +38,52 @@
         </div>
     </div>
 </section>
+@endsection
 
+@push('scripts')
 <script
     src="https://app.sandbox.midtrans.com/snap/snap.js"
     data-client-key="{{ config('midtrans.client_key') }}">
 </script>
 
 <script>
-document.getElementById('pay-button').onclick = function () {
-    snap.pay('{{ $order->payment_token }}', {
-        onSuccess: function () {
-            window.location.href = "{{ route('orders.index') }}";
-        },
-        onPending: function () {
-            window.location.href = "{{ route('orders.index') }}";
-        },
-        onError: function () {
-            alert('Payment failed');
-        }
+(function () {
+    const payButton = document.getElementById('pay-button');
+    let snapOpened = false;
+
+    if (!payButton) return;
+
+    payButton.addEventListener('click', function () {
+
+        // ⛔ cegah double klik / double state
+        if (snapOpened) return;
+
+        snapOpened = true;
+        payButton.disabled = true;
+        payButton.innerText = 'Processing...';
+
+        snap.pay('{{ $order->payment_token }}', {
+            onSuccess: function () {
+                window.location.href = "{{ route('orders.index') }}";
+            },
+            onPending: function () {
+                window.location.href = "{{ route('orders.index') }}";
+            },
+            onError: function () {
+                resetButton();
+                alert('Payment failed');
+            },
+            onClose: function () {
+                resetButton();
+            }
+        });
     });
-};
+
+    function resetButton() {
+        snapOpened = false;
+        payButton.disabled = false;
+        payButton.innerText = 'Pay with Midtrans';
+    }
+})();
 </script>
-@endsection
+@endpush

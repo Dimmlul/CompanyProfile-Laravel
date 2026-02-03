@@ -18,7 +18,7 @@ class Order extends Model
 
     protected $casts = [
     'total' => 'integer',
-    'midtrans_response' => 'array',
+    // 'midtrans_response' => 'array',
     ];
 
     public function calculateTotal()

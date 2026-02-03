@@ -107,6 +107,30 @@
             </span>
         </a>
 
+        <!-- ORDERS -->
+        <a href="{{ route('admin.orders.index') }}"
+        class="{{ $itemBase }} mb-4"
+        :class="isActive('/admin/orders')
+                ? '{{ $itemActive }}'
+                : '{{ $itemInactive }}'">
+
+            <!-- icon: shopping-bag / order -->
+            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M5 8h14l-1.5 12.5a2 2 0 01-2 1.5H8.5a2 2 0 01-2-1.5L5 8z"/>
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 8V6a3 3 0 016 0v2"/>
+            </svg>
+
+            <span
+                x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+                class="font-medium"
+            >
+                Orders
+            </span>
+        </a>
+
         <!-- SECTION LABEL -->
         <p
             x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"

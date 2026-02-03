@@ -15,20 +15,13 @@ use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
-    /**
-     * Show checkout page
-     */
     public function index()
     {
         $carts = Cart::with('product')
             ->where('user_id', Auth::id())
             ->get();
 
-        if ($carts->isEmpty()) {
-            return redirect()
-                ->route('cart.index')
-                ->with('error', 'Your cart is empty.');
-        }
+        abort_if($carts->isEmpty(), 404);
 
         $total = $carts->sum(fn ($cart) =>
             $cart->product->price * $cart->qty
@@ -37,16 +30,12 @@ class CheckoutController extends Controller
         return view('pages.user.checkout.index', compact('carts', 'total'));
     }
 
-    /**
-     * Process checkout & generate Midtrans snap token
-     */
     public function process(Request $request)
     {
         DB::beginTransaction();
 
         try {
-            $user = Auth::user();
-
+            $user  = Auth::user();
             $carts = Cart::with('product')
                 ->where('user_id', $user->id)
                 ->get();
@@ -59,7 +48,6 @@ class CheckoutController extends Controller
                 $cart->product->price * $cart->qty
             );
 
-            // ✅ CREATE ORDER
             $order = Order::create([
                 'user_id'        => $user->id,
                 'order_number'   => 'ORDER-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4)),
@@ -67,7 +55,6 @@ class CheckoutController extends Controller
                 'payment_status' => 'pending',
             ]);
 
-            // ✅ CREATE ORDER ITEMS
             foreach ($carts as $cart) {
                 OrderItem::create([
                     'order_id'   => $order->id,
@@ -77,16 +64,16 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // 🔥 MIDTRANS CONFIG
+            // MIDTRANS CONFIG
             Config::$serverKey    = config('midtrans.server_key');
-            Config::$isProduction = false; // sandbox
+            Config::$isProduction = false;
             Config::$isSanitized  = true;
             Config::$is3ds        = true;
 
             $params = [
                 'transaction_details' => [
                     'order_id'     => $order->order_number,
-                    'gross_amount' => (int) $order->total,
+                    'gross_amount' => $order->total,
                 ],
                 'customer_details' => [
                     'first_name' => $user->name,
@@ -94,19 +81,16 @@ class CheckoutController extends Controller
                 ],
             ];
 
-            // 🔥 GENERATE SNAP TOKEN
             $snapToken = Snap::getSnapToken($params);
 
             if (!$snapToken) {
-                throw new \Exception('Failed to generate Midtrans token');
+                throw new \Exception('Snap token failed');
             }
 
-            // ✅ SAVE TOKEN
             $order->update([
                 'payment_token' => $snapToken,
             ]);
 
-            // ✅ CLEAR CART
             Cart::where('user_id', $user->id)->delete();
 
             DB::commit();
@@ -119,17 +103,12 @@ class CheckoutController extends Controller
         }
     }
 
-    /**
-     * Show payment page (Snap)
-     */
     public function payment(Order $order)
     {
-        // 🔐 pastikan order milik user
         abort_if($order->user_id !== Auth::id(), 403);
 
-        // 🔴 token wajib ada
-        if (!$order->payment_token) {
-            abort(500, 'Payment token not generated.');
+        if ($order->payment_status !== 'pending') {
+            return redirect()->route('orders.index');
         }
 
         return view('pages.user.checkout.payment', compact('order'));

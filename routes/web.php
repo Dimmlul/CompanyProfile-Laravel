@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,7 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])->name('checkout.payment');
 
-   
+
     Route::get('/orders', [UserOrderController::class, 'index'])
         ->name('orders.index');
 
@@ -142,12 +144,33 @@ Route::middleware('auth')->group(function () {
 | MIDTRANS CALLBACK
 |--------------------------------------------------------------------------
 */
-Route::post('/midtrans/callback', function (Request $request) {
-    $order = \App\Models\Order::where('order_number', $request->order_id)->firstOrFail();
 
-    if ($request->transaction_status === 'settlement') {
-        $order->update(['payment_status' => 'paid']);
-    } elseif (in_array($request->transaction_status, ['expire', 'cancel'])) {
+Route::post('/midtrans/callback', function (Request $request) {
+
+    Log::info('MIDTRANS CALLBACK', $request->all());
+
+    $order = Order::where('order_number', $request->order_id)->first();
+
+    if (!$order) {
+        Log::error('ORDER NOT FOUND', ['order_id' => $request->order_id]);
+        return response()->json(['message' => 'Order not found'], 404);
+    }
+
+    $status = $request->transaction_status;
+    $type   = $request->payment_type;
+
+    if (
+        $status === 'settlement' ||
+        ($status === 'capture' && $type === 'credit_card')
+    ) {
+        $order->update([
+            'payment_status' => 'paid',
+            'midtrans_transaction_id' => $request->transaction_id,
+            'midtrans_response' => $request->all(),
+        ]);
+    } elseif ($status === 'expire') {
+        $order->update(['payment_status' => 'expired']);
+    } elseif (in_array($status, ['cancel', 'deny'])) {
         $order->update(['payment_status' => 'failed']);
     }
 
