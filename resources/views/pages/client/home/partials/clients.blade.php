@@ -1,51 +1,69 @@
-<section class=" x-data
+<section
+    x-data
     x-reveal
-    class="reveal py-24 bg-app-bg">
+    class="reveal py-28 bg-app-bg"
+>
     <div class="mx-auto max-w-7xl px-6">
 
-        {{-- SECTION HEADER --}}
-        <div class="mb-14 text-center">
-            <h2 class="text-3xl font-semibold text-app-text">
+        {{-- ================= HEADER ================= --}}
+        <div class="mb-16 text-center">
+            <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400">
+                Partnerships
+            </span>
+
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-white">
                 Trusted by Our Clients
             </h2>
-            <p class="mt-3 text-sm text-app-muted max-w-xl mx-auto">
-                We collaborate with startups, enterprises, and creative teams
-                to deliver impactful digital solutions.
+
+            <p class="mt-4 text-sm leading-relaxed text-app-muted max-w-xl mx-auto">
+                We collaborate with startups, growing businesses, and established
+                organizations to deliver reliable and impactful digital solutions.
             </p>
         </div>
 
-        {{-- CLIENT GRID --}}
+        {{-- ================= CLIENT GRID ================= --}}
         <div
             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
-                   gap-x-10 gap-y-12"
+                   gap-x-10 gap-y-14"
         >
             @foreach ($clients as $client)
                 <div
                     class="group
                            aspect-[3/2]
-                           rounded-xl
+                           rounded-2xl
                            border border-white/10
-                           p-[6px]
-                           transition
-                           hover:border-white/25"
+                           bg-slate-900/40
+                           p-3
+                           transition-all duration-300
+                           hover:border-white/25
+                           hover:-translate-y-1"
                 >
                     <div
                         class="relative h-full w-full
-                               rounded-lg
-                               bg-[rgba(255,255,255,0.04)]
+                               rounded-xl
+                               bg-white/[0.03]
                                overflow-hidden
                                flex items-center justify-center"
                     >
                         <img
                             src="{{ asset('storage/'.$client->logo) }}"
                             alt="{{ $client->name }}"
-                            class="h-[90%] w-[90%]
+                            class="h-[85%] w-[85%]
                                    object-contain
-                                   transition
-                                   opacity-90
+                                   opacity-80
+                                   transition-all duration-300
                                    group-hover:opacity-100
-                                   group-hover:scale-[1.03]"
+                                   group-hover:scale-[1.05]"
                         >
+
+                        {{-- subtle glow --}}
+                        <span
+                            class="pointer-events-none absolute inset-0
+                                   opacity-0 group-hover:opacity-100
+                                   transition
+                                   bg-gradient-to-tr
+                                   from-indigo-500/5 via-transparent to-transparent"
+                        ></span>
                     </div>
                 </div>
             @endforeach

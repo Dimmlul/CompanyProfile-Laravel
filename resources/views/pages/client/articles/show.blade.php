@@ -4,44 +4,60 @@
 
 @section('content')
 
-<section class="bg-app-bg py-20">
+<section class="bg-app-bg py-24">
     <div class="mx-auto max-w-3xl px-6">
 
-        <!-- Back + Title -->
-        <div class="mb-8">
+        {{-- ================= HEADER ================= --}}
+        <header class="mb-12">
+
             <a
                 href="{{ route('articles') }}"
-                class="text-sm text-gray-400 hover:text-white transition"
+                class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition"
             >
-                ← Back to Articles
+                <span>←</span>
+                <span>Back to Articles</span>
             </a>
 
-            <h1 class="mt-3 text-3xl font-semibold text-white leading-tight">
+            <h1 class="mt-5 text-3xl md:text-4xl font-semibold text-white leading-tight tracking-tight">
                 {{ $article->title }}
             </h1>
 
-            <div class="mt-2 flex items-center gap-4 text-sm text-gray-400">
+            <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-400">
                 <span>{{ $article->published_at?->format('d M Y') }}</span>
+
                 @if ($article->author)
-                    <span>•</span>
+                    <span class="opacity-50">•</span>
                     <span>{{ $article->author }}</span>
                 @endif
             </div>
-        </div>
 
-        <!-- Thumbnail -->
+        </header>
+
+        {{-- ================= THUMBNAIL ================= --}}
         @if ($article->thumbnail)
-            <img
-                src="{{ asset('storage/' . $article->thumbnail) }}"
-                class="mb-10 w-full rounded-xl border border-gray-800 object-cover"
-            >
+            <figure class="mb-14">
+                <img
+                    src="{{ asset('storage/' . $article->thumbnail) }}"
+                    class="w-full rounded-2xl border border-white/10 object-cover"
+                    alt="{{ $article->title }}"
+                >
+            </figure>
         @endif
 
-    <!-- Content -->
-    <div class="mt-10 text-gray-300 leading-relaxed space-y-6">
-        {!! nl2br(e($article->content)) !!}
-    </div>
+        {{-- ================= CONTENT ================= --}}
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300">
+            {!! nl2br(e($article->content)) !!}
+        </article>
 
+        {{-- ================= FOOTER ================= --}}
+        <footer class="mt-16 border-t border-white/5 pt-8">
+            <p class="text-sm text-gray-500">
+                Written by
+                <span class="text-gray-300 font-medium">
+                    {{ $article->author ?? 'Editorial Team' }}
+                </span>
+            </p>
+        </footer>
 
     </div>
 </section>
