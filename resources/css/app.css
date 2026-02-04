@@ -1,18 +1,22 @@
 /* ===================================================================
-| FILE: resources/css/app.css
-| PROJECT: Company Profile / Admin Panel
-| PURPOSE:
-| - Single source of truth for colors & UI styles
+| FILE    : resources/css/app.css
+| PROJECT : Company Profile + Admin Panel (Laravel)
+| PURPOSE :
+| - Single source of truth for UI & colors
+| - Tailwind v4 (CSS-first)
 | - No hardcoded colors in Blade
 | - Ready for Dark / Light mode
 =================================================================== */
 
+/* -------------------------------------------------------------------
+| TAILWIND CORE
+------------------------------------------------------------------- */
 @import 'tailwindcss';
 
-/* ===================================================================
+/* -------------------------------------------------------------------
 | SOURCE PATHS (Tailwind v4 – CSS First)
 | Used by Tailwind to scan class usage
-=================================================================== */
+------------------------------------------------------------------- */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -38,19 +42,19 @@
     /* ===============================================================
     | BASE COLORS – APPLICATION
     ============================================================== */
-    --color-bg-main: #111827;            /* Client background (gray-900) */
-    --color-bg-surface: #020617;         /* Admin background (slate-950) */
+    --color-bg-main: #111827;        /* Client background (gray-900) */
+    --color-bg-surface: #020617;     /* Admin background (slate-950) */
 
-    --color-text-main: #e5e7eb;          /* Primary text */
-    --color-text-muted: #9ca3af;         /* Muted text */
-    --color-text-inverse: #020617;       /* Text on light surface */
+    --color-text-main: #e5e7eb;      /* Primary text */
+    --color-text-muted: #9ca3af;     /* Muted text */
+    --color-text-inverse: #020617;   /* Text on light surface */
 
 
     /* ===============================================================
-    | BRAND / PRIMARY COLOR SYSTEM
+    | BRAND / PRIMARY
     ============================================================== */
-    --color-brand-main: #4f46e5;          /* Indigo 600 */
-    --color-brand-hover: #4338ca;         /* Indigo 700 */
+    --color-brand-main: #4f46e5;      /* Indigo 600 */
+    --color-brand-hover: #4338ca;     /* Indigo 700 */
     --color-brand-soft: rgba(79,70,229,0.15);
     --color-brand-text: #ffffff;
 
@@ -82,9 +86,9 @@
     /* ===============================================================
     | STATE COLORS
     ============================================================== */
-    --color-success: #22c55e;             /* green-500 */
-    --color-danger: #ef4444;              /* red-500 */
-    --color-danger-hover: #dc2626;        /* red-600 */
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-danger-hover: #dc2626;
 }
 
 
@@ -110,54 +114,17 @@
 =================================================================== */
 @layer components {
 
+    /* ===============================================================
+    | HERO
+    ============================================================== */
     .hero-section {
         min-height: 60vh;
     }
 
     @media (min-width: 1280px) {
-    .hero-section {
-        min-height: 75vh;
-    }
-    }
-
-
-    /* ===============================================================
-    | GALLERY MARQUEE (AUTO HORIZONTAL LOOP)
-    ============================================================== */
-    .gallery-marquee {
-        position: relative;
-        width: 100%;
-        overflow: hidden; /* 🔥 HILANGKAN SCROLLBAR */
-    }
-
-    .gallery-track {
-        display: flex;
-        gap: 3rem;
-        width: max-content;
-        animation: gallery-scroll 35s linear infinite;
-    }
-
-    .gallery-marquee:hover .gallery-track {
-        animation-play-state: paused; /* pause on hover */
-    }
-
-    .gallery-item {
-        min-width: 280px;
-        flex-shrink: 0;
-        text-align: center;
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 12px;
-        margin-bottom: 0.75rem;
-    }
-
-    .gallery-item p {
-        font-size: 0.875rem;
-        color: var(--color-text-muted);
+        .hero-section {
+            min-height: 75vh;
+        }
     }
 
 
@@ -194,11 +161,11 @@
     }
 
 
-        /* ===============================================================
-    | FOOTER LINK (CLIENT)
-    =============================================================== */
+    /* ===============================================================
+    | FOOTER LINK
+    ============================================================== */
     .footer-link {
-        @apply relative inline-flex items-center gap-3 transition;
+        @apply relative inline-flex items-center gap-2 transition;
         color: var(--color-text-muted);
     }
 
@@ -222,9 +189,8 @@
     }
 
 
-
     /* ===============================================================
-    | BUTTON — PRIMARY (MAIN CTA)
+    | BUTTONS
     ============================================================== */
     .btn-primary {
         @apply inline-flex items-center justify-center
@@ -238,10 +204,6 @@
         background-color: var(--color-brand-hover);
     }
 
-
-    /* ===============================================================
-    | BUTTON — SECONDARY (TEXT / GHOST)
-    ============================================================== */
     .btn-secondary {
         @apply inline-flex items-center gap-2
                text-sm font-medium transition;
@@ -254,7 +216,7 @@
 
 
     /* ===============================================================
-    | CARD (CLIENT & AUTH)
+    | CARD
     ============================================================== */
     .card {
         background-color: var(--color-card-bg);
@@ -286,7 +248,47 @@
 
 
     /* ===============================================================
-    | ADMIN SCOPE & SURFACE
+    | GALLERY MARQUEE
+    ============================================================== */
+    .gallery-marquee {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .gallery-track {
+        display: flex;
+        gap: 3rem;
+        width: max-content;
+        animation: gallery-scroll 35s linear infinite;
+    }
+
+    .gallery-marquee:hover .gallery-track {
+        animation-play-state: paused;
+    }
+
+    .gallery-item {
+        min-width: 280px;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+    }
+
+    .gallery-item p {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+    }
+
+
+    /* ===============================================================
+    | ADMIN SCOPE
     ============================================================== */
     .admin-scope {
         background-color: var(--color-bg-surface);
@@ -375,17 +377,30 @@
     .btn-danger:hover {
         background-color: var(--color-danger-hover);
     }
-    .btn-admin-icon {
-    background-color: rgba(255,255,255,0.08);
+
+
+    /* ===============================================================
+    | ANIMATION ON SCROLL (REVEAL)
+    ============================================================== */
+    .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 600ms ease-out, transform 600ms ease-out;
     }
 
-    .btn-admin-icon:hover {
-    background-color: rgba(255,255,255,0.16);
+    .reveal-fast {
+        transition-duration: 400ms;
+    }
+
+    .reveal-slow {
+        transition-duration: 800ms;
     }
 }
-/* ===============================================================
+
+
+/* ===================================================================
 | KEYFRAMES
-============================================================== */
+=================================================================== */
 @keyframes gallery-scroll {
     from {
         transform: translateX(0);

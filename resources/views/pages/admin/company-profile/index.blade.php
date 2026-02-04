@@ -1,4 +1,3 @@
-<!-- resources/views/pages/admin/company-profile/index.blade.php -->
 @extends('layouts.admin')
 
 @section('title', 'Company Profile')
@@ -10,12 +9,51 @@
     <form
         method="POST"
         action="{{ route('admin.company-profile.store') }}"
+        enctype="multipart/form-data"
     >
         @csrf
 
         <div class="grid grid-cols-1 gap-5">
 
-            <!-- Company Name -->
+            {{-- COMPANY LOGO --}}
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                    Company Logo
+                </label>
+
+                @if (!empty($companyProfile?->logo))
+                    <div class="mb-3">
+                        <img
+                            src="{{ asset('storage/' . $companyProfile->logo) }}"
+                            alt="Company Logo"
+                            class="h-16 w-auto rounded-md border
+                                   border-gray-200 dark:border-gray-700"
+                        >
+                    </div>
+                @endif
+
+                <input
+                    type="file"
+                    name="logo"
+                    accept="image/*"
+                    class="block w-full text-sm text-gray-500
+                           file:mr-4 file:rounded-lg file:border-0
+                           file:bg-brand-500 file:px-4 file:py-2
+                           file:text-sm file:font-medium file:text-white
+                           hover:file:bg-brand-600
+                           dark:file:bg-brand-600 dark:hover:file:bg-brand-700"
+                >
+
+                <p class="mt-1 text-xs text-gray-500">
+                    PNG, JPG, JPEG, WEBP, SVG. Max 2MB.
+                </p>
+
+                @error('logo')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- COMPANY NAME --}}
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                     Company Name
@@ -32,7 +70,7 @@
                 >
             </div>
 
-            <!-- About -->
+            {{-- ABOUT --}}
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                     About Company
@@ -48,7 +86,7 @@
                 >{{ old('about', $companyProfile->about ?? '') }}</textarea>
             </div>
 
-            <!-- Vision -->
+            {{-- VISION --}}
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                     Vision
@@ -64,7 +102,7 @@
                 >{{ old('vision', $companyProfile->vision ?? '') }}</textarea>
             </div>
 
-            <!-- Mission -->
+            {{-- MISSION --}}
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                     Mission
@@ -80,7 +118,7 @@
                 >{{ old('mission', $companyProfile->mission ?? '') }}</textarea>
             </div>
 
-            <!-- Address -->
+            {{-- ADDRESS --}}
             <div>
                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                     Address
@@ -96,10 +134,10 @@
                 >{{ old('address', $companyProfile->address ?? '') }}</textarea>
             </div>
 
-            <!-- Contact Info -->
+            {{-- CONTACT INFO --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-                <!-- Phone -->
+                {{-- PHONE --}}
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Phone
@@ -116,7 +154,7 @@
                     >
                 </div>
 
-                <!-- Fax -->
+                {{-- FAX --}}
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Fax
@@ -133,7 +171,7 @@
                     >
                 </div>
 
-                <!-- Email -->
+                {{-- EMAIL --}}
                 <div>
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Email
@@ -152,7 +190,7 @@
 
             </div>
 
-            <!-- Submit -->
+            {{-- SUBMIT --}}
             <div class="pt-3">
                 <button
                     type="submit"

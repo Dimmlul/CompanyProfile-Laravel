@@ -1,5 +1,13 @@
-<!-- resources/views/pages/admin/partials/sidebar.blade.php -->
-<!-- Admin Sidebar Navigation -->
+{{-- resources/views/pages/admin/partials/sidebar.blade.php --}}
+{{-- Admin Sidebar Navigation --}}
+
+@php
+    use App\Models\CompanyProfile;
+    use Illuminate\Support\Str;
+
+    // karena company profile hanya 1
+    $companyProfile = CompanyProfile::first();
+@endphp
 
 <aside
     x-data="{ openContent: false }"
@@ -26,20 +34,32 @@
         class="flex h-16 items-center gap-3 px-6
                border-b border-[var(--color-border-soft)]"
     >
-        <div class="flex h-9 w-9 items-center justify-center
-                    rounded-lg overflow-hidden bg-white">
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXVc_Rr-sZWO7462pa4SOJT4jillPGMXFPpw&s"
-                alt="Logo"
-                class="h-full w-full object-cover"
-            >
+        <!-- LOGO -->
+        <div
+            class="flex h-9 w-9 items-center justify-center
+                   rounded-lg overflow-hidden
+                   bg-white shrink-0"
+        >
+            @if (!empty($companyProfile?->logo))
+                <img
+                    src="{{ asset('storage/' . $companyProfile->logo) }}"
+                    alt="{{ $companyProfile->company_name ?? 'Company Logo' }}"
+                    class="h-full w-full object-contain"
+                >
+            @else
+                <!-- FALLBACK INITIAL -->
+                <span class="text-sm font-bold text-indigo-600">
+                    {{ Str::upper(Str::substr($companyProfile->company_name ?? 'CP', 0, 2)) }}
+                </span>
+            @endif
         </div>
 
+        <!-- COMPANY NAME -->
         <span
             x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            class="text-lg font-semibold tracking-wide"
+            class="text-lg font-semibold tracking-wide truncate"
         >
-            Admin Panel
+            {{ $companyProfile->company_name ?? 'Admin Panel' }}
         </span>
     </div>
 
@@ -70,7 +90,6 @@
                 ? '{{ $itemActive }}'
                 : '{{ $itemInactive }}'">
 
-            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -92,7 +111,6 @@
                 ? '{{ $itemActive }}'
                 : '{{ $itemInactive }}'">
 
-            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -109,18 +127,17 @@
 
         <!-- ORDERS -->
         <a href="{{ route('admin.orders.index') }}"
-        class="{{ $itemBase }} mb-4"
-        :class="isActive('/admin/orders')
+           class="{{ $itemBase }} mb-4"
+           :class="isActive('/admin/orders')
                 ? '{{ $itemActive }}'
                 : '{{ $itemInactive }}'">
 
-            <!-- icon: shopping-bag / order -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
+                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M5 8h14l-1.5 12.5a2 2 0 01-2 1.5H8.5a2 2 0 01-2-1.5L5 8z"/>
+                      d="M5 8h14l-1.5 12.5a2 2 0 01-2 1.5H8.5a2 2 0 01-2-1.5L5 8z"/>
                 <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 8V6a3 3 0 016 0v2"/>
+                      d="M9 8V6a3 3 0 016 0v2"/>
             </svg>
 
             <span
@@ -146,7 +163,6 @@
             @click="openContent = !openContent"
             class="{{ $itemBase }} w-full {{ $itemInactive }}"
         >
-            <!-- icon unchanged -->
             <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -160,7 +176,6 @@
                 Content
             </span>
 
-            <!-- arrow icon unchanged -->
             <svg
                 x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
                 class="ml-auto h-4 w-4 transition-transform"
@@ -172,9 +187,7 @@
             </svg>
         </button>
 
-        <!-- ======================================================
-        | SUB MENU
-        ====================================================== -->
+        <!-- SUB MENU -->
         <div
             x-cloak
             x-show="openContent && ($store.sidebar.isExpanded || $store.sidebar.isMobileOpen)"
@@ -184,83 +197,43 @@
                    space-y-1"
         >
 
-            <!-- ARTICLES -->
             <a href="{{ route('admin.articles.index') }}"
                class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/articles')
                     ? '{{ $itemActive }}'
                     : '{{ $itemInactive }}'">
-
-                <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M19 11H5m14-4H5m14 8H5"/>
-                </svg>
-
                 <span>Articles</span>
             </a>
 
-            <!-- PRODUCTS -->
             <a href="{{ route('admin.products.index') }}"
                class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/products')
                     ? '{{ $itemActive }}'
                     : '{{ $itemInactive }}'">
-
-                <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M20 7H4m16 0l-2 13H6L4 7m6-3h4"/>
-                </svg>
-
                 <span>Products</span>
             </a>
 
-            <!-- EVENTS -->
             <a href="{{ route('admin.events.index') }}"
                class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/events')
                     ? '{{ $itemActive }}'
                     : '{{ $itemInactive }}'">
-
-                <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M8 7V3m8 4V3m-9 8h10m-13 9h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v11a2 2 0 002 2z"/>
-                </svg>
-
                 <span>Events</span>
             </a>
 
-            <!-- GALLERY -->
             <a href="{{ route('admin.gallery.index') }}"
                class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/gallery')
                     ? '{{ $itemActive }}'
                     : '{{ $itemInactive }}'">
-
-                <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M4 16l4-4a3 3 0 014 0l4 4m-6-6l1-1a3 3 0 014 0l3 3M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                </svg>
-
                 <span>Gallery</span>
             </a>
 
-            <!-- CLIENTS -->
             <a href="{{ route('admin.clients.index') }}"
                class="{{ $itemBase }} text-sm"
                :class="isActive('/admin/clients')
                     ? '{{ $itemActive }}'
                     : '{{ $itemInactive }}'">
-
-                <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M17 20h5v-2a4 4 0 00-4-4h-1m-4 6H2v-2a4 4 0 014-4h1m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 10-8 0"/>
-                </svg>
-
                 <span>Clients</span>
             </a>
 

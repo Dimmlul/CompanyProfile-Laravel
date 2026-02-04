@@ -7,7 +7,7 @@ use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
-| AUTH
+| AUTH CONTROLLERS
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Auth\AuthController;
@@ -17,37 +17,43 @@ use App\Http\Controllers\Auth\AuthController;
 | ADMIN CONTROLLERS
 |--------------------------------------------------------------------------
 */
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CompanyProfileController;
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\EventController;
-use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\ClientController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\{
+    DashboardController,
+    CompanyProfileController,
+    ArticleController,
+    ProductController,
+    EventController,
+    GalleryController,
+    ClientController,
+    OrderController as AdminOrderController
+};
 
 /*
 |--------------------------------------------------------------------------
-| CLIENT / PUBLIC
+| CLIENT / PUBLIC CONTROLLERS
 |--------------------------------------------------------------------------
 */
-use App\Http\Controllers\Client\HomeController;
-use App\Http\Controllers\Client\CompanyProfileController as ClientCompanyProfileController;
-use App\Http\Controllers\Client\ArticleController as ClientArticleController;
-use App\Http\Controllers\Client\ProductController as ClientProductController;
-use App\Http\Controllers\Client\EventController as ClientEventController;
-use App\Http\Controllers\Client\GalleryController as ClientGalleryController;
-use App\Http\Controllers\Client\ClientController as ClientClientController;
+use App\Http\Controllers\Client\{
+    HomeController,
+    CompanyProfileController as ClientCompanyProfileController,
+    ArticleController as ClientArticleController,
+    ProductController as ClientProductController,
+    EventController as ClientEventController,
+    GalleryController as ClientGalleryController,
+    ClientController as ClientClientController
+};
 
 /*
 |--------------------------------------------------------------------------
-| USER / SHOP
+| USER / SHOP CONTROLLERS
 |--------------------------------------------------------------------------
 */
-use App\Http\Controllers\User\CartController;
-use App\Http\Controllers\User\CheckoutController;
-use App\Http\Controllers\User\OrderController as UserOrderController;
-use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\{
+    CartController,
+    CheckoutController,
+    OrderController as UserOrderController,
+    ProfileController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -65,26 +71,22 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | ADMIN PANEL
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])
-            ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::resource('company-profile', CompanyProfileController::class)
-            ->only(['index', 'store', 'update']);
+    Route::resource('company-profile', CompanyProfileController::class)
+        ->only(['index', 'store', 'update']);
 
-        Route::resource('articles', ArticleController::class);
-        Route::resource('products', ProductController::class);
-        Route::resource('events', EventController::class);
-        Route::resource('gallery', GalleryController::class);
-        Route::resource('clients', ClientController::class);
+    Route::resource('articles', ArticleController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('events', EventController::class);
+    Route::resource('gallery', GalleryController::class);
+    Route::resource('clients', ClientController::class);
 
-        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
-    });
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -127,12 +129,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])->name('checkout.payment');
 
-
-    Route::get('/orders', [UserOrderController::class, 'index'])
-        ->name('orders.index');
-
-    Route::get('/orders/{order}', [UserOrderController::class, 'show'])
-        ->name('orders.show');
+    // ORDERS
+    Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -141,17 +140,16 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| MIDTRANS CALLBACK
+| MIDTRANS CALLBACK (SERVER TO SERVER)
 |--------------------------------------------------------------------------
 */
-
 Route::post('/midtrans/callback', function (Request $request) {
 
     Log::info('MIDTRANS CALLBACK', $request->all());
 
     $order = Order::where('order_number', $request->order_id)->first();
 
-    if (!$order) {
+    if (! $order) {
         Log::error('ORDER NOT FOUND', ['order_id' => $request->order_id]);
         return response()->json(['message' => 'Order not found'], 404);
     }
@@ -159,18 +157,28 @@ Route::post('/midtrans/callback', function (Request $request) {
     $status = $request->transaction_status;
     $type   = $request->payment_type;
 
-    if (
-        $status === 'settlement' ||
-        ($status === 'capture' && $type === 'credit_card')
-    ) {
+    // 🔹 normalize payment method
+    $paymentMethod = $type;
+
+    if ($type === 'bank_transfer') {
+        $paymentMethod .= ' - ' . ($request->va_numbers[0]['bank'] ?? 'unknown');
+    }
+
+    if ($status === 'settlement' || ($status === 'capture' && $type === 'credit_card')) {
+
         $order->update([
-            'payment_status' => 'paid',
-            'midtrans_transaction_id' => $request->transaction_id,
-            'midtrans_response' => $request->all(),
+            'payment_status'            => 'paid',
+            'payment_method'            => $paymentMethod,
+            'midtrans_transaction_id'   => $request->transaction_id,
+            'midtrans_response'         => $request->all(),
         ]);
+
     } elseif ($status === 'expire') {
+
         $order->update(['payment_status' => 'expired']);
+
     } elseif (in_array($status, ['cancel', 'deny'])) {
+
         $order->update(['payment_status' => 'failed']);
     }
 

@@ -14,7 +14,7 @@ class HomeController extends Controller
     {
         $galleries = Gallery::where('is_active', true)
             ->orderBy('order')
-            ->limit(8)
+            ->limit(4)
             ->get();
 
         $products = Product::where('is_active', true)
@@ -27,7 +27,6 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
-        // 🔥 INI YANG HILANG
         $companyProfile = CompanyProfile::first();
 
         return view('pages.client.home.index', compact(

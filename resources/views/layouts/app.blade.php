@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Website')</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -23,6 +25,28 @@
 </head>
 
 <body class="bg-app-bg text-app-text min-h-screen flex flex-col">
+
+    <script>
+document.addEventListener('alpine:init', () => {
+    Alpine.directive('reveal', (el, { expression }, { effect }) => {
+        let options = expression ? JSON.parse(expression) : {}
+
+        let observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.classList.add('opacity-100', 'translate-y-0')
+                    observer.unobserve(el)
+                }
+            },
+            {
+                threshold: options.threshold || 0.15,
+            }
+        )
+
+        observer.observe(el)
+    })
+})
+</script>
 
     {{-- HEADER --}}
     @include('pages.client.partials.header')

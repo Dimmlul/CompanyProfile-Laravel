@@ -12,6 +12,7 @@ class CompanyProfile extends Model
 
     protected $fillable = [
         'company_name',
+        'logo',
         'about',
         'vision',
         'mission',
@@ -20,4 +21,9 @@ class CompanyProfile extends Model
         'fax',
         'email'
     ];
+
+
+
 }
+
+    

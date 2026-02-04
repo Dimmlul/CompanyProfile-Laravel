@@ -1,10 +1,11 @@
 <?php
-// app/Http/Controllers/Admin/CompanyProfileController.php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyProfileController extends Controller
 {
@@ -14,7 +15,7 @@ class CompanyProfileController extends Controller
     public function index()
     {
         return view('pages.admin.company-profile.index', [
-            // biasanya company profile cuma 1
+            // company profile hanya 1 record
             'companyProfile' => CompanyProfile::first(),
         ]);
     }
@@ -27,6 +28,7 @@ class CompanyProfileController extends Controller
         // VALIDATION
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
+            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,webp,svg|max:2048',
             'about'        => 'nullable|string',
             'vision'       => 'nullable|string',
             'mission'      => 'nullable|string',
@@ -36,9 +38,28 @@ class CompanyProfileController extends Controller
             'email'        => 'nullable|email|max:255',
         ]);
 
-        // karena company profile cuma 1 record
+        // Ambil data lama (karena hanya 1)
+        $companyProfile = CompanyProfile::first();
+
+        /**
+         * HANDLE LOGO UPLOAD
+         */
+        if ($request->hasFile('logo')) {
+
+            // Hapus logo lama jika ada
+            if ($companyProfile && $companyProfile->logo) {
+                Storage::disk('public')->delete($companyProfile->logo);
+            }
+
+            // Simpan logo baru
+            $validated['logo'] = $request
+                ->file('logo')
+                ->store('company', 'public');
+        }
+
+        // Simpan / update (paksa 1 record)
         CompanyProfile::updateOrCreate(
-            ['id' => 1], // paksa satu data
+            ['id' => 1],
             $validated
         );
 

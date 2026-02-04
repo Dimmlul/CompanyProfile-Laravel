@@ -1,4 +1,6 @@
-<section class="py-24 bg-app-bg">
+<section class=" x-data
+    x-reveal
+    class="reveal py-24 bg-app-bg">
     <div class="mx-auto max-w-7xl px-6">
 
         {{-- SECTION HEADER --}}
