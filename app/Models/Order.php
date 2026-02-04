@@ -3,8 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'order_number',
@@ -17,15 +21,23 @@ class Order extends Model
     ];
 
     protected $casts = [
-    'total' => 'integer',
-    // 'midtrans_response' => 'array',
+        'total' => 'integer',
+        'midtrans_response' => 'array',
     ];
 
-    public function calculateTotal()
-{
-    return $this->items->sum(fn ($item) => $item->price * $item->qty);
-}
+    /**
+     * Gunakan order_number sebagai route key (BUKAN id)
+     * contoh URL: /orders/ORDER-20260204-RDRQ
+     */
+    public function getRouteKeyName()
+    {
+        return 'order_number';
+    }
 
+    public function calculateTotal()
+    {
+        return $this->items->sum(fn ($item) => $item->price * $item->qty);
+    }
 
     public function items()
     {
@@ -36,6 +48,4 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
 }

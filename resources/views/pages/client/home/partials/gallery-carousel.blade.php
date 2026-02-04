@@ -1,4 +1,4 @@
-<!-- Gallery Section -->
+<!-- ================= GALLERY SECTION ================= -->
 <section class="relative py-24 overflow-hidden bg-app-bg">
     <div class="mx-auto max-w-6xl px-6">
 
@@ -30,7 +30,8 @@
                 >
                     {{-- Image --}}
                     <img
-                        class="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        class="h-full w-full object-cover object-center
+                               transition-transform duration-700 group-hover:scale-105"
                         src="{{ asset('storage/' . $gallery->image) }}"
                         alt="{{ $gallery->title }}"
                     >
@@ -43,6 +44,11 @@
                                opacity-0 group-hover:opacity-100
                                transition-all duration-300"
                     >
+                        {{-- Optional small label (lebih elegan dari CTA) --}}
+                        <span class="mb-2 text-xs uppercase tracking-widest text-indigo-300">
+                            Featured Work
+                        </span>
+
                         <h3 class="text-2xl font-semibold leading-tight">
                             {{ $gallery->title }}
                         </h3>
@@ -52,10 +58,6 @@
                                 {{ $gallery->description }}
                             </p>
                         @endif
-
-                        <span class="mt-4 inline-block text-xs uppercase tracking-widest text-indigo-300">
-                            View Project
-                        </span>
                     </div>
 
                 </div>

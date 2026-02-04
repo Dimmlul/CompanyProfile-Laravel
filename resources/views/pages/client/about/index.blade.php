@@ -18,11 +18,8 @@
             </h1>
 
             <p class="mt-6 text-base leading-relaxed text-app-muted">
-                We design and build digital products that balance
-                <span class="text-white font-medium">clarity</span>,
-                <span class="text-white font-medium">performance</span>,
-                and <span class="text-white font-medium">long-term vision</span>
-                — helping brands grow with confidence.
+                {!! nl2br(e($companyProfile->about ??
+                'We are a digital studio focused on building meaningful and scalable digital solutions that support long-term business growth.')) !!}
             </p>
         </div>
 
@@ -42,7 +39,10 @@
                 </h2>
 
                 <p class="leading-relaxed text-app-muted">
-                    {{ $companyProfile->about }}
+                    {!! nl2br(e(
+                        $companyProfile->who_we_are ??
+                        'We are a multidisciplinary digital studio that collaborates with businesses to design, build, and scale digital products. Our team combines strategic thinking, design excellence, and technical expertise to deliver solutions that solve real-world challenges.'
+                    )) !!}
                 </p>
             </div>
 
@@ -60,7 +60,8 @@
                             <span class="block font-medium text-white">
                                 Scalable Systems
                             </span>
-                            Built with performance, security, and growth in mind.
+                            We build systems that are designed to grow, focusing on performance,
+                            security, and maintainable architecture.
                         </div>
                     </li>
 
@@ -70,7 +71,8 @@
                             <span class="block font-medium text-white">
                                 User-Centered Design
                             </span>
-                            Interfaces that feel intuitive and purposeful.
+                            Every interface is crafted with clarity, usability, and accessibility
+                            as top priorities.
                         </div>
                     </li>
 
@@ -80,7 +82,8 @@
                             <span class="block font-medium text-white">
                                 Long-Term Strategy
                             </span>
-                            Digital decisions guided by clarity and sustainability.
+                            We help businesses make digital decisions that remain effective
+                            beyond short-term trends.
                         </div>
                     </li>
 
@@ -110,7 +113,10 @@
                 </h3>
 
                 <p class="leading-relaxed text-app-muted">
-                    {{ $companyProfile->vision }}
+                    {!! nl2br(e(
+                        $companyProfile->vision ??
+                        'To become a trusted digital partner that empowers businesses through purposeful, adaptable, and sustainable technology solutions.'
+                    )) !!}
                 </p>
             </div>
 
@@ -123,7 +129,10 @@
                 </h3>
 
                 <p class="leading-relaxed text-app-muted">
-                    {{ $companyProfile->mission }}
+                    {!! nl2br(e(
+                        $companyProfile->mission ??
+                        'Our mission is to design and develop digital products that solve real business challenges while delivering meaningful user experiences and long-term value.'
+                    )) !!}
                 </p>
             </div>
 
@@ -143,23 +152,23 @@
 
             @php
                 $items = [
-                    ['label' => 'Address', 'value' => $companyProfile->address],
-                    ['label' => 'Phone', 'value' => $companyProfile->phone],
-                    ['label' => 'Fax', 'value' => $companyProfile->fax],
-                    ['label' => 'Email', 'value' => $companyProfile->email],
+                    ['label' => 'Address', 'value' => $companyProfile->address ?? null],
+                    ['label' => 'Phone', 'value' => $companyProfile->phone ?? null],
+                    ['label' => 'Fax', 'value' => $companyProfile->fax ?? null],
+                    ['label' => 'Email', 'value' => $companyProfile->email ?? null],
                 ];
             @endphp
 
             @foreach ($items as $item)
                 @if ($item['value'])
-                <div class="rounded-xl bg-slate-900/60 border border-white/10 p-6">
-                    <span class="mb-2 block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                        {{ $item['label'] }}
-                    </span>
-                    <p class="text-sm text-app-muted">
-                        {{ $item['value'] }}
-                    </p>
-                </div>
+                    <div class="rounded-xl bg-slate-900/60 border border-white/10 p-6">
+                        <span class="mb-2 block text-xs font-semibold uppercase tracking-widest text-indigo-400">
+                            {{ $item['label'] }}
+                        </span>
+                        <p class="text-sm text-app-muted">
+                            {{ $item['value'] }}
+                        </p>
+                    </div>
                 @endif
             @endforeach
 

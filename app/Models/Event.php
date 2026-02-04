@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Event extends Model
@@ -30,31 +29,47 @@ class Event extends Model
     ];
 
     /**
-     * Handle automatic slug creation for events.
-     * Slugs allow events to be accessed via readable URLs.
+     * Generate unique slug.
+     */
+    private static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $counter++;
+            $slug = $original . '-' . $counter;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Model events.
      */
     protected static function booted()
     {
-        /**
-         * Create slug when a new event is stored.
-         */
         static::creating(function ($event) {
-            $event->slug = Str::slug($event->title);
+            $event->slug = static::generateUniqueSlug($event->title);
         });
 
-        /**
-         * Update slug only if the event title changes.
-         */
         static::updating(function ($event) {
             if ($event->isDirty('title')) {
-                $event->slug = Str::slug($event->title);
+                $event->slug = static::generateUniqueSlug(
+                    $event->title,
+                    $event->id
+                );
             }
         });
     }
 
     /**
-     * Scope to retrieve only active events.
-     * Keeps event visibility logic centralized.
+     * Scope: active events.
      */
     public function scopeActive($query)
     {

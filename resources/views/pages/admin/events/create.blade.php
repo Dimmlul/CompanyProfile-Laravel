@@ -15,90 +15,99 @@
 
     {{-- TITLE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Title
         </label>
         <input type="text" name="title" required
-               class="h-11 w-full rounded-lg
-                      border border-card-border
-                      bg-input-bg px-4 text-sm text-app-text">
+               class="shadow-theme-xs h-11 w-full rounded-lg
+                      border border-gray-300 bg-transparent
+                      px-4 py-2.5 text-sm
+                      dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
     </div>
 
-    {{-- DESCRIPTION --}}
+    {{-- SHORT DESCRIPTION --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Short Description
         </label>
         <textarea name="description" rows="3"
-                  class="w-full rounded-lg
-                         border border-card-border
-                         bg-input-bg px-4 py-3 text-sm text-app-text"></textarea>
+                  class="shadow-theme-xs w-full rounded-lg
+                         border border-gray-300 bg-transparent
+                         px-4 py-3 text-sm
+                         dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"></textarea>
     </div>
 
     {{-- CONTENT --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Content
         </label>
         <textarea name="content" rows="6" required
-                  class="w-full rounded-lg
-                         border border-card-border
-                         bg-input-bg px-4 py-3 text-sm text-app-text"></textarea>
+                  class="shadow-theme-xs w-full rounded-lg
+                         border border-gray-300 bg-transparent
+                         px-4 py-3 text-sm
+                         dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"></textarea>
     </div>
 
     {{-- IMAGE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Image
         </label>
         <input type="file" name="image"
                class="block w-full text-sm
-                      file:rounded-lg file:bg-btn-primary
-                      file:px-4 file:py-2 file:text-btn-text">
+                      file:rounded-lg
+                      file:bg-btn-primary
+                      file:px-4 file:py-2
+                      file:text-btn-text
+                      hover:file:bg-btn-primary-hover">
     </div>
 
     {{-- LOCATION --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Location
         </label>
         <input type="text" name="location"
-               class="h-11 w-full rounded-lg
-                      border border-card-border
-                      bg-input-bg px-4 text-sm text-app-text">
+               class="shadow-theme-xs h-11 w-full rounded-lg
+                      border border-gray-300 bg-transparent
+                      px-4 py-2.5 text-sm
+                      dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
     </div>
 
     {{-- START DATE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Start Date
         </label>
         <input type="datetime-local" name="start_date" required
-               class="h-11 w-full rounded-lg
-                      border border-card-border
-                      bg-input-bg px-4 text-sm text-app-text">
+               class="shadow-theme-xs h-11 w-full rounded-lg
+                      border border-gray-300 bg-transparent
+                      px-4 py-2.5 text-sm
+                      dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
     </div>
 
     {{-- END DATE --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-text-muted">
+        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
             End Date
         </label>
         <input type="datetime-local" name="end_date"
-               class="h-11 w-full rounded-lg
-                      border border-card-border
-                      bg-input-bg px-4 text-sm text-app-text">
+               class="shadow-theme-xs h-11 w-full rounded-lg
+                      border border-gray-300 bg-transparent
+                      px-4 py-2.5 text-sm
+                      dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
     </div>
 
     {{-- STATUS --}}
     <div>
-        <label class="mb-2 block text-sm font-medium text-text-muted">
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Status
         </label>
 
         <input type="hidden" name="is_active" value="0">
 
-        <div class="flex gap-6 text-sm text-app-text">
+        <div class="flex gap-6 text-sm">
             <label class="flex items-center gap-2">
                 <input type="radio" name="is_active" value="1" checked>
                 Active
@@ -111,9 +120,14 @@
     </div>
 
     {{-- SUBMIT --}}
-    <button class="btn-primary w-fit">
-        Save Event
-    </button>
+    <div class="pt-3">
+        <button type="submit"
+                class="rounded-lg bg-btn-primary px-5 py-2.5
+                       text-sm font-medium text-btn-text
+                       hover:bg-btn-primary-hover transition">
+            Save Event
+        </button>
+    </div>
 
 </div>
 </form>

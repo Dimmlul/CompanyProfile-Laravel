@@ -21,7 +21,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Show order detail
+     * Show order detail (pakai order_number)
      */
     public function show(Order $order)
     {

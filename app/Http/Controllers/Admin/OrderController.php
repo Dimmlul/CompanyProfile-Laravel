@@ -21,6 +21,8 @@ class OrderController extends Controller
     {
         abort_if(!Auth::user()?->isAdmin(), 403);
 
+        $order->load('items.product', 'user');
+
         return view('pages.admin.orders.show', compact('order'));
     }
 }

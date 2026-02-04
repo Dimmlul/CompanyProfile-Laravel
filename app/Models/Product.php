@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -28,7 +27,7 @@ class Product extends Model
         'order'     => 'integer',
     ];
 
-     /**
+    /**
      * Use slug instead of id for route model binding.
      */
     public function getRouteKeyName()
@@ -37,41 +36,54 @@ class Product extends Model
     }
 
     /**
-     * Automatically handle slug generation for products.
-     * Slugs are used instead of numeric IDs to create
-     * cleaner, more readable, and SEO-friendly URLs.
+     * Generate unique slug.
+     */
+    private static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($name);
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $counter++;
+            $slug = $original . '-' . $counter;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Model events.
      */
     protected static function booted()
     {
-        /**
-         * Generate slug when a product is first created.
-         */
         static::creating(function ($product) {
-            $product->slug = Str::slug($product->name);
+            $product->slug = static::generateUniqueSlug($product->name);
         });
 
-        /**
-         * Update slug only when the product name changes.
-         * This prevents unnecessary URL changes.
-         */
         static::updating(function ($product) {
             if ($product->isDirty('name')) {
-                $product->slug = Str::slug($product->name);
+                $product->slug = static::generateUniqueSlug(
+                    $product->name,
+                    $product->id
+                );
             }
         });
     }
 
     /**
-     * Scope to retrieve only active products.
-     * Used for public-facing product listings.
+     * Scope: active products.
      */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
     }
 
-
-        public function cartItems()
+    public function cartItems()
     {
         return $this->hasMany(Cart::class);
     }
@@ -80,6 +92,4 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-
 }
-

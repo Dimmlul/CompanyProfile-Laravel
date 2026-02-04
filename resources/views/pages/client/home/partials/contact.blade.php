@@ -1,34 +1,43 @@
-<section class="relative overflow-hidden bg-app-bg py-20">
-    <div class="mx-auto max-w-5xl px-6 text-center">
+<section class="relative overflow-hidden bg-app-bg py-24">
+    <div class="mx-auto max-w-6xl px-6">
 
-        {{-- Accent --}}
-        <div class="mx-auto mb-6 h-1 w-16 rounded-full bg-indigo-500/60"></div>
+        {{-- Card Wrapper --}}
+        <div class="relative rounded-3xl border border-white/10
+                    bg-gradient-to-br from-slate-900/70 to-slate-950/80
+                    p-10 md:p-14 text-center">
 
-        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-text">
-            Let’s Build Something Meaningful
-        </h2>
+            {{-- Soft Glow --}}
+            <div class="pointer-events-none absolute inset-0 -z-10
+                        bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_60%)]">
+            </div>
 
-        <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-app-muted">
-            Whether you’re planning a new digital product, refining an existing
-            platform, or exploring collaboration opportunities — we’d love to
-            hear from you.
-        </p>
+            {{-- Accent --}}
+            <div class="mx-auto mb-6 h-1 w-20 rounded-full bg-indigo-500/70"></div>
 
-        <a
-            href="{{ route('contact') }}"
-            class="group inline-flex items-center gap-2 mt-10 rounded-xl
-                   bg-btn-primary px-8 py-4
-                   text-btn-text font-medium
-                   hover:bg-btn-primary-hover transition"
-        >
-            <span>Start a Conversation</span>
-            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                 fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M5 12h14"/>
-            </svg>
-        </a>
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-text">
+                Let’s Build Something Meaningful Together
+            </h2>
 
+            <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-app-muted">
+                Whether you’re planning a new digital product, refining an existing
+                platform, or looking for a long-term technology partner —
+                let’s start the conversation.
+            </p>
+
+            {{-- Button --}}
+            <div class="mt-12">
+                <a
+                    href="{{ route('contact') }}"
+                    class="inline-flex items-center justify-center rounded-xl
+                           bg-indigo-500 px-10 py-4
+                           text-white font-medium
+                           shadow-lg shadow-indigo-500/20
+                           hover:bg-indigo-400 transition"
+                >
+                    Start Conversation
+                </a>
+            </div>
+
+        </div>
     </div>
 </section>

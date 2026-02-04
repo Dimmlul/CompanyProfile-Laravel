@@ -1,47 +1,70 @@
 <a href="{{ route('events.show', $event->slug) }}"
-   class="group rounded-2xl border border-white/10 bg-white/5 p-6
-          transition hover:border-indigo-400/40 hover:bg-white/10">
+   class="group relative flex flex-col sm:flex-row
+          gap-6 rounded-3xl border border-white/10
+          bg-slate-900/60 p-6
+          transition hover:border-indigo-500/40">
 
-    @if ($event->image)
-        <img
-            src="{{ asset('storage/' . $event->image) }}"
-            alt="{{ $event->title }}"
-            class="mb-5 h-44 w-full rounded-xl object-cover">
-    @endif
+    {{-- POSTER --}}
+    <div class="relative flex-shrink-0
+                w-full sm:w-40 md:w-44
+                rounded-2xl overflow-hidden
+                bg-slate-900 border border-white/10">
 
-    <div class="mb-2 flex items-center gap-2 text-xs text-app-muted">
-        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5"
-             viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M8 7V3m8 4V3M3 11h18M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"/>
-        </svg>
-        {{ $event->start_date?->format('d M Y') ?? '-' }}
+        @if ($event->image)
+            <img
+                src="{{ asset('storage/' . $event->image) }}"
+                alt="{{ $event->title }}"
+                class="w-full h-full object-contain"
+            >
+        @else
+            <div class="flex h-full items-center justify-center text-xs text-app-muted">
+                No image
+            </div>
+        @endif
     </div>
 
-    <h3 class="mb-2 text-lg font-semibold text-white
-               group-hover:text-indigo-300 transition">
-        {{ $event->title }}
-    </h3>
+    {{-- CONTENT --}}
+    <div class="flex flex-col justify-between flex-1">
 
-    @if ($event->location)
-        <div class="flex items-center gap-2 text-sm text-app-muted">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 21s-6-5.686-6-10a6 6 0 1112 0c0 4.314-6 10-6 10z"/>
-            </svg>
-            {{ $event->location }}
+        <div class="space-y-3">
+
+            {{-- DATE --}}
+            <div class="flex items-center gap-2 text-xs text-app-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10m-13 8h16
+                             a2 2 0 002-2V7a2 2 0 00-2-2H5
+                             a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                {{ $event->start_date->format('d M Y') }}
+            </div>
+
+            {{-- TITLE --}}
+            <h3 class="text-lg font-semibold leading-snug text-white">
+                {{ $event->title }}
+            </h3>
+
+            {{-- LOCATION --}}
+            @if ($event->location)
+                <div class="flex items-center gap-2 text-sm text-app-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 21s6-5.686 6-10
+                                 a6 6 0 10-12 0c0 4.314 6 10 6 10z"/>
+                        <circle cx="12" cy="11" r="2.5"/>
+                    </svg>
+                    {{ $event->location }}
+                </div>
+            @endif
+
         </div>
-    @endif
 
-    <div class="mt-4 inline-flex items-center gap-2
-                text-sm font-medium text-indigo-400">
-        View event
-        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1"
-             fill="none" stroke="currentColor" stroke-width="1.5"
-             viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M9 5l7 7-7 7"/>
-        </svg>
+        {{-- CTA --}}
+        <div class="mt-4 text-sm font-medium text-indigo-400
+                    transition group-hover:translate-x-1">
+            View event →
+        </div>
     </div>
 </a>

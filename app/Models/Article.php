@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Article extends Model
@@ -29,9 +28,6 @@ class Article extends Model
 
     /**
      * Use slug instead of id for route model binding.
-     *
-     *  URL to slugged article:
-     * /admin/articles/slug-judul/edit
      */
     public function getRouteKeyName()
     {
@@ -39,19 +35,33 @@ class Article extends Model
     }
 
     /**
-     * The booted method listens to model lifecycle events.
-     * It is used here to automatically manage slug and excerpt
-     * without placing logic inside controllers.
+     * Generate unique slug.
+     */
+    private static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $counter++;
+            $slug = $original . '-' . $counter;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Model events.
      */
     protected static function booted()
     {
-        /**
-         * This event runs when a new article is being created.
-         * - Generates a URL-friendly slug from the article title.
-         * - Automatically creates an excerpt if it is not provided.
-         */
         static::creating(function ($article) {
-            $article->slug = Str::slug($article->title);
+            $article->slug = static::generateUniqueSlug($article->title);
 
             if (empty($article->excerpt)) {
                 $article->excerpt = Str::limit(
@@ -61,22 +71,18 @@ class Article extends Model
             }
         });
 
-        /**
-         * This event runs when an existing article is being updated.
-         * The slug is regenerated only if the title has changed,
-         * ensuring stable URLs and preventing unnecessary slug updates.
-         */
         static::updating(function ($article) {
             if ($article->isDirty('title')) {
-                $article->slug = Str::slug($article->title);
+                $article->slug = static::generateUniqueSlug(
+                    $article->title,
+                    $article->id
+                );
             }
         });
     }
 
     /**
-     * Scope to retrieve only published articles.
-     * This keeps query logic consistent and reusable
-     * across controllers and other parts of the application.
+     * Scope: published articles.
      */
     public function scopePublished($query)
     {
