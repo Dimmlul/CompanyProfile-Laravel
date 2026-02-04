@@ -4,13 +4,26 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\CompanyProfile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class CompanyProfileSeeder extends Seeder
 {
     public function run(): void
     {
+
+        $source = database_path('seeders/assets/logo/logo.jpg');
+        $dir = 'logo';
+
+        if (!Storage::disk('public')->exists($dir)) {
+            Storage::disk('public')->makeDirectory($dir);
+        }
+
+        Storage::disk('public')->put("$dir/logo.jpg", File::get($source));
+
         CompanyProfile::create([
             'company_name' => 'Nexora Studio Digital',
+            'logo' => 'logo/logo.jpg',
             'about' => 'Nexora Studio Digital is a creative digital studio specializing in modern websites, scalable applications, and digital product design.',
             'vision' => 'To become a trusted digital partner for growing brands worldwide.',
             'mission' => 'Deliver impactful digital solutions through thoughtful design, reliable technology, and long-term strategy.',
