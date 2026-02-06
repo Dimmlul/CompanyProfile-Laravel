@@ -32,10 +32,15 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
         DB::beginTransaction();
 
         try {
-            $user  = Auth::user();
+            $user = Auth::user();
+
             $carts = Cart::with('product')
                 ->where('user_id', $user->id)
                 ->get();
@@ -48,43 +53,48 @@ class CheckoutController extends Controller
                 $cart->product->price * $cart->qty
             );
 
+            // 1️⃣ CREATE ORDER
             $order = Order::create([
                 'user_id'        => $user->id,
+                'customer_email' => $request->email,
                 'order_number'   => 'ORDER-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4)),
-                'total'          => $total,
+                'total'          => (int) $total,
                 'payment_status' => 'pending',
             ]);
 
+            // 2️⃣ ORDER ITEMS
             foreach ($carts as $cart) {
                 OrderItem::create([
                     'order_id'   => $order->id,
                     'product_id' => $cart->product_id,
-                    'price'      => $cart->product->price,
+                    'price'      => (int) $cart->product->price,
                     'qty'        => $cart->qty,
                 ]);
             }
 
-            // MIDTRANS CONFIG
+            // 3️⃣ MIDTRANS CONFIG
             Config::$serverKey    = config('midtrans.server_key');
-            Config::$isProduction = false;
+            Config::$isProduction = false; // SANDBOX
             Config::$isSanitized  = true;
             Config::$is3ds        = true;
 
+            // 4️⃣ PARAMS
             $params = [
                 'transaction_details' => [
                     'order_id'     => $order->order_number,
-                    'gross_amount' => $order->total,
+                    'gross_amount' => (int) $order->total,
                 ],
                 'customer_details' => [
                     'first_name' => $user->name,
-                    'email'      => $user->email,
+                    'email'      => $order->customer_email,
                 ],
             ];
 
+            // 5️⃣ SNAP TOKEN
             $snapToken = Snap::getSnapToken($params);
 
-            if (!$snapToken) {
-                throw new \Exception('Snap token failed');
+            if (! $snapToken) {
+                throw new \Exception('Failed to get Snap token');
             }
 
             $order->update([
@@ -95,7 +105,10 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            return redirect()->route('checkout.payment', $order);
+            // ⛔ INI FIX 404 KAMU
+            return redirect()->route('checkout.payment', [
+                'order' => $order->order_number
+            ]);
 
         } catch (\Throwable $e) {
             DB::rollBack();

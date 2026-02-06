@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Event;
 use App\Models\Gallery;
 use App\Models\Client;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -31,6 +32,7 @@ class DashboardController extends Controller
             'activeEvents' => Event::where('is_active', true)->count(),
             'totalGalleries' => Gallery::count(),
             'totalClients' => Client::count(),
+            'recentOrders' => Order::latest()->limit(5)->get(),
         ]);
     }
 }

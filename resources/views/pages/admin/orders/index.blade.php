@@ -55,7 +55,7 @@
                                 {{ $order->user->name }}
                             </div>
                             <div class="text-xs text-text-muted">
-                                {{ $order->user->city ?? '-' }}
+                                {{ $order->customer_email }}
                             </div>
                         </td>
 

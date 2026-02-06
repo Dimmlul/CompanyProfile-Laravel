@@ -73,6 +73,10 @@
                     Pay with Midtrans
                 </span>
             </button>
+            {{-- debugging --}}
+            {{-- <p class="text-xs text-red-400">
+                SNAP TOKEN: {{ $order->payment_token ?? 'NULL' }}
+            </p> --}}
 
             {{-- Info --}}
             <div class="mt-5 space-y-1">

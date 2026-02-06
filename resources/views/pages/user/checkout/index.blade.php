@@ -9,44 +9,31 @@
         {{-- STEP INDICATOR --}}
         <div class="mb-10 flex items-center justify-center gap-6 text-sm">
             <div class="flex items-center gap-2 text-indigo-400">
-                <span class="h-7 w-7 rounded-full bg-indigo-500/20 flex items-center justify-center font-semibold">
-                    1
-                </span>
+                <span class="h-7 w-7 rounded-full bg-indigo-500/20 flex items-center justify-center font-semibold">1</span>
                 Cart
             </div>
-
             <div class="h-px w-10 bg-white/10"></div>
-
             <div class="flex items-center gap-2 text-white font-medium">
-                <span class="h-7 w-7 rounded-full bg-indigo-500 flex items-center justify-center font-semibold">
-                    2
-                </span>
+                <span class="h-7 w-7 rounded-full bg-indigo-500 flex items-center justify-center font-semibold">2</span>
                 Checkout
             </div>
-
             <div class="h-px w-10 bg-white/10"></div>
-
             <div class="flex items-center gap-2 text-app-muted">
-                <span class="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center">
-                    3
-                </span>
+                <span class="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center">3</span>
                 Payment
             </div>
         </div>
 
         {{-- PAGE TITLE --}}
         <div class="mb-8 text-center">
-            <h1 class="text-3xl font-semibold text-white">
-                Review & Confirm
-            </h1>
+            <h1 class="text-3xl font-semibold text-white">Review & Confirm</h1>
             <p class="mt-2 text-sm text-app-muted">
                 Please review your order before proceeding to payment
             </p>
         </div>
 
-        {{-- ORDER SUMMARY (COMPACT, NOT TABLE) --}}
+        {{-- ORDER SUMMARY --}}
         <div class="bg-card border border-card-border rounded-2xl p-6 space-y-4">
-
             <h2 class="text-sm font-semibold uppercase tracking-wider text-app-muted">
                 Order Summary
             </h2>
@@ -54,14 +41,9 @@
             @foreach ($carts as $cart)
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-white font-medium">
-                            {{ $cart->product->name }}
-                        </p>
-                        <p class="text-xs text-app-muted">
-                            Qty {{ $cart->qty }}
-                        </p>
+                        <p class="text-white font-medium">{{ $cart->product->name }}</p>
+                        <p class="text-xs text-app-muted">Qty {{ $cart->qty }}</p>
                     </div>
-
                     <p class="text-white font-medium">
                         Rp {{ number_format($cart->product->price * $cart->qty) }}
                     </p>
@@ -73,10 +55,6 @@
                     <span>Subtotal</span>
                     <span>Rp {{ number_format($total) }}</span>
                 </div>
-                <div class="flex justify-between text-app-muted">
-                    <span>Tax</span>
-                    <span>Included</span>
-                </div>
                 <div class="flex justify-between text-white font-semibold text-base pt-2">
                     <span>Total</span>
                     <span>Rp {{ number_format($total) }}</span>
@@ -84,16 +62,40 @@
             </div>
         </div>
 
-        {{-- FINAL ACTION --}}
-        <form
-            method="POST"
-            action="{{ route('checkout.process') }}"
-            class="mt-8"
-        >
+        {{-- FORM START --}}
+        <form method="POST" action="{{ route('checkout.process') }}" class="mt-8">
             @csrf
 
+            {{-- CUSTOMER INFORMATION --}}
+            <div class="bg-card border border-card-border rounded-2xl p-6 space-y-4">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-app-muted">
+                    Customer Information
+                </h2>
+
+                <div>
+                    <label class="block text-sm text-app-muted mb-1">
+                        Email Address
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        value="{{ old('email', auth()->user()->email ?? '') }}"
+                        placeholder="you@example.com"
+                        class="w-full rounded-xl
+                               bg-input-bg border border-input-border
+                               px-4 py-3 text-white
+                               placeholder:text-input-placeholder
+                               focus:border-indigo-500
+                               focus:ring-2 focus:ring-indigo-500/20"
+                    >
+                </div>
+            </div>
+
+            {{-- SUBMIT --}}
             <button
-                class="group w-full py-4 rounded-2xl
+                type="submit"
+                class="mt-6 group w-full py-4 rounded-2xl
                        bg-indigo-500 text-white
                        font-semibold text-lg
                        transition-all
@@ -118,10 +120,8 @@
 
         {{-- BACK --}}
         <div class="mt-6 text-center">
-            <a
-                href="{{ route('cart.index') }}"
-                class="text-sm text-indigo-400 hover:underline"
-            >
+            <a href="{{ route('cart.index') }}"
+               class="text-sm text-indigo-400 hover:underline">
                 ← Back to Cart
             </a>
         </div>

@@ -124,14 +124,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/cart/buy-now', [CartController::class, 'buyNow'])->name('cart.buyNow');
 
-    // CHECKOUT
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])->name('checkout.payment');
+    Route::get('/checkout', [CheckoutController::class, 'index'])
+        ->name('checkout.index');
 
-    // ORDERS
-    Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [UserOrderController::class, 'show'])->name('orders.show');
+    Route::post('/checkout', [CheckoutController::class, 'process'])
+        ->name('checkout.process');
+
+    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])
+        ->name('checkout.payment');
+
+    Route::get('/orders', [UserOrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::get('/orders/{order}', [UserOrderController::class, 'show'])
+        ->name('orders.show');
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

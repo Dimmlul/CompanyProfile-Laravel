@@ -29,8 +29,8 @@
         <div class="rounded-lg border border-border-soft p-4">
             <p class="text-xs text-text-muted">Customer</p>
             <p class="font-medium">{{ $order->user->name }}</p>
-            <p class="text-xs text-text-muted">
-                {{ $order->user->city ?? '-' }}
+            <p class="text-sm font-medium">
+                {{ $order->customer_email }}
             </p>
         </div>
 
