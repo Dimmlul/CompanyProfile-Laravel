@@ -1,5 +1,3 @@
-<!-- resources/views/pages/admin/dashboard/index.blade.php -->
-
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')
@@ -21,6 +19,10 @@
         <p class="mt-1 text-xs text-dashboard-card-muted">
             Published: {{ $publishedArticles }}
         </p>
+
+        <div class="mt-4">
+            <x-admin.quick-add type="article" label="+ Add Article" />
+        </div>
     </div>
 
     <!-- Products -->
@@ -32,6 +34,10 @@
         <p class="mt-1 text-xs text-dashboard-card-muted">
             Active: {{ $activeProducts }}
         </p>
+
+        <div class="mt-4">
+            <x-admin.quick-add type="product" label="+ Add Product" />
+        </div>
     </div>
 
     <!-- Events -->
@@ -43,6 +49,10 @@
         <p class="mt-1 text-xs text-dashboard-card-muted">
             Active: {{ $activeEvents }}
         </p>
+
+        <div class="mt-4">
+            <x-admin.quick-add type="event" label="+ Add Event" />
+        </div>
     </div>
 
     <!-- Gallery -->
@@ -54,6 +64,10 @@
         <p class="mt-1 text-xs text-dashboard-card-muted">
             Total images
         </p>
+
+        <div class="mt-4">
+            <x-admin.quick-add type="gallery" label="+ Add Image" />
+        </div>
     </div>
 
     <!-- Clients -->
@@ -65,6 +79,10 @@
         <p class="mt-1 text-xs text-dashboard-card-muted">
             Total partners
         </p>
+
+        <div class="mt-4">
+            <x-admin.quick-add type="client" label="+ Add Client" />
+        </div>
     </div>
 
 </div>
