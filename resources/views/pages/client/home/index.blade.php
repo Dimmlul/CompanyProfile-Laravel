@@ -10,7 +10,7 @@
     {{-- VISION & MISSION --}}
     @include('pages.client.home.partials.vision-mission')
 
-    {{-- GALLERY CAROUSEL --}}
+    {{-- GALLERY --}}
     @include('pages.client.home.partials.gallery-carousel', [
         'galleries' => $galleries
     ])
@@ -24,7 +24,6 @@
     @include('pages.client.home.partials.clients', [
         'clients' => $clients
     ])
-
 
     {{-- CONTACT --}}
     @include('pages.client.home.partials.contact')

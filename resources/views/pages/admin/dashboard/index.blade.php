@@ -7,22 +7,38 @@
 {{-- =========================================================
 | HEADER
 ========================================================= --}}
-<div class="mb-10">
-    <h1 class="text-2xl font-semibold text-app-text">Dashboard</h1>
+<div class="mb-12">
+    <h1 class="text-2xl font-semibold tracking-tight text-app-text">
+        Dashboard
+    </h1>
     <p class="mt-1 text-sm text-app-muted">
         Overview of content, activity, and recent orders
     </p>
 </div>
 
 {{-- =========================================================
-| CONTENT CARDS
+| CONTENT CARDS (FLAT • DARK • PREMIUM)
 ========================================================= --}}
 @php
-    $card = 'relative bg-dashboard-card border border-dashboard-card-border rounded-2xl p-6 flex flex-col';
-    $iconWrap = 'flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand-soft)]';
-    $title = 'text-base font-semibold text-dashboard-card-text';
-    $meta  = 'text-xs text-dashboard-card-muted';
-    $value = 'mt-5 text-3xl font-bold text-dashboard-card-text';
+    $card = '
+        bg-dashboard-card
+        border border-dashboard-card-border
+        rounded-2xl
+        p-6
+        flex flex-col
+        transition
+        hover:bg-white/[0.015]
+    ';
+
+    $iconWrap = '
+        flex h-11 w-11 items-center justify-center
+        rounded-lg
+        bg-[var(--color-brand-soft)]
+        text-primary
+    ';
+
+    $title = 'text-sm font-medium text-dashboard-card-muted';
+    $value = 'mt-4 text-3xl font-semibold tracking-tight text-dashboard-card-text';
     $actions = 'mt-auto pt-6 flex items-center justify-between';
 @endphp
 
@@ -32,26 +48,23 @@
     <div class="{{ $card }}">
         <div class="flex items-center gap-4">
             <div class="{{ $iconWrap }}">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M4 4h16v16H4z"/>
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4z"/>
                 </svg>
             </div>
             <div>
                 <p class="{{ $title }}">Articles</p>
-                <p class="{{ $meta }}">Published {{ $publishedArticles }}</p>
+                <p class="text-xs text-dashboard-card-muted">
+                    Published {{ $publishedArticles }}
+                </p>
             </div>
         </div>
 
         <p class="{{ $value }}">{{ $totalArticles }}</p>
 
         <div class="{{ $actions }}">
-            <x-admin.quick-add type="article" label="+ Add" />
-            <a href="{{ route('admin.articles.index') }}"
-               class="text-xs font-medium text-primary hover:underline">
-                View all →
-            </a>
+            <x-admin.quick-add type="article" label="+ Add"/>
+            <a href="{{ route('admin.articles.index') }}" class="btn-admin">View all</a>
         </div>
     </div>
 
@@ -59,26 +72,24 @@
     <div class="{{ $card }}">
         <div class="flex items-center gap-4">
             <div class="{{ $iconWrap }}">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           d="M21 16V8l-9-5-9 5v8l9 5 9-5z"/>
                 </svg>
             </div>
             <div>
                 <p class="{{ $title }}">Products</p>
-                <p class="{{ $meta }}">Active {{ $activeProducts }}</p>
+                <p class="text-xs text-dashboard-card-muted">
+                    Active {{ $activeProducts }}
+                </p>
             </div>
         </div>
 
         <p class="{{ $value }}">{{ $totalProducts }}</p>
 
         <div class="{{ $actions }}">
-            <x-admin.quick-add type="product" label="+ Add" />
-            <a href="{{ route('admin.products.index') }}"
-               class="text-xs font-medium text-primary hover:underline">
-                View all →
-            </a>
+            <x-admin.quick-add type="product" label="+ Add"/>
+            <a href="{{ route('admin.products.index') }}" class="btn-admin">View all</a>
         </div>
     </div>
 
@@ -86,26 +97,24 @@
     <div class="{{ $card }}">
         <div class="flex items-center gap-4">
             <div class="{{ $iconWrap }}">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           d="M8 7V3m8 4V3M5 11h14"/>
                 </svg>
             </div>
             <div>
                 <p class="{{ $title }}">Events</p>
-                <p class="{{ $meta }}">Active {{ $activeEvents }}</p>
+                <p class="text-xs text-dashboard-card-muted">
+                    Active {{ $activeEvents }}
+                </p>
             </div>
         </div>
 
         <p class="{{ $value }}">{{ $totalEvents }}</p>
 
         <div class="{{ $actions }}">
-            <x-admin.quick-add type="event" label="+ Add" />
-            <a href="{{ route('admin.events.index') }}"
-               class="text-xs font-medium text-primary hover:underline">
-                View all →
-            </a>
+            <x-admin.quick-add type="event" label="+ Add"/>
+            <a href="{{ route('admin.events.index') }}" class="btn-admin">View all</a>
         </div>
     </div>
 
@@ -113,26 +122,24 @@
     <div class="{{ $card }}">
         <div class="flex items-center gap-4">
             <div class="{{ $iconWrap }}">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M4 16l4-4a3 3 0 014 0l4 4m-4-8h.01"/>
+                          d="M4 16l4-4a3 3 0 014 0l4 4"/>
                 </svg>
             </div>
             <div>
                 <p class="{{ $title }}">Gallery</p>
-                <p class="{{ $meta }}">Total images</p>
+                <p class="text-xs text-dashboard-card-muted">
+                    Total images
+                </p>
             </div>
         </div>
 
         <p class="{{ $value }}">{{ $totalGalleries }}</p>
 
         <div class="{{ $actions }}">
-            <x-admin.quick-add type="gallery" label="+ Add" />
-            <a href="{{ route('admin.gallery.index') }}"
-               class="text-xs font-medium text-primary hover:underline">
-                View all →
-            </a>
+            <x-admin.quick-add type="gallery" label="+ Add"/>
+            <a href="{{ route('admin.gallery.index') }}" class="btn-admin">View all</a>
         </div>
     </div>
 
@@ -140,66 +147,132 @@
     <div class="{{ $card }}">
         <div class="flex items-center gap-4">
             <div class="{{ $iconWrap }}">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M17 20h5v-2a4 4 0 00-5-4M9 20H4v-2a4 4 0 015-4m4-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a3 3 0 100-6 3 3 0 000 6z"/>
+                          d="M17 20h5v-2a4 4 0 00-5-4M9 20H4v-2a4 4 0 015-4m4-4a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </div>
             <div>
                 <p class="{{ $title }}">Clients</p>
-                <p class="{{ $meta }}">Business partners</p>
+                <p class="text-xs text-dashboard-card-muted">
+                    Business partners
+                </p>
             </div>
         </div>
 
         <p class="{{ $value }}">{{ $totalClients }}</p>
 
         <div class="{{ $actions }}">
-            <x-admin.quick-add type="client" label="+ Add" />
-            <a href="{{ route('admin.clients.index') }}"
-               class="text-xs font-medium text-primary hover:underline">
-                View all →
-            </a>
+            <x-admin.quick-add type="client" label="+ Add"/>
+            <a href="{{ route('admin.clients.index') }}" class="btn-admin">View all</a>
         </div>
     </div>
 
 </div>
 
 {{-- =========================================================
-| VERTICAL SPACER (IMPORTANT)
+| SPACER
 ========================================================= --}}
-<div class="h-20"></div>
+<div class="h-24"></div>
 
 {{-- =========================================================
-| RECENT ORDERS
+| RECENT ORDERS (SAME STYLE AS CARD)
 ========================================================= --}}
-<div class="bg-dashboard-card border border-dashboard-card-border rounded-2xl">
+<div class="bg-dashboard-card border border-dashboard-card-border rounded-2xl p-6">
 
-    <div class="flex items-center justify-between px-6 py-5 border-b border-dashboard-card-border">
-        <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-brand-soft)]">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M5 8h14l-1.5 12.5H6.5L5 8z"/>
-                </svg>
-            </div>
-            <div>
-                <p class="font-semibold text-dashboard-card-text">Recent Orders</p>
-                <p class="text-xs text-dashboard-card-muted">
-                    Latest customer transactions
-                </p>
-            </div>
+    <div class="mb-4 flex items-center justify-between">
+        <div>
+            <h3 class="text-base font-medium text-dashboard-card-text">
+                Recent Orders
+            </h3>
+            <p class="text-sm text-dashboard-card-muted">
+                Latest transactions
+            </p>
         </div>
 
-        <a href="{{ route('admin.orders.index') }}"
-           class="text-sm font-medium text-primary hover:underline">
+        <a href="{{ route('admin.orders.index') }}" class="btn-admin">
             View all
         </a>
     </div>
 
-    <div class="px-6 py-10 text-center text-dashboard-card-muted">
-        No recent orders
+    <div class="overflow-x-auto">
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse ($recentOrders as $order)
+
+                    @php
+                        $items = $order->items ?? collect();
+                        $firstProduct = $items->first();
+                    @endphp
+
+                    <tr>
+                        <td class="font-medium">
+                            {{ $order->order_number }}
+                            <div class="text-xs text-text-muted">
+                                {{ $order->created_at->format('d M Y') }}
+                            </div>
+                        </td>
+
+                        <td>{{ $order->user->name ?? 'Guest' }}</td>
+
+                        <td>
+                            @if ($firstProduct)
+                                <span class="font-medium">
+                                    {{ $firstProduct->product_name }}
+                                </span>
+                                @if ($items->count() > 1)
+                                    <span class="text-xs text-text-muted">
+                                        +{{ $items->count() - 1 }} more
+                                    </span>
+                                @endif
+                            @else
+                                <span class="text-xs text-text-muted">No product</span>
+                            @endif
+                        </td>
+
+                        <td class="font-medium">
+                            Rp {{ number_format($order->total, 0, ',', '.') }}
+                        </td>
+
+                        <td>
+                            @if ($order->payment_status === 'paid')
+                                <span class="badge badge-success">Paid</span>
+                            @elseif ($order->payment_status === 'pending')
+                                <span class="badge badge-warning">Pending</span>
+                            @else
+                                <span class="badge badge-danger">Failed</span>
+                            @endif
+                        </td>
+
+                        <td class="text-right">
+                            <a href="{{ route('admin.orders.show', $order) }}" class="btn-admin">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+
+                @empty
+                    <tr>
+                        <td colspan="6" class="admin-table-empty">
+                            No recent orders
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+
+        </table>
     </div>
 
 </div>

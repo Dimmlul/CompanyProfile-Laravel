@@ -89,6 +89,11 @@
     --color-success: #22c55e;
     --color-danger: #ef4444;
     --color-danger-hover: #dc2626;
+
+        /* CLIENT DARK SURFACE */
+    --color-client-card-bg: rgba(15,23,42,0.85); /* slate-900 */
+    --color-client-card-border: rgba(255,255,255,0.08);
+    --color-client-input-bg: rgba(2,6,23,0.9);
 }
 
 
@@ -113,6 +118,36 @@
 | COMPONENTS
 =================================================================== */
 @layer components {
+
+
+/* ===============================================================
+| CLIENT (PUBLIC SITE) – DARK CARD & INPUT
+=============================================================== */
+.client-card {
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.95),
+        rgba(2, 6, 23, 0.98)
+    );
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.25rem;
+}
+
+.client-input {
+    background-color: #020617;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #ffffff;
+}
+
+.client-input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+.client-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+}
 
     /* ===============================================================
     | HERO
@@ -293,6 +328,21 @@
     .admin-scope {
         background-color: var(--color-bg-surface);
         color: var(--color-text-main);
+    }
+
+    .admin-scope .form-input {
+        background-color: #0b1220 !important;
+        border: 1px solid rgba(255,255,255,0.16);
+        color: #e5e7eb;
+    }
+
+    .admin-scope .form-input::placeholder {
+        color: rgba(255,255,255,0.45);
+    }
+
+    .admin-scope textarea.form-input {
+        min-height: 96px;
+        resize: vertical;
     }
 
     .admin-card {
