@@ -328,6 +328,11 @@
     .admin-scope {
         background-color: var(--color-bg-surface);
         color: var(--color-text-main);
+        transform: none !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        perspective: none !important;
+        will-change: auto !important;
     }
 
     .admin-scope .form-input {
@@ -434,17 +439,25 @@
     ============================================================== */
     .reveal {
         opacity: 0;
+        transition: opacity 600ms ease;
+    }
+
+    .reveal-inner {
         transform: translateY(24px);
-        transition: opacity 600ms ease-out, transform 600ms ease-out;
+        transition: transform 600ms ease;
     }
 
-    .reveal-fast {
-        transition-duration: 400ms;
+    .reveal.is-visible {
+        opacity: 1;
     }
 
-    .reveal-slow {
-        transition-duration: 800ms;
+    .reveal.is-visible .reveal-inner {
+        transform: translateY(0);
     }
+    .hero-section.reveal {
+    opacity: 1 !important;
+}
+
 }
 
 

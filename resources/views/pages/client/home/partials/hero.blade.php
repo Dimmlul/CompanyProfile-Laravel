@@ -3,10 +3,7 @@
     x-init="init()"
     class="relative min-h-screen w-full overflow-hidden bg-app-bg"
 >
-
-    <!-- ==========================================================
-    | BACKGROUND
-    ========================================================== -->
+    {{-- ================= BACKGROUND ================= --}}
     <div class="absolute inset-0 -z-10">
         <img
             src="{{ asset('images/hero.jpg') }}"
@@ -19,9 +16,7 @@
         </div>
     </div>
 
-    <!-- ==========================================================
-    | CONTENT
-    ========================================================== -->
+    {{-- ================= CONTENT ================= --}}
     <div
         class="relative mx-auto max-w-7xl px-6
                min-h-screen
@@ -29,17 +24,17 @@
                text-center"
     >
 
-        <!-- OFFSET FOR FLOATING NAVBAR -->
+        {{-- OFFSET FOR FLOATING NAVBAR --}}
         <div class="pt-28"></div>
 
-        <!-- BADGE -->
+        {{-- BADGE --}}
         <div
             x-ref="badge"
             class="mb-6 inline-flex items-center gap-2
                    rounded-full border border-white/10
                    bg-white/5 px-4 py-1.5
                    text-xs uppercase tracking-wider text-app-muted
-                   opacity-0 translate-y-3"
+                   opacity-100 translate-y-0"
         >
             <svg class="h-4 w-4 text-indigo-400"
                  fill="none" stroke="currentColor"
@@ -51,13 +46,13 @@
             {{ $companyProfile->tagline ?? 'Digital Solutions for Growing Brands' }}
         </div>
 
-        <!-- TITLE -->
+        {{-- TITLE --}}
         <h1
             x-ref="title"
             class="mx-auto max-w-4xl
                    text-4xl md:text-5xl lg:text-6xl
                    font-semibold tracking-tight text-white
-                   opacity-0 translate-y-4"
+                   opacity-100 translate-y-0"
         >
             Build Powerful Digital Experiences
             <br class="hidden sm:block">
@@ -67,25 +62,24 @@
             </span>
         </h1>
 
-        <!-- DESCRIPTION -->
+        {{-- DESCRIPTION --}}
         <p
             x-ref="desc"
             class="mx-auto mt-6 max-w-2xl
                    text-base leading-relaxed text-app-muted
-                   opacity-0 translate-y-4"
+                   opacity-100 translate-y-0"
         >
             {{ $companyProfile->about
                 ?? 'We help businesses and organizations build modern, scalable, and reliable digital products for long-term growth.' }}
         </p>
 
-        <!-- CTA -->
+        {{-- CTA --}}
         <div
             x-ref="cta"
             class="mt-10 flex flex-col items-center gap-4 sm:flex-row
-                   opacity-0 translate-y-4"
+                   opacity-100 translate-y-0"
         >
-
-            <!-- PRIMARY -->
+            {{-- PRIMARY --}}
             <a href="{{ route('contact') }}"
                class="inline-flex h-12 items-center justify-center
                       rounded-full bg-white px-7
@@ -95,7 +89,7 @@
                 Get in Touch
             </a>
 
-            <!-- SECONDARY -->
+            {{-- SECONDARY --}}
             <a href="{{ route('products') }}"
                class="inline-flex h-12 items-center justify-center gap-2
                       rounded-full border border-white/15
@@ -114,38 +108,6 @@
             </a>
         </div>
 
-        <!-- BOTTOM SPACING -->
         <div class="pb-24"></div>
-
     </div>
 </section>
-
-@push('scripts')
-<script>
-function heroReveal() {
-    return {
-        init() {
-            const items = [
-                this.$refs.badge,
-                this.$refs.title,
-                this.$refs.desc,
-                this.$refs.cta,
-            ]
-
-            items.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.remove('opacity-0', 'translate-y-3', 'translate-y-4')
-                    el.classList.add(
-                        'opacity-100',
-                        'translate-y-0',
-                        'transition-all',
-                        'duration-700',
-                        'ease-out'
-                    )
-                }, index * 120)
-            })
-        }
-    }
-}
-</script>
-@endpush

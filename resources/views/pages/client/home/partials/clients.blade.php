@@ -1,7 +1,7 @@
 <section
     x-data
     x-reveal
-    class="reveal py-28 bg-app-bg"
+    class="py-28 bg-app-bg"
 >
     <div class="mx-auto max-w-7xl px-6">
 

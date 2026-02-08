@@ -28,4 +28,8 @@
     {{-- CONTACT --}}
     @include('pages.client.home.partials.contact')
 
+    {{-- SUPPORT CHAT --}}
+    <x-support-chat />
+
+
 @endsection
