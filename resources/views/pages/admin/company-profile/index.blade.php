@@ -135,7 +135,7 @@
             </div>
 
             {{-- CONTACT INFO --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
 
                 {{-- PHONE --}}
                 <div>
@@ -146,6 +146,42 @@
                         type="text"
                         name="phone"
                         value="{{ old('phone', $companyProfile->phone ?? '') }}"
+                        class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
+                               border border-gray-300 bg-transparent px-4 py-2.5 text-sm
+                               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
+                               focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
+                               dark:text-white/90"
+                    >
+                </div>
+
+                {{-- WHATSAPP --}}
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        WhatsApp
+                    </label>
+                    <input
+                        type="text"
+                        name="whatsapp"
+                        placeholder="6281234567890"
+                        value="{{ old('whatsapp', $companyProfile->whatsapp ?? '') }}"
+                        class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
+                               border border-gray-300 bg-transparent px-4 py-2.5 text-sm
+                               focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10
+                               focus:outline-hidden dark:border-gray-700 dark:bg-gray-900
+                               dark:text-white/90"
+                    >
+                </div>
+
+                {{-- INSTAGRAM --}}
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Instagram
+                    </label>
+                    <input
+                        type="text"
+                        name="instagram"
+                        placeholder="nexorastudio"
+                        value="{{ old('instagram', $companyProfile->instagram ?? '') }}"
                         class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg
                                border border-gray-300 bg-transparent px-4 py-2.5 text-sm
                                focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10

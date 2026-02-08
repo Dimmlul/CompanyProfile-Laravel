@@ -80,16 +80,24 @@
 
         <!-- BODY -->
         <div class="px-5 py-4 space-y-3">
-            <!-- WHATSAPP -->
+
+            {{-- ================= WHATSAPP (FROM DB) ================= --}}
+            @php
+                $waLink = filled($companyProfile->whatsapp)
+                    ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
+                    : null;
+            @endphp
+
             <a
-                href="https://wa.me/6281234567890"
-                target="_blank"
+                href="{{ $waLink ?? '#' }}"
+                @if($waLink) target="_blank" @endif
                 style="background:#25D366"
                 class="flex items-center justify-center gap-3
                        rounded-xl
                        py-3
                        text-sm font-semibold text-white
-                       transition hover:opacity-95"
+                       transition hover:opacity-95
+                       {{ $waLink ? '' : 'opacity-50 pointer-events-none' }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg"
                      width="18" height="18"
@@ -99,9 +107,17 @@
                      stroke-width="2.5"
                      stroke-linecap="round"
                      stroke-linejoin="round">
-                    <path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h4.09a2 2 0 0 1 2 1.72c.12.81.37 1.6.73 2.34a2 2 0 0 1-.45 2.11L10.91 10.91a16 16 0 0 0 6.18 6.18l1.74-1.74a2 2 0 0 1 2.11-.45c.74.36 1.53.61 2.34.73a2 2 0 0 1 1.72 1.99z"/>
+                    <path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18
+                             2 2 0 0 1 5 3h4.09a2 2 0 0 1 2 1.72
+                             c.12.81.37 1.6.73 2.34
+                             a2 2 0 0 1-.45 2.11L10.91 10.91
+                             a16 16 0 0 0 6.18 6.18l1.74-1.74
+                             a2 2 0 0 1 2.11-.45
+                             c.74.36 1.53.61 2.34.73
+                             a2 2 0 0 1 1.72 1.99z"/>
                 </svg>
-                Chat via WhatsApp
+
+                {{ $waLink ? 'Chat via WhatsApp' : 'WhatsApp not available' }}
             </a>
 
             <!-- CONTACT PAGE -->

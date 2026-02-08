@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CompanyProfile extends Model
 {
@@ -18,12 +17,9 @@ class CompanyProfile extends Model
         'mission',
         'address',
         'phone',
+        'whatsapp',
+        'instagram',
         'fax',
-        'email'
+        'email',
     ];
-
-
-
 }
-
-    

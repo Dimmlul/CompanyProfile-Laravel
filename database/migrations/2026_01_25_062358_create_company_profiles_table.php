@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('company_profiles', function (Blueprint $table) {
@@ -19,18 +16,18 @@ return new class extends Migration
             $table->text('vision')->nullable();
             $table->text('mission')->nullable();
             $table->string('address')->nullable();
+
             $table->string('phone')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('instagram')->nullable();
+
             $table->string('fax')->nullable();
             $table->string('email')->nullable();
-            $table->timestamps();
-            // $table->softDeletes();
-        });
 
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('company_profiles');

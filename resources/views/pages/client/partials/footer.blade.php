@@ -236,8 +236,83 @@
                         </li>
                     @endif
 
+
+
                 </ul>
+
             </div>
+
+
+            <!-- ==================================================
+| SOCIAL MEDIA
+================================================== -->
+<div>
+    <h4 class="text-sm font-semibold text-white">
+        Social Media
+    </h4>
+
+    <ul class="mt-5 space-y-4 text-sm">
+
+        {{-- WHATSAPP --}}
+        <li>
+            <a
+                href="{{ filled($companyProfile->whatsapp)
+                    ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
+                    : '#' }}"
+                target="_blank"
+                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
+            >
+                <!-- ICON (DISAMAKAN) -->
+                <svg class="h-4 w-4 text-indigo-400"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M22 16.92V21a2 2 0 01-2.18 2A19.86 19.86 0 013 5.18
+                             2 2 0 015 3h4.09a2 2 0 012 1.72
+                             c.12.81.37 1.6.73 2.34
+                             a2 2 0 01-.45 2.11L10.91 10.91
+                             a16 16 0 006.18 6.18l1.74-1.74
+                             a2 2 0 012.11-.45
+                             c.74.36 1.53.61 2.34.73
+                             A2 2 0 0122 16.92z"/>
+                </svg>
+
+                <span class="relative">
+                    WhatsApp
+                    <span class="{{ $underline }}"></span>
+                </span>
+            </a>
+        </li>
+
+        {{-- INSTAGRAM --}}
+        <li>
+            <a
+                href="{{ filled($companyProfile->instagram)
+                    ? (str_starts_with($companyProfile->instagram, 'http')
+                        ? $companyProfile->instagram
+                        : 'https://instagram.com/' . ltrim($companyProfile->instagram, '@'))
+                    : '#' }}"
+                target="_blank"
+                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
+            >
+                <!-- ICON (DISAMAKAN) -->
+                <svg class="h-4 w-4 text-indigo-400"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="20" height="20" rx="5"/>
+                    <circle cx="12" cy="12" r="3"/>
+                    <circle cx="17" cy="7" r="1"/>
+                </svg>
+
+                <span class="relative">
+                    Instagram
+                    <span class="{{ $underline }}"></span>
+                </span>
+            </a>
+        </li>
+
+    </ul>
+</div>
 
         </div>
 
@@ -252,6 +327,8 @@
             </span>.
             All rights reserved.
         </div>
+
+
 
     </div>
 </footer>
