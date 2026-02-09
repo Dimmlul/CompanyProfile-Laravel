@@ -11,36 +11,45 @@ class ContactController extends Controller
 {
     /**
      * Handle contact form
-     * - Auth user  → save to DB
-     * - Guest      → EmailJS (handled in frontend)
+     * Auth user → save to DB
+     * Guest → EmailJS (frontend)
      */
-    public function send(Request $request)
-    {
-        $data = $request->validate([
-            'from_name'  => 'required|string|max:255',
-            'from_email' => 'required|email|max:255',
-            'message'    => 'required|string|max:3000',
+public function send(Request $request)
+{
+    $rules = [
+        'from_name'  => 'required|string|max:255',
+        'from_email' => 'required|email|max:255',
+        'message'    => 'required|string|max:3000',
+    ];
+
+    if (Auth::check()) {
+        $rules['subject'] = 'required|string|max:255';
+    }
+
+    $data = $request->validate($rules);
+
+    $user = Auth::user();
+
+    if ($user) {
+        Message::create([
+            'user_id' => $user->id,
+            'name'    => $user->name,
+            'email'   => $user->email,
+            'subject' => $data['subject'],
+            'message' => $data['message'],
+            'is_read' => false,
         ]);
 
-        // ✅ USER LOGIN → SAVE TO DATABASE
-        if (Auth::check()) {
-            $user = Auth::user();
-            Message::create([
-                'name'    => $user->name,
-                'email'   => $user->email,
-                'message' => $data['message'],
-                'is_read' => false,
-            ]);
-
-            return response()->json([
-                'status'  => 'saved',
-                'message' => 'Message sent to admin inbox.',
-            ]);
-        }
-
-        // ✅ GUEST → FRONTEND WILL SEND EMAILJS
         return response()->json([
-            'status' => 'guest',
+            'status'  => 'saved',
+            'message' => 'Message saved to admin inbox.',
         ]);
     }
+
+    return response()->json([
+        'status' => 'guest',
+    ]);
+}
+
+
 }

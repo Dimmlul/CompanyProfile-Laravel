@@ -34,7 +34,13 @@
                     Send Us a Message
                 </h3>
 
-                <form id="contact-form" class="space-y-5">
+                <form
+                    id="contact-form"
+                    method="POST"
+                    action="{{ route('contact.message.send') }}"
+                    class="space-y-5"
+                >
+                    @csrf
 
                     {{-- EmailJS target --}}
                     <input
@@ -43,6 +49,7 @@
                         value="{{ $companyProfile->email }}"
                     >
 
+                    {{-- NAME --}}
                     <input
                         type="text"
                         name="from_name"
@@ -53,6 +60,7 @@
                                placeholder:text-app-muted focus:outline-none"
                     >
 
+                    {{-- EMAIL --}}
                     <input
                         type="email"
                         name="from_email"
@@ -63,6 +71,20 @@
                                placeholder:text-app-muted focus:outline-none"
                     >
 
+                    {{-- SUBJECT → ONLY AUTH USER --}}
+                    @auth
+                        <input
+                            type="text"
+                            name="subject"
+                            placeholder="Subject"
+                            required
+                            class="w-full rounded-lg border border-white/10 bg-transparent
+                                   px-4 py-3 text-sm text-white
+                                   placeholder:text-app-muted focus:outline-none"
+                        >
+                    @endauth
+
+                    {{-- MESSAGE --}}
                     <textarea
                         name="message"
                         rows="4"
@@ -73,6 +95,7 @@
                                placeholder:text-app-muted focus:outline-none"
                     ></textarea>
 
+                    {{-- SUBMIT --}}
                     <button
                         type="submit"
                         class="w-full rounded-lg bg-white py-3
@@ -91,7 +114,6 @@
 </section>
 @endsection
 
-
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
@@ -106,26 +128,33 @@
 
         status.textContent = 'Sending message...';
 
-        // STEP 1 → SEND TO BACKEND
-        fetch("{{ route('contact.message.send') }}", {
+        fetch(form.action, {
             method: 'POST',
+            credentials: 'same-origin', // 🔥 INI KUNCI
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json',
             },
             body: new FormData(form),
         })
-        .then(res => res.json())
+
+        .then(async res => {
+            if (!res.ok) {
+                const text = await res.text();
+                throw text;
+            }
+            return res.json();
+        })
         .then(res => {
 
-            // USER LOGIN → MESSAGE SAVED
+            // AUTH USER → SAVED TO DB
             if (res.status === 'saved') {
                 status.textContent = res.message;
                 form.reset();
                 return;
             }
 
-            // GUEST → SEND VIA EMAILJS
+            // GUEST → SEND EMAILJS
             if (res.status === 'guest') {
                 emailjs.sendForm(
                     '{{ config('services.emailjs.service_id') }}',
@@ -141,7 +170,8 @@
                 });
             }
         })
-        .catch(() => {
+        .catch(err => {
+            console.error(err);
             status.textContent = 'Something went wrong.';
         });
     });

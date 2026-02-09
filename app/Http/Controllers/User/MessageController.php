@@ -11,7 +11,7 @@ class MessageController extends Controller
     public function index()
     {
         return view('pages.user.messages.index', [
-            'messages' => Message::where('email', Auth::user()->email)
+            'messages' => Message::where('user_id', Auth::user()->id)
                 ->latest()
                 ->paginate(10),
         ]);
@@ -19,11 +19,15 @@ class MessageController extends Controller
 
     public function show(Message $message)
     {
-        abort_if(
-            $message->email !== Auth::user()->email,
-            403
-        );
+        abort_if($message->user_id !== Auth::user()->id, 403);
 
-        return view('pages.user.messages.show', compact('message'));
+        $message->update(['is_read' => true]);
+
+        return view('pages.user.messages.show', [
+            'message' => $message,
+            'replies' => $message->replies,
+        ]);
     }
+
+
 }

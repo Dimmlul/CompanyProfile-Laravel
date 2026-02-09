@@ -3,60 +3,90 @@
 @section('title', 'Messages')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-8">
 
-    <h1 class="text-xl font-semibold">Inbox Messages</h1>
-
-    <div class="client-card overflow-hidden">
-        <table class="w-full text-sm">
-            <thead class="bg-white/5 text-app-muted">
-                <tr>
-                    <th class="px-4 py-3 text-left">From</th>
-                    <th class="px-4 py-3 text-left">Subject</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($messages as $message)
-                    <tr class="border-t border-white/10 hover:bg-white/5">
-                        <td class="px-4 py-3">
-                            {{ $message->name }}<br>
-                            <span class="text-xs text-app-muted">
-                                {{ $message->email }}
-                            </span>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <a href="{{ route('admin.messages.show', $message) }}"
-                               class="text-indigo-400 hover:underline">
-                                {{ $message->subject ?? '(No subject)' }}
-                            </a>
-                        </td>
-
-                        <td class="px-4 py-3 text-center">
-                            @if ($message->is_read)
-                                <span class="text-xs text-green-400">Read</span>
-                            @else
-                                <span class="text-xs text-yellow-400">Unread</span>
-                            @endif
-                        </td>
-
-                        <td class="px-4 py-3 text-center text-xs text-app-muted">
-                            {{ $message->created_at->format('d M Y') }}
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-app-muted">
-                            No messages
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    {{-- HEADER --}}
+    <div>
+        <h1 class="text-2xl font-semibold text-white">
+            Inbox Messages
+        </h1>
+        <p class="mt-1 text-sm text-app-muted">
+            Messages sent by users via contact form
+        </p>
     </div>
 
-    {{ $messages->links() }}
+    {{-- LIST --}}
+    <div class="space-y-4">
+
+        @forelse ($messages as $message)
+            <a
+                href="{{ route('admin.messages.show', $message) }}"
+                class="group block rounded-2xl
+                       border border-white/10
+                       bg-white/5 backdrop-blur
+                       p-6 transition
+                       hover:bg-white/10"
+            >
+                <div class="flex items-start justify-between gap-6">
+
+                    {{-- LEFT --}}
+                    <div class="min-w-0 space-y-2">
+                        <p class="font-medium text-white">
+                            {{ $message->subject ?? '(No subject)' }}
+                        </p>
+
+                        <p class="text-sm text-app-muted">
+                            From {{ $message->user?->name ?? 'User' }}
+                        </p>
+
+                        <p class="line-clamp-2 text-sm text-app-muted">
+                            {{ $message->message }}
+                        </p>
+                    </div>
+
+                    {{-- RIGHT --}}
+                    <div class="shrink-0 text-right space-y-2">
+                        <p class="text-xs text-app-muted">
+                            {{ $message->created_at->format('d M Y') }}
+                        </p>
+
+                        @if (! $message->is_read)
+                            <span
+                                class="inline-flex items-center rounded-full
+                                       bg-indigo-500/20 px-2.5 py-0.5
+                                       text-xs font-medium text-indigo-400"
+                            >
+                                New
+                            </span>
+                        @else
+                            <span class="text-xs text-app-muted">
+                                Read
+                            </span>
+                        @endif
+                    </div>
+
+                </div>
+            </a>
+        @empty
+            <div
+                class="rounded-2xl border border-white/10
+                       bg-white/5 backdrop-blur
+                       p-12 text-center"
+            >
+                <p class="text-app-muted">
+                    No messages yet.
+                </p>
+            </div>
+        @endforelse
+
+    </div>
+
+    {{-- PAGINATION --}}
+    @if ($messages->hasPages())
+        <div class="pt-6">
+            {{ $messages->links() }}
+        </div>
+    @endif
+
 </div>
 @endsection

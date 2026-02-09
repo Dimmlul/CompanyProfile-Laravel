@@ -44,18 +44,24 @@ class MessageController extends Controller
     /**
      * Reply message
      */
-    public function reply(Request $request, Message $message)
-    {
-        $request->validate([
-            'reply' => ['required', 'string'],
-        ]);
+public function reply(Request $request, Message $message)
+{
+    $request->validate([
+        'message' => 'required|string|max:3000',
+    ]);
 
-        // 🔹 KIRIM EMAIL KE USER
-        Mail::raw($request->reply, function ($mail) use ($message) {
-            $mail->to($message->email)
-                 ->subject('Reply: ' . ($message->subject ?? 'Your Message'));
-        });
+    Message::create([
+        'parent_id' => $message->id,
+        'user_id'   => $message->user_id,
+        'sender'    => 'admin',
+        'name'      => 'Admin',
+        'email'     => $message->email,
+        'subject'   => 'Re: ' . ($message->subject ?? 'Message'),
+        'message'   => $request->message,
+        'is_read'   => false,
+    ]);
 
-        return back()->with('success', 'Reply sent to user.');
-    }
+    return back()->with('success', 'Reply sent.');
+}
+
 }

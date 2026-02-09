@@ -6,33 +6,50 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-Schema::create('messages', function (Blueprint $table) {
-    $table->id();
+        Schema::create('messages', function (Blueprint $table) {
+            $table->id();
 
-    $table->string('name');
-    $table->string('email')->nullable();
-    $table->string('phone')->nullable();
+            // ========================
+            // USER (AUTH ONLY)
+            // ========================
+            $table->foreignId('user_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
 
-    $table->string('subject')->nullable();
-    $table->text('message');
+            // ========================
+            // MESSAGE
+            // ========================
+            $table->string('subject')->nullable();
+            $table->text('message');
 
-    // optional: relasi order
-    $table->foreignId('order_id')->nullable()->constrained()->nullOnDelete();
+            // ========================
+            // ADMIN REPLY (CHAT STYLE)
+            // ========================
+            $table->text('reply')->nullable();
+            $table->timestamp('replied_at')->nullable();
 
-    $table->boolean('is_read')->default(false);
+            // ========================
+            // OPTIONAL ORDER
+            // ========================
+            $table->foreignId('order_id')
+                  ->nullable()
+                  ->constrained()
+                  ->nullOnDelete();
 
-    $table->timestamps();
-});
+            // ========================
+            // STATUS
+            // ========================
+            $table->boolean('is_read')->default(false);
+
+            $table->timestamps();
+
+            $table->foreignId('parent_id')->nullable()->constrained('messages')->nullOnDelete();
+$table->enum('sender', ['user', 'admin']);
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('messages');
