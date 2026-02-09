@@ -53,16 +53,15 @@ class CheckoutController extends Controller
                 $cart->product->price * $cart->qty
             );
 
-            // 1️⃣ CREATE ORDER
+            // CREATE ORDER
             $order = Order::create([
                 'user_id'        => $user->id,
                 'customer_email' => $request->email,
-                'order_number'   => 'ORDER-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4)),
+                'order_number'   => 'ORD-' . now()->format('ymdHis') . '-' . $user->id,
                 'total'          => (int) $total,
                 'payment_status' => 'pending',
             ]);
 
-            // 2️⃣ ORDER ITEMS
             foreach ($carts as $cart) {
                 OrderItem::create([
                     'order_id'   => $order->id,
@@ -72,13 +71,12 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // 3️⃣ MIDTRANS CONFIG
-            Config::$serverKey    = config('midtrans.server_key');
-            Config::$isProduction = false; // SANDBOX
+            // MIDTRANS CONFIG (BENAR)
+            Config::$serverKey    = config('services.midtrans.server_key');
+            Config::$isProduction = false;
             Config::$isSanitized  = true;
             Config::$is3ds        = true;
 
-            // 4️⃣ PARAMS
             $params = [
                 'transaction_details' => [
                     'order_id'     => $order->order_number,
@@ -90,7 +88,6 @@ class CheckoutController extends Controller
                 ],
             ];
 
-            // 5️⃣ SNAP TOKEN
             $snapToken = Snap::getSnapToken($params);
 
             if (! $snapToken) {
@@ -105,7 +102,6 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // ⛔ INI FIX 404 KAMU
             return redirect()->route('checkout.payment', [
                 'order' => $order->order_number
             ]);
@@ -116,12 +112,15 @@ class CheckoutController extends Controller
         }
     }
 
-    public function payment(Order $order)
+    // 🔥 INI FIX UTAMA SNAP
+    public function payment(string $order)
     {
+        $order = Order::where('order_number', $order)->firstOrFail();
+
         abort_if($order->user_id !== Auth::id(), 403);
 
-        if ($order->payment_status !== 'pending') {
-            return redirect()->route('orders.index');
+        if (! $order->payment_token) {
+            abort(500, 'Snap token missing');
         }
 
         return view('pages.user.checkout.payment', compact('order'));

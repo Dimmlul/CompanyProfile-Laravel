@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
+        public function index()
+    {
+        return view('pages.client.contact.index');
+    }
+
     public function send(Request $request)
     {
         $data = $request->validate([

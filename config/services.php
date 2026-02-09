@@ -13,6 +13,12 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'midtrans' => [
+    'client_key'    => env('MIDTRANS_CLIENT_KEY'),
+    'server_key'    => env('MIDTRANS_SERVER_KEY'),
+    'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+],
+
     'emailjs' => [
     'service_id'  => env('EMAILJS_SERVICE_ID'),
     'template_id' => env('EMAILJS_TEMPLATE_ID'),
