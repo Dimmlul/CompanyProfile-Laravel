@@ -1,70 +1,53 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Message Detail')
 
 @section('content')
-<div class="mx-auto max-w-3xl px-6 py-16">
+<div class="space-y-6 max-w-3xl">
 
-    {{-- BACK --}}
-    <a
-        href="{{ route('user.messages.index') }}"
-        class="mb-6 inline-flex items-center gap-2
-               text-sm text-app-muted
-               hover:text-indigo-400 transition"
-    >
-        ← Back to messages
+    <a href="{{ route('admin.messages.index') }}"
+       class="text-sm text-indigo-400 hover:underline">
+        ← Back to inbox
     </a>
 
-    {{-- CARD --}}
-    <div
-        class="rounded-2xl border border-white/10
-               bg-white/[0.015] p-8"
-    >
+    <div class="client-card p-6 space-y-4">
+        <h2 class="text-lg font-semibold text-white">
+            {{ $message->subject ?? 'Message' }}
+        </h2>
 
-        <div class="mb-6">
-            <h1 class="text-xl font-semibold text-white">
-                {{ $message->subject ?: 'No Subject' }}
-            </h1>
+        <p class="text-sm text-app-muted">
+            From: {{ $message->name }} ({{ $message->email }})
+        </p>
 
-            <p class="mt-1 text-sm text-app-muted">
-                Sent on {{ $message->created_at->format('d M Y, H:i') }}
-            </p>
+        <div class="mt-4 text-white text-sm leading-relaxed">
+            {{ $message->message }}
         </div>
-
-        {{-- MESSAGE CONTENT --}}
-        <div class="prose prose-invert max-w-none text-white/90">
-            {!! nl2br(e($message->message)) !!}
-        </div>
-
-        {{-- META --}}
-        <div class="mt-8 border-t border-white/10 pt-6 text-sm text-app-muted">
-            <p>
-                Email:
-                <span class="text-white/80">
-                    {{ $message->email ?? '-' }}
-                </span>
-            </p>
-
-            @if ($message->phone)
-                <p class="mt-1">
-                    Phone:
-                    <span class="text-white/80">
-                        {{ $message->phone }}
-                    </span>
-                </p>
-            @endif
-
-            @if ($message->order)
-                <p class="mt-1">
-                    Related Order:
-                    <span class="text-white/80">
-                        {{ $message->order->order_number }}
-                    </span>
-                </p>
-            @endif
-        </div>
-
     </div>
 
+    {{-- REPLY --}}
+    <div class="client-card p-6">
+        <h3 class="text-sm font-semibold mb-3 text-white">
+            Reply to message
+        </h3>
+
+        <form method="POST"
+              action="{{ route('admin.messages.reply', $message) }}">
+            @csrf
+
+            <textarea
+                name="reply"
+                rows="4"
+                required
+                class="client-input w-full rounded-lg px-4 py-3 text-sm"
+                placeholder="Type your reply..."
+            ></textarea>
+
+            <button
+                class="mt-4 rounded-lg bg-indigo-500 px-6 py-2
+                       text-sm font-semibold text-white hover:bg-indigo-600">
+                Send Reply
+            </button>
+        </form>
+    </div>
 </div>
 @endsection

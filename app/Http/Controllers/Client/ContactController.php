@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
-        public function index()
-    {
-        return view('pages.client.contact.index');
-    }
-
+    /**
+     * Handle contact form
+     * - Auth user  → save to DB
+     * - Guest      → EmailJS (handled in frontend)
+     */
     public function send(Request $request)
     {
         $data = $request->validate([
@@ -22,23 +22,25 @@ class ContactController extends Controller
             'message'    => 'required|string|max:3000',
         ]);
 
+        // ✅ USER LOGIN → SAVE TO DATABASE
         if (Auth::check()) {
+            $user = Auth::user();
             Message::create([
-                'name'    => $data['from_name'],
-                'email'   => $data['from_email'],
+                'name'    => $user->name,
+                'email'   => $user->email,
                 'message' => $data['message'],
                 'is_read' => false,
             ]);
 
             return response()->json([
-                'type'    => 'saved',
-                'message' => 'Message sent successfully.',
+                'status'  => 'saved',
+                'message' => 'Message sent to admin inbox.',
             ]);
         }
 
-        // ✅ GUEST → EMAILJS (handled by frontend)
+        // ✅ GUEST → FRONTEND WILL SEND EMAILJS
         return response()->json([
-            'type' => 'email',
+            'status' => 'guest',
         ]);
     }
 }

@@ -99,12 +99,17 @@ Route::middleware('auth')
         ->name('orders.show');
 
     // MESSAGES (ADMIN)
-    Route::get('/messages', [AdminMessageController::class, 'index'])
-        ->name('messages.index');
-    Route::get('/messages/{message}', [AdminMessageController::class, 'show'])
-        ->name('messages.show');
-    Route::patch('/messages/{message}/read', [AdminMessageController::class, 'markAsRead'])
-        ->name('messages.read');
+        Route::get('/messages', [AdminMessageController::class, 'index'])
+            ->name('messages.index');
+
+        Route::get('/messages/{message}', [AdminMessageController::class, 'show'])
+            ->name('messages.show');
+
+        Route::patch('/messages/{message}/read', [AdminMessageController::class, 'markAsRead'])
+            ->name('messages.read');
+
+        Route::post('/messages/{message}/reply', [AdminMessageController::class, 'reply'])
+            ->name('messages.reply');
 });
 
 /*
