@@ -42,7 +42,8 @@ use App\Http\Controllers\Client\{
     EventController as ClientEventController,
     GalleryController as ClientGalleryController,
     ClientController as ClientClientController,
-    ContactController as ClientContactController
+    ContactController as ClientContactController,
+    MessageController as ClientMessageController
 };
 
 /*
@@ -58,6 +59,7 @@ use App\Http\Controllers\User\{
     MessageController as UserMessageController
 
 };
+use App\Models\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,6 +154,27 @@ Route::get('/contact', fn () => view('pages.client.contact.index'))
 // CONTACT SUBMIT (USER + GUEST)
 Route::post('/contact/message', [ClientContactController::class, 'send'])
     ->name('contact.message.send');
+
+
+Route::prefix('messages')->name('client.messages.')->group(function () {
+
+    // START CHAT (FORM)
+    Route::get('/start', [ClientMessageController::class, 'create'])
+        ->name('start');
+
+    // SUBMIT FIRST MESSAGE (CREATE THREAD)
+    Route::post('/start', [ClientMessageController::class, 'store'])
+        ->name('store');
+
+    // SHOW CHAT BY TOKEN
+    Route::get('/{token}', [ClientMessageController::class, 'show'])
+        ->name('show');
+
+    // CLIENT REPLY
+    Route::post('/{token}/reply', [ClientMessageController::class, 'reply'])
+        ->name('reply');
+});
+
 
 /*
 |--------------------------------------------------------------------------

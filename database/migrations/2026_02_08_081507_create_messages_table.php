@@ -8,43 +8,42 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->id();
+        $table->id();
 
-            // THREAD (CHAT)
-            $table->foreignId('parent_id')
-                  ->nullable()
-                  ->constrained('messages')
-                  ->nullOnDelete();
+        // THREAD
+        $table->foreignId('parent_id')
+            ->nullable()
+            ->constrained('messages')
+            ->nullOnDelete();
 
-            // SENDER
-            $table->enum('sender', ['user', 'admin']);
+        // SENDER
+        $table->enum('sender', ['user', 'admin', 'client']);
 
-            // USER (nullable untuk admin reply)
-            $table->foreignId('user_id')
-                  ->nullable()
-                  ->constrained()
-                  ->nullOnDelete();
+        // USER (AUTH)
+        $table->foreignId('user_id')
+            ->nullable()
+            ->constrained()
+            ->nullOnDelete();
 
-            // CONTENT
-            $table->string('subject')->nullable();
-            $table->text('message');
+        // CLIENT (UNAUTH)
+        $table->uuid('client_token')->nullable()->index();
+        $table->string('client_name')->nullable();
+        $table->string('client_email')->nullable();
 
-            // OPTIONAL
-            $table->foreignId('order_id')
-                  ->nullable()
-                  ->constrained()
-                  ->nullOnDelete();
+        // CONTENT
+        $table->string('subject')->nullable();
+        $table->text('message')->nullable();
 
+        // ATTACHMENT
+        $table->string('attachment')->nullable();
+        $table->enum('attachment_type', ['image', 'file'])->nullable();
 
-            // FILE
-            $table->string('attachment')->nullable();
-            $table->enum('attachment_type', ['image', 'file'])->nullable();
+        // STATUS
+        $table->boolean('is_read')->default(false);
 
-            // STATUS
-            $table->boolean('is_read')->default(false);
+        $table->timestamps();
+    });
 
-            $table->timestamps();
-        });
     }
 
     public function down(): void

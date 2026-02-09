@@ -10,9 +10,11 @@ class Message extends Model
         'parent_id',
         'sender',
         'user_id',
+        'client_token',
+        'client_name',
+        'client_email',
         'subject',
         'message',
-        'order_id',
         'attachment',
         'attachment_type',
         'is_read',
@@ -22,10 +24,9 @@ class Message extends Model
         'is_read' => 'boolean',
     ];
 
-    // ========================
-    // RELATIONSHIPS
-    // ========================
-
+    /* =====================
+     | RELATIONS
+     ===================== */
     public function replies()
     {
         return $this->hasMany(Message::class, 'parent_id')->oldest();
@@ -41,8 +42,20 @@ class Message extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function order()
+    /* =====================
+     | HELPERS
+     ===================== */
+    public function isClient(): bool
     {
-        return $this->belongsTo(Order::class);
+        return ! is_null($this->client_token);
+    }
+
+    public function displayName(): string
+    {
+        return match ($this->sender) {
+            'admin'  => 'Admin',
+            'user'   => $this->user?->name ?? 'User',
+            'client' => $this->client_name ?? 'Client',
+        };
     }
 }

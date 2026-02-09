@@ -1,30 +1,31 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('title', 'Message Detail')
+@section('title', 'Support Chat')
 
 @section('content')
-<div class="max-w-5xl space-y-10">
+<section class="bg-app-bg py-24">
+<div class="mx-auto max-w-5xl px-6 space-y-12">
 
     {{-- BACK --}}
-    <div class="pt-2">
+    <div>
         <a
-            href="{{ route('admin.messages.index') }}"
+            href="{{ route('client.messages.start') }}"
             class="inline-flex items-center gap-2
                    text-sm text-app-muted
                    hover:text-indigo-400 transition"
         >
-            ← Back to inbox
+            ← Start new chat
         </a>
     </div>
 
     {{-- THREAD --}}
     <div class="rounded-2xl border border-white/10 bg-white/5 p-8 space-y-6">
 
-        {{-- ROOT MESSAGE (CLIENT / USER) --}}
-        <div class="flex justify-start">
-            <div class="max-w-xl rounded-2xl bg-white/10 px-5 py-4">
-                <p class="text-xs text-app-muted mb-1">
-                    {{ $message->client_name ?? $message->user?->name ?? 'Client' }}
+        {{-- ROOT MESSAGE --}}
+        <div class="flex justify-end">
+            <div class="max-w-xl rounded-2xl bg-indigo-500 px-5 py-4">
+                <p class="text-xs text-indigo-100 mb-1 text-right">
+                    {{ $message->client_name }}
                     • {{ $message->created_at->format('d M Y, H:i') }}
                 </p>
 
@@ -43,7 +44,7 @@
                         <a
                             href="{{ asset('storage/'.$message->attachment) }}"
                             target="_blank"
-                            class="mt-3 inline-block text-sm text-indigo-400 underline"
+                            class="mt-3 inline-block text-sm text-white underline"
                         >
                             Download file
                         </a>
@@ -53,12 +54,13 @@
         </div>
 
         {{-- REPLIES --}}
-        @forelse ($replies as $reply)
+        @foreach ($replies as $reply)
+
             @if ($reply->sender === 'admin')
                 {{-- ADMIN --}}
-                <div class="flex justify-end">
-                    <div class="max-w-xl rounded-2xl bg-indigo-500 px-5 py-4">
-                        <p class="text-xs text-indigo-100 mb-1 text-right">
+                <div class="flex justify-start">
+                    <div class="max-w-xl rounded-2xl bg-white/10 px-5 py-4">
+                        <p class="text-xs text-app-muted mb-1">
                             Admin • {{ $reply->created_at->format('H:i') }}
                         </p>
 
@@ -77,7 +79,7 @@
                                 <a
                                     href="{{ asset('storage/'.$reply->attachment) }}"
                                     target="_blank"
-                                    class="mt-3 inline-block text-sm text-white underline"
+                                    class="mt-3 inline-block text-sm text-indigo-400 underline"
                                 >
                                     Download file
                                 </a>
@@ -87,11 +89,10 @@
                 </div>
             @else
                 {{-- CLIENT --}}
-                <div class="flex justify-start">
-                    <div class="max-w-xl rounded-2xl bg-white/10 px-5 py-4">
-                        <p class="text-xs text-app-muted mb-1">
-                            {{ $reply->client_name ?? 'Client' }}
-                            • {{ $reply->created_at->format('H:i') }}
+                <div class="flex justify-end">
+                    <div class="max-w-xl rounded-2xl bg-indigo-500 px-5 py-4">
+                        <p class="text-xs text-indigo-100 mb-1 text-right">
+                            You • {{ $reply->created_at->format('H:i') }}
                         </p>
 
                         <p class="text-sm text-white whitespace-pre-line">
@@ -109,7 +110,7 @@
                                 <a
                                     href="{{ asset('storage/'.$reply->attachment) }}"
                                     target="_blank"
-                                    class="mt-3 inline-block text-sm text-indigo-400 underline"
+                                    class="mt-3 inline-block text-sm text-white underline"
                                 >
                                     Download file
                                 </a>
@@ -118,19 +119,15 @@
                     </div>
                 </div>
             @endif
-        @empty
-            <p class="text-center text-app-muted text-sm">
-                No replies yet.
-            </p>
-        @endforelse
 
+        @endforeach
     </div>
 
     {{-- REPLY FORM --}}
     <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
         <form
             method="POST"
-            action="{{ route('admin.messages.reply', $message) }}"
+            action="{{ route('client.messages.reply', $token) }}"
             enctype="multipart/form-data"
             class="space-y-4"
         >
@@ -143,10 +140,9 @@
                        border border-white/10
                        px-4 py-3 text-sm text-white
                        focus:outline-none focus:border-indigo-500"
-                placeholder="Reply to client..."
-            >{{ old('message') }}</textarea>
+                placeholder="Type your reply..."
+            ></textarea>
 
-            {{-- FILE --}}
             <input
                 type="file"
                 name="file"
@@ -170,11 +166,12 @@
                            text-sm font-semibold text-white
                            hover:bg-indigo-600 transition"
                 >
-                    Send Reply
+                    Send
                 </button>
             </div>
         </form>
     </div>
 
 </div>
+</section>
 @endsection
