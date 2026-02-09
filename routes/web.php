@@ -192,6 +192,12 @@ Route::middleware('auth')->group(function () {
         ->name('user.messages.index');
     Route::get('/user/messages/{message}', [UserMessageController::class, 'show'])
         ->name('user.messages.show');
+        // USER REPLY MESSAGE
+    Route::post(
+        '/user/messages/{message}/reply',
+        [UserMessageController::class, 'reply']
+    )->name('user.messages.reply');
+
 });
 
 /*

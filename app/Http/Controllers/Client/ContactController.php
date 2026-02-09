@@ -28,28 +28,25 @@ public function send(Request $request)
 
     $data = $request->validate($rules);
 
-    $user = Auth::user();
-
-    if ($user) {
+    if (Auth::check()) {
         Message::create([
-            'user_id' => $user->id,
-            'name'    => $user->name,
-            'email'   => $user->email,
-            'subject' => $data['subject'],
-            'message' => $data['message'],
-            'is_read' => false,
+            'parent_id' => null,          // 🔑 THREAD BARU
+            'sender'    => 'user',
+            'user_id'   => Auth::id(),
+            'subject'   => $data['subject'],
+            'message'   => $data['message'],
+            'is_read'   => false,          // BELUM DIBACA ADMIN
         ]);
 
         return response()->json([
-            'status'  => 'saved',
-            'message' => 'Message saved to admin inbox.',
+            'status' => 'saved',
+            'message' => 'Message sent to admin.',
         ]);
     }
 
-    return response()->json([
-        'status' => 'guest',
-    ]);
+    return response()->json(['status' => 'guest']);
 }
+
 
 
 }

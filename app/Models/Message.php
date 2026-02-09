@@ -7,28 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     protected $fillable = [
+        'parent_id',
+        'sender',
         'user_id',
         'subject',
         'message',
-        'reply',
-        'replied_at',
         'order_id',
+        'attachment',
+        'attachment_type',
         'is_read',
     ];
 
     protected $casts = [
-        'is_read'    => 'boolean',
-        'replied_at' => 'datetime',
+        'is_read' => 'boolean',
     ];
 
     // ========================
-    // RELATIONS
+    // RELATIONSHIPS
     // ========================
-
 
     public function replies()
     {
-        return $this->hasMany(Message::class, 'parent_id')->latest();
+        return $this->hasMany(Message::class, 'parent_id')->oldest();
     }
 
     public function parent()
@@ -44,14 +44,5 @@ class Message extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    // ========================
-    // HELPERS
-    // ========================
-
-    public function hasReply(): bool
-    {
-        return ! is_null($this->reply);
     }
 }
