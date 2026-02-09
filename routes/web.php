@@ -25,7 +25,8 @@ use App\Http\Controllers\Admin\{
     EventController,
     GalleryController,
     ClientController,
-    OrderController as AdminOrderController
+    OrderController as AdminOrderController,
+    MessageController as AdminMessageController
 };
 
 /*
@@ -40,7 +41,8 @@ use App\Http\Controllers\Client\{
     ProductController as ClientProductController,
     EventController as ClientEventController,
     GalleryController as ClientGalleryController,
-    ClientController as ClientClientController
+    ClientController as ClientClientController,
+    ContactController as ClientContactController
 };
 
 /*
@@ -52,7 +54,9 @@ use App\Http\Controllers\User\{
     CartController,
     CheckoutController,
     OrderController as UserOrderController,
-    ProfileController
+    ProfileController,
+    MessageController as UserMessageController
+
 };
 
 /*
@@ -71,9 +75,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | ADMIN PANEL
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::resource('company-profile', CompanyProfileController::class)
         ->only(['index', 'store', 'update']);
@@ -84,8 +92,19 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('gallery', GalleryController::class);
     Route::resource('clients', ClientController::class);
 
-    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    // ORDERS
+    Route::get('/orders', [AdminOrderController::class, 'index'])
+        ->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
+        ->name('orders.show');
+
+    // MESSAGES (ADMIN)
+    Route::get('/messages', [AdminMessageController::class, 'index'])
+        ->name('messages.index');
+    Route::get('/messages/{message}', [AdminMessageController::class, 'show'])
+        ->name('messages.show');
+    Route::patch('/messages/{message}/read', [AdminMessageController::class, 'markAsRead'])
+        ->name('messages.read');
 });
 
 /*
@@ -94,25 +113,44 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [ClientCompanyProfileController::class, 'about'])->name('about');
-Route::get('/vision-mission', [ClientCompanyProfileController::class, 'visionMission'])->name('vision-mission');
 
-Route::get('/articles', [ClientArticleController::class, 'index'])->name('articles');
-Route::get('/articles/{article:slug}', [ClientArticleController::class, 'show'])->name('articles.show');
+Route::get('/about', [ClientCompanyProfileController::class, 'about'])
+    ->name('about');
 
-Route::get('/products', [ClientProductController::class, 'index'])->name('products');
-Route::get('/products/{product:slug}', [ClientProductController::class, 'show'])->name('products.show');
+Route::get('/vision-mission', [ClientCompanyProfileController::class, 'visionMission'])
+    ->name('vision-mission');
 
-Route::get('/events', [ClientEventController::class, 'index'])->name('events');
-Route::get('/events/{event:slug}', [ClientEventController::class, 'show'])->name('events.show');
+Route::get('/articles', [ClientArticleController::class, 'index'])
+    ->name('articles');
+Route::get('/articles/{article:slug}', [ClientArticleController::class, 'show'])
+    ->name('articles.show');
 
-Route::get('/gallery', [ClientGalleryController::class, 'index'])->name('gallery');
-Route::get('/clients', [ClientClientController::class, 'index'])->name('clients');
-Route::get('/contact', fn () => view('pages.client.contact.index'))->name('contact');
+Route::get('/products', [ClientProductController::class, 'index'])
+    ->name('products');
+Route::get('/products/{product:slug}', [ClientProductController::class, 'show'])
+    ->name('products.show');
+
+Route::get('/events', [ClientEventController::class, 'index'])
+    ->name('events');
+Route::get('/events/{event:slug}', [ClientEventController::class, 'show'])
+    ->name('events.show');
+
+Route::get('/gallery', [ClientGalleryController::class, 'index'])
+    ->name('gallery');
+
+Route::get('/clients', [ClientClientController::class, 'index'])
+    ->name('clients');
+
+Route::get('/contact', fn () => view('pages.client.contact.index'))
+    ->name('contact');
+
+// CONTACT SUBMIT (USER + GUEST)
+Route::post('/contact/message', [ClientContactController::class, 'send'])
+    ->name('contact.message.send');
 
 /*
 |--------------------------------------------------------------------------
-| USER / SHOP
+| USER / SHOP (AUTH)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -124,24 +162,31 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/cart/buy-now', [CartController::class, 'buyNow'])->name('cart.buyNow');
 
+    // CHECKOUT
     Route::get('/checkout', [CheckoutController::class, 'index'])
         ->name('checkout.index');
-
     Route::post('/checkout', [CheckoutController::class, 'process'])
         ->name('checkout.process');
-
     Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])
         ->name('checkout.payment');
 
+    // ORDERS
     Route::get('/orders', [UserOrderController::class, 'index'])
         ->name('orders.index');
-
     Route::get('/orders/{order}', [UserOrderController::class, 'show'])
         ->name('orders.show');
 
     // PROFILE
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    // MESSAGES (USER)
+    Route::get('/user/messages', [UserMessageController::class, 'index'])
+        ->name('user.messages.index');
+    Route::get('/user/messages/{message}', [UserMessageController::class, 'show'])
+        ->name('user.messages.show');
 });
 
 /*
@@ -163,7 +208,6 @@ Route::post('/midtrans/callback', function (Request $request) {
     $status = $request->transaction_status;
     $type   = $request->payment_type;
 
-    // 🔹 normalize payment method
     $paymentMethod = $type;
 
     if ($type === 'bank_transfer') {
@@ -173,10 +217,10 @@ Route::post('/midtrans/callback', function (Request $request) {
     if ($status === 'settlement' || ($status === 'capture' && $type === 'credit_card')) {
 
         $order->update([
-            'payment_status'            => 'paid',
-            'payment_method'            => $paymentMethod,
-            'midtrans_transaction_id'   => $request->transaction_id,
-            'midtrans_response'         => $request->all(),
+            'payment_status'          => 'paid',
+            'payment_method'          => $paymentMethod,
+            'midtrans_transaction_id' => $request->transaction_id,
+            'midtrans_response'       => $request->all(),
         ]);
 
     } elseif ($status === 'expire') {

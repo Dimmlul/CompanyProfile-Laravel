@@ -24,14 +24,22 @@ class DashboardController extends Controller
 
 
         return view('pages.admin.dashboard.index', [
+
             'totalArticles' => Article::count(),
             'publishedArticles' => Article::where('is_published', true)->count(),
+
             'totalProducts' => Product::count(),
             'activeProducts' => Product::where('is_active', true)->count(),
+
             'totalEvents' => Event::count(),
             'activeEvents' => Event::where('is_active', true)->count(),
-            'totalGalleries' => Gallery::count(),
+
+            'totalGalleries' => Gallery::where('is_active', true)->count(),
+            'activeGalleries' => Gallery::where('is_active', true)->count(),
+
             'totalClients' => Client::count(),
+            'activeClients' => Client::where('is_active', true)->count(),
+
             'recentOrders' => Order::latest()->limit(5)->get(),
         ]);
     }

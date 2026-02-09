@@ -150,6 +150,48 @@
             </span>
         </a>
 
+        <!-- MESSAGES -->
+<a href="{{ route('admin.messages.index') }}"
+   class="{{ $itemBase }} mb-4"
+   :class="isActive('/admin/messages') ? '{{ $itemActive }}' : '{{ $itemInactive }}'">
+
+    <!-- ICON -->
+    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12
+                 c0 4.418-4.03 8-9 8
+                 a9.77 9.77 0 01-4-.8
+                 L3 20l1.8-4
+                 A7.82 7.82 0 013 12
+                 c0-4.418 4.03-8 9-8
+                 s9 3.582 9 8z"/>
+    </svg>
+
+    <!-- LABEL -->
+    <span
+        x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
+        x-transition.opacity
+        class="flex items-center gap-2 font-medium"
+    >
+        Messages
+
+        {{-- UNREAD BADGE --}}
+        @if ($unreadMessages > 0)
+            <span
+                class="ml-1 inline-flex items-center justify-center
+                       min-w-[20px] h-5 px-1.5
+                       rounded-full
+                       bg-[var(--color-danger)]
+                       text-[11px] font-semibold text-white"
+            >
+                {{ $unreadMessages }}
+            </span>
+        @endif
+    </span>
+</a>
+
+
         <!-- CONTENT -->
         <p
             x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"

@@ -1,8 +1,6 @@
 <footer
-    class="relative
-           bg-[rgba(2,6,23,0.65)]
-           backdrop-blur-md
-           border-t border-white/10"
+    class="relative bg-[rgba(2,6,23,0.65)]
+           backdrop-blur-md border-t border-white/10"
 >
     <div
         class="mx-auto max-w-7xl px-6
@@ -17,18 +15,24 @@
                    md:grid-cols-4 items-start"
         >
 
-            <!-- ==================================================
-            | BRAND
-            ================================================== -->
+            <!-- ================= BRAND ================= -->
             <div>
                 <div class="flex items-center gap-3">
-                    <div
-                        class="flex h-10 w-10 items-center justify-center
-                               rounded-lg bg-btn-primary text-btn-text
-                               font-semibold"
-                    >
-                        N
-                    </div>
+                    @if (!empty($companyProfile->logo))
+                        <img
+                            src="{{ asset('storage/' . $companyProfile->logo) }}"
+                            alt="{{ $companyProfile->company_name }}"
+                            class="h-10 w-10 rounded-lg object-cover"
+                        >
+                    @else
+                        <div
+                            class="flex h-10 w-10 items-center justify-center
+                                   rounded-lg bg-btn-primary text-btn-text
+                                   font-semibold"
+                        >
+                            {{ Str::substr($companyProfile->company_name ?? 'N', 0, 1) }}
+                        </div>
+                    @endif
 
                     <span class="text-lg font-semibold text-white">
                         {{ $companyProfile->company_name ?? 'Nexora Studio Digital' }}
@@ -41,13 +45,9 @@
                 </p>
             </div>
 
-            <!-- ==================================================
-            | COMPANY LINKS
-            ================================================== -->
+            <!-- ================= COMPANY LINKS ================= -->
             <div>
-                <h4 class="text-sm font-semibold text-white">
-                    Company
-                </h4>
+                <h4 class="text-sm font-semibold text-white">Company</h4>
 
                 @php
                     $linkBase = 'group flex items-center gap-3 text-app-muted transition hover:text-white';
@@ -55,102 +55,53 @@
                 @endphp
 
                 <ul class="mt-5 space-y-4 text-sm">
-
                     <li>
                         <a href="{{ route('about') }}" class="{{ $linkBase }}">
-                            <svg class="h-4 w-4 text-indigo-400"
-                                 fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 100-12 6 6 0 000 12z"/>
-                            </svg>
                             <span class="relative">
                                 About Us
                                 <span class="{{ $underline }}"></span>
                             </span>
                         </a>
                     </li>
-
                     <li>
                         <a href="{{ route('articles') }}" class="{{ $linkBase }}">
-                            <svg class="h-4 w-4 text-indigo-400"
-                                 fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M19 11H5m14-4H5m14 8H5"/>
-                            </svg>
                             <span class="relative">
                                 Articles
                                 <span class="{{ $underline }}"></span>
                             </span>
                         </a>
                     </li>
-
                     <li>
                         <a href="{{ route('products') }}" class="{{ $linkBase }}">
-                            <svg class="h-4 w-4 text-indigo-400"
-                                 fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M20 7H4m16 0l-2 13H6L4 7m6-3h4"/>
-                            </svg>
                             <span class="relative">
                                 Products
                                 <span class="{{ $underline }}"></span>
                             </span>
                         </a>
                     </li>
-
                     <li>
                         <a href="{{ route('events') }}" class="{{ $linkBase }}">
-                            <svg class="h-4 w-4 text-indigo-400"
-                                 fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M8 7V3m8 4V3m-9 8h10m-13 9h16
-                                         a2 2 0 002-2V7
-                                         a2 2 0 00-2-2H4
-                                         a2 2 0 00-2 2v11
-                                         a2 2 0 002 2z"/>
-                            </svg>
                             <span class="relative">
                                 Events
                                 <span class="{{ $underline }}"></span>
                             </span>
                         </a>
                     </li>
-
                 </ul>
             </div>
 
-            <!-- ==================================================
-            | CONTACT (CLICKABLE)
-            ================================================== -->
+            <!-- ================= CONTACT ================= -->
             <div class="md:justify-self-end">
-                <h4 class="text-sm font-semibold text-white">
-                    Contact
-                </h4>
+                <h4 class="text-sm font-semibold text-white">Contact</h4>
 
                 <ul class="mt-5 space-y-4 text-sm">
-
-                    {{-- ADDRESS → GOOGLE MAPS --}}
                     @if (filled($companyProfile->address))
                         <li>
                             <a
                                 href="https://www.google.com/maps/search/?api=1&query={{ urlencode($companyProfile->address) }}"
                                 target="_blank"
-                                rel="noopener"
-                                class="group flex items-start gap-3 text-app-muted hover:text-white transition"
+                                class="{{ $linkBase }}"
                             >
-                                <svg class="h-4 w-4 mt-0.5 text-indigo-400"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M12 21s-6-5.686-6-10
-                                             a6 6 0 1112 0
-                                             c0 4.314-6 10-6 10z"/>
-                                    <circle cx="12" cy="11" r="2.5"/>
-                                </svg>
                                 <span class="relative">
                                     {{ $companyProfile->address }}
                                     <span class="{{ $underline }}"></span>
@@ -159,26 +110,12 @@
                         </li>
                     @endif
 
-                    {{-- PHONE → CALL --}}
                     @if (filled($companyProfile->phone))
                         <li>
                             <a
                                 href="tel:{{ preg_replace('/\s+/', '', $companyProfile->phone) }}"
-                                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
+                                class="{{ $linkBase }}"
                             >
-                                <svg class="h-4 w-4 text-indigo-400"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M2 3.5A1.5 1.5 0 013.5 2h2
-                                             A1.5 1.5 0 017 3.5v2
-                                             A1.5 1.5 0 015.5 7H4.121
-                                             a14.978 14.978 0 006.757 6.757V12.5
-                                             A1.5 1.5 0 0112.5 11h2
-                                             a1.5 1.5 0 011.5 1.5v2
-                                             A1.5 1.5 0 0114.5 16h-.5
-                                             C7.373 16 2 10.627 2 4v-.5z"/>
-                                </svg>
                                 <span class="relative">
                                     {{ $companyProfile->phone }}
                                     <span class="{{ $underline }}"></span>
@@ -187,47 +124,12 @@
                         </li>
                     @endif
 
-                    {{-- FAX → FAX --}}
-                    @if (filled($companyProfile->fax))
-                        <li>
-                            <a
-                                href="fax:{{ preg_replace('/\s+/', '', $companyProfile->fax) }}"
-                                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
-                            >
-                                <svg class="h-4 w-4 text-indigo-400"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M6 9V2h12v7"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M6 18h12v4H6z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M6 14h12"/>
-                                </svg>
-                                <span class="relative">
-                                    {{ $companyProfile->fax }}
-                                    <span class="{{ $underline }}"></span>
-                                </span>
-                            </a>
-                        </li>
-                    @endif
-
-                    {{-- EMAIL → MAIL CLIENT --}}
                     @if (filled($companyProfile->email))
                         <li>
                             <a
                                 href="mailto:{{ $companyProfile->email }}"
-                                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
+                                class="{{ $linkBase }}"
                             >
-                                <svg class="h-4 w-4 text-indigo-400"
-                                     fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M3 8l9 6 9-6"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M21 8v8a2 2 0 01-2 2H5
-                                             a2 2 0 01-2-2V8"/>
-                                </svg>
                                 <span class="relative">
                                     {{ $companyProfile->email }}
                                     <span class="{{ $underline }}"></span>
@@ -235,84 +137,47 @@
                             </a>
                         </li>
                     @endif
-
-
-
                 </ul>
-
             </div>
 
+            <!-- ================= SOCIAL ================= -->
+            <div>
+                <h4 class="text-sm font-semibold text-white">Social Media</h4>
 
-            <!-- ==================================================
-| SOCIAL MEDIA
-================================================== -->
-<div>
-    <h4 class="text-sm font-semibold text-white">
-        Social Media
-    </h4>
+                <ul class="mt-5 space-y-4 text-sm">
+                    <li>
+                        <a
+                            href="{{ filled($companyProfile->whatsapp)
+                                ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
+                                : '#' }}"
+                            target="_blank"
+                            class="{{ $linkBase }}"
+                        >
+                            <span class="relative">
+                                WhatsApp
+                                <span class="{{ $underline }}"></span>
+                            </span>
+                        </a>
+                    </li>
 
-    <ul class="mt-5 space-y-4 text-sm">
-
-        {{-- WHATSAPP --}}
-        <li>
-            <a
-                href="{{ filled($companyProfile->whatsapp)
-                    ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
-                    : '#' }}"
-                target="_blank"
-                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
-            >
-                <!-- ICON (DISAMAKAN) -->
-                <svg class="h-4 w-4 text-indigo-400"
-                     fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M22 16.92V21a2 2 0 01-2.18 2A19.86 19.86 0 013 5.18
-                             2 2 0 015 3h4.09a2 2 0 012 1.72
-                             c.12.81.37 1.6.73 2.34
-                             a2 2 0 01-.45 2.11L10.91 10.91
-                             a16 16 0 006.18 6.18l1.74-1.74
-                             a2 2 0 012.11-.45
-                             c.74.36 1.53.61 2.34.73
-                             A2 2 0 0122 16.92z"/>
-                </svg>
-
-                <span class="relative">
-                    WhatsApp
-                    <span class="{{ $underline }}"></span>
-                </span>
-            </a>
-        </li>
-
-        {{-- INSTAGRAM --}}
-        <li>
-            <a
-                href="{{ filled($companyProfile->instagram)
-                    ? (str_starts_with($companyProfile->instagram, 'http')
-                        ? $companyProfile->instagram
-                        : 'https://instagram.com/' . ltrim($companyProfile->instagram, '@'))
-                    : '#' }}"
-                target="_blank"
-                class="group flex items-center gap-3 text-app-muted hover:text-white transition"
-            >
-                <!-- ICON (DISAMAKAN) -->
-                <svg class="h-4 w-4 text-indigo-400"
-                     fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5"/>
-                    <circle cx="12" cy="12" r="3"/>
-                    <circle cx="17" cy="7" r="1"/>
-                </svg>
-
-                <span class="relative">
-                    Instagram
-                    <span class="{{ $underline }}"></span>
-                </span>
-            </a>
-        </li>
-
-    </ul>
-</div>
+                    <li>
+                        <a
+                            href="{{ filled($companyProfile->instagram)
+                                ? (str_starts_with($companyProfile->instagram, 'http')
+                                    ? $companyProfile->instagram
+                                    : 'https://instagram.com/' . ltrim($companyProfile->instagram, '@'))
+                                : '#' }}"
+                            target="_blank"
+                            class="{{ $linkBase }}"
+                        >
+                            <span class="relative">
+                                Instagram
+                                <span class="{{ $underline }}"></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
         </div>
 
@@ -327,8 +192,6 @@
             </span>.
             All rights reserved.
         </div>
-
-
 
     </div>
 </footer>

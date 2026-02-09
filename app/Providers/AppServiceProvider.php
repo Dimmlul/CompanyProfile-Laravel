@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use App\Models\Message;
 use App\Models\CompanyProfile;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
@@ -18,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $view->with('companyProfile', CompanyProfile::first());
+                        $view->with(
+                'unreadMessages',
+                Message::where('is_read', false)->count()
+            );
         });
 
         if (app()->environment('production','local')) {

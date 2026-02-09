@@ -110,66 +110,90 @@
                 </div>
 
                     {{-- PROFILE DROPDOWN --}}
-            <div class="relative group">
-                <button
-                    type="button"
-                    class="flex items-center gap-2 rounded-lg
-                        px-3 py-2 text-sm font-medium
-                        text-white/80 hover:text-indigo-400
-                        hover:bg-indigo-500/10 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        class="h-5 w-5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M4 21a8 8 0 0116 0"/>
-                    </svg>
-                    {{ auth()->user()->name }}
-                </button>
+{{-- PROFILE DROPDOWN --}}
+<div class="relative group">
+    <button
+        type="button"
+        class="flex items-center gap-2 rounded-lg
+            px-3 py-2 text-sm font-medium
+            text-white/80 hover:text-indigo-400
+            hover:bg-indigo-500/10 transition">
+        <svg xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 21a8 8 0 0116 0"/>
+        </svg>
+        {{ auth()->user()->name }}
+    </button>
 
-                <div
-                    class="absolute right-0 mt-3 w-56
-                        rounded-2xl border border-white/10
-                        bg-[#020617]
-                        shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]
-                        opacity-0 translate-y-2 scale-95 invisible
-                        transition-all duration-200 ease-out
-                        group-hover:visible
-                        group-hover:opacity-100
-                        group-hover:translate-y-0
-                        group-hover:scale-100">
+    <div
+        class="absolute right-0 mt-3 w-56
+            rounded-2xl border border-white/10
+            bg-[#020617]
+            shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]
+            opacity-0 translate-y-2 scale-95 invisible
+            transition-all duration-200 ease-out
+            group-hover:visible
+            group-hover:opacity-100
+            group-hover:translate-y-0
+            group-hover:scale-100">
 
-                    <a href="{{ route('profile.index') }}"
-                    class="block px-4 py-3 text-sm
-                            text-white/80 hover:text-indigo-400
-                            hover:bg-indigo-500/10 transition">
-                        Profile
-                    </a>
+        {{-- PROFILE --}}
+        <a href="{{ route('profile.index') }}"
+           class="block px-4 py-3 text-sm
+                  text-white/80 hover:text-indigo-400
+                  hover:bg-indigo-500/10 transition">
+            Profile
+        </a>
 
-                    <a href="{{ route('orders.index') }}"
-                    class="block px-4 py-3 text-sm
-                            text-white/80 hover:text-indigo-400
-                            hover:bg-indigo-500/10 transition">
-                        Orders
-                    </a>
+        {{-- ORDERS --}}
+        <a href="{{ route('orders.index') }}"
+           class="block px-4 py-3 text-sm
+                  text-white/80 hover:text-indigo-400
+                  hover:bg-indigo-500/10 transition">
+            Orders
+        </a>
 
-                    <div class="border-t border-white/10"></div>
+        {{-- MESSAGES --}}
+<a href="{{ route('user.messages.index') }}"
+   class="flex items-center justify-between
+          px-4 py-3 text-sm
+          text-white/80 hover:text-indigo-400
+          hover:bg-indigo-500/10 transition">
+    <span>Messages</span>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button
-                            type="submit"
-                            class="w-full text-left px-4 py-3 text-sm
-                                text-red-400 hover:bg-red-500/10 transition">
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
+    @if(isset($unreadMessages) && $unreadMessages > 0)
+        <span
+            class="ml-2 rounded-full bg-indigo-500/20
+                   px-2 py-0.5 text-xs
+                   text-indigo-400">
+            {{ $unreadMessages }}
+        </span>
+    @endif
+</a>
+
+
+        <div class="border-t border-white/10"></div>
+
+        {{-- LOGOUT --}}
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button
+                type="submit"
+                class="w-full text-left px-4 py-3 text-sm
+                       text-red-400 hover:bg-red-500/10 transition">
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
 
                     @endif
                 @else

@@ -55,12 +55,14 @@
             <div>
                 <p class="{{ $title }}">Articles</p>
                 <p class="text-xs text-dashboard-card-muted">
-                    Published {{ $publishedArticles }}
+                    Total Article : {{ $totalArticles }}
                 </p>
             </div>
         </div>
 
-        <p class="{{ $value }}">{{ $totalArticles }}</p>
+        <p class="{{ $value }}">
+            {{ $publishedArticles }}
+        </p>
 
         <div class="{{ $actions }}">
             <x-admin.quick-add type="article" label="+ Add"/>
@@ -80,12 +82,14 @@
             <div>
                 <p class="{{ $title }}">Products</p>
                 <p class="text-xs text-dashboard-card-muted">
-                    Active {{ $activeProducts }}
+                    Total Product : {{ $totalProducts }}
                 </p>
             </div>
         </div>
 
-        <p class="{{ $value }}">{{ $totalProducts }}</p>
+        <p class="{{ $value }}">
+             {{ $activeProducts }}
+        </p>
 
         <div class="{{ $actions }}">
             <x-admin.quick-add type="product" label="+ Add"/>
@@ -105,12 +109,14 @@
             <div>
                 <p class="{{ $title }}">Events</p>
                 <p class="text-xs text-dashboard-card-muted">
-                    Active {{ $activeEvents }}
+                    Total Events : {{ $totalEvents }}
                 </p>
             </div>
         </div>
 
-        <p class="{{ $value }}">{{ $totalEvents }}</p>
+        <p class="{{ $value }}">
+             {{ $activeEvents }}
+        </p>
 
         <div class="{{ $actions }}">
             <x-admin.quick-add type="event" label="+ Add"/>
@@ -130,12 +136,14 @@
             <div>
                 <p class="{{ $title }}">Gallery</p>
                 <p class="text-xs text-dashboard-card-muted">
-                    Total images
+                    Total Gallery : {{ $totalGalleries }}
                 </p>
             </div>
         </div>
 
-        <p class="{{ $value }}">{{ $totalGalleries }}</p>
+        <p class="{{ $value }}">
+        {{ $activeGalleries }}
+        </p>
 
         <div class="{{ $actions }}">
             <x-admin.quick-add type="gallery" label="+ Add"/>
@@ -155,12 +163,14 @@
             <div>
                 <p class="{{ $title }}">Clients</p>
                 <p class="text-xs text-dashboard-card-muted">
-                    Business partners
+                    Total Clients : {{ $totalClients }}
                 </p>
             </div>
         </div>
 
-        <p class="{{ $value }}">{{ $totalClients }}</p>
+        <p class="{{ $value }}">
+            {{ $activeClients }}
+        </p>
 
         <div class="{{ $actions }}">
             <x-admin.quick-add type="client" label="+ Add"/>
