@@ -1,121 +1,81 @@
+<!-- resources/views/pages/admin/orders/index.blade.php -->
+
 @extends('layouts.admin')
 
 @section('title', 'Orders')
 
 @section('content')
 
-<x-common.component-card title="Orders">
+<x-common.component-card
+    title="Orders"
+    desc="List of all customer orders"
+>
 
-    {{-- HEADER --}}
-    <div class="mb-4 flex items-center justify-between">
-        <p class="text-sm text-text-muted">
-            Manage customer orders & payments
-        </p>
+    <x-common.table.simple
+        :headers="['Order', 'Customer', 'Products', 'Total', 'Status', 'Action']"
+    >
+        @forelse ($orders as $order)
+            <tr>
+
+                {{-- ORDER NUMBER --}}
+                <td class="font-mono text-sm">
+                    {{ $order->order_number }}
+                </td>
+
+                {{-- CUSTOMER --}}
+                <td>
+                    {{ $order->user->name ?? '-' }}
+                </td>
+
+                {{-- PRODUCTS --}}
+                <td class="text-sm space-y-1">
+                    @foreach ($order->items as $item)
+                        <div class="flex items-center gap-1">
+                            <span class="text-app-muted">•</span>
+                            <span>{{ $item->product->name }}</span>
+                            <span class="text-xs text-app-muted">
+                                (x{{ $item->qty }})
+                            </span>
+                        </div>
+                    @endforeach
+                </td>
+
+                {{-- TOTAL --}}
+                <td class="font-medium">
+                    Rp {{ number_format($order->total) }}
+                </td>
+
+                {{-- STATUS --}}
+                <td>
+                    <span class="badge badge-muted">
+                        {{ ucfirst($order->payment_status) }}
+                    </span>
+                </td>
+
+                {{-- ACTION --}}
+                <td>
+                    <a
+                        href="{{ route('admin.orders.show', $order) }}"
+                        class="btn-admin"
+                    >
+                        View
+                    </a>
+                </td>
+
+            </tr>
+        @empty
+            <tr>
+                <td colspan="6" class="admin-table-empty">
+                    No orders found
+                </td>
+            </tr>
+        @endforelse
+    </x-common.table.simple>
+
+    {{-- PAGINATION --}}
+    <div class="mt-6">
+        {{ $orders->links() }}
     </div>
-
-    {{-- TABLE --}}
-    <div class="overflow-x-auto">
-        <table class="admin-table">
-
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                    <th class="text-right">Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse ($orders as $order)
-                    <tr>
-
-                        {{-- NO --}}
-                        <td class="text-text-muted">
-                            {{ $loop->iteration }}
-                        </td>
-
-                        {{-- PRODUCT --}}
-                        <td class="font-medium">
-                            {{ $order->items->first()->product->name ?? '-' }}
-                        </td>
-
-                        {{-- ORDER ID --}}
-                        <td class="text-text-muted text-xs">
-                            {{ $order->order_number }}
-                        </td>
-
-                        {{-- CUSTOMER --}}
-                        <td>
-                            <div class="font-medium">
-                                {{ $order->user->name }}
-                            </div>
-                            <div class="text-xs text-text-muted">
-                                {{ $order->customer_email }}
-                            </div>
-                        </td>
-
-                        {{-- TOTAL --}}
-                        <td class="font-semibold">
-                            Rp {{ number_format($order->total) }}
-                        </td>
-
-                        {{-- STATUS --}}
-                        <td>
-                            @if ($order->payment_status === 'paid')
-                                <span class="badge badge-success">Paid</span>
-
-                            @elseif ($order->payment_status === 'pending')
-                                <span class="badge badge-warning">Pending</span>
-
-                            @elseif ($order->payment_status === 'expired')
-                                <span class="badge badge-danger">Expired</span>
-
-                            @else
-                                <span class="badge badge-muted">
-                                    {{ ucfirst($order->payment_status) }}
-                                </span>
-                            @endif
-                        </td>
-
-                        {{-- CREATED --}}
-                        <td class="text-text-muted">
-                            {{ $order->created_at->format('d M Y') }}
-                        </td>
-
-                        {{-- ACTION --}}
-                        <td class="text-right">
-                            <div class="inline-flex gap-2">
-                                <a href="{{ route('admin.orders.show', $order) }}"
-                                   class="btn-admin">
-                                    View
-                                </a>
-                            </div>
-                        </td>
-
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8" class="admin-table-empty">
-                            No orders found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-
-        </table>
-    </div>
-
-    {{-- PAGINATION (kalau pakai paginate) --}}
-    @if(method_exists($orders, 'links'))
-        <div class="mt-4">
-            {{ $orders->links() }}
-        </div>
-    @endif
 
 </x-common.component-card>
 

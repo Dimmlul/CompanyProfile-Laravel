@@ -1,4 +1,3 @@
-{{-- FILE: resources/views/pages/admin/products/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Products')
@@ -7,100 +6,17 @@
 
 <x-common.component-card title="Products">
 
-    {{-- HEADER --}}
     <div class="mb-4 flex items-center justify-between">
         <p class="text-sm text-text-muted">
             Manage products
         </p>
 
-        <a href="{{ route('admin.products.create') }}"
-           class="btn-primary">
+        <a href="{{ route('admin.products.create') }}" class="btn-primary">
             + New Product
         </a>
     </div>
 
-    {{-- TABLE --}}
-    <div class="overflow-x-auto">
-        <table class="admin-table">
-
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Order</th>
-                    <th>Status</th>
-                    <th class="text-right">Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse ($products as $product)
-                    <tr>
-
-                        <td>
-                            @if ($product->image)
-                                <img src="{{ asset('storage/'.$product->image) }}"
-                                     class="h-12 w-16 rounded object-cover">
-                            @else
-                                <span class="text-text-muted text-xs">No image</span>
-                            @endif
-                        </td>
-
-                        <td class="font-medium">
-                            {{ $product->name }}
-                        </td>
-
-                        <td class="text-text-muted">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </td>
-
-                        <td class="text-text-muted">
-                            {{ $product->order ?? '-' }}
-                        </td>
-
-                        <td>
-                            @if ($product->is_active)
-                                <span class="badge badge-success">Active</span>
-                            @else
-                                <span class="badge badge-muted">Inactive</span>
-                            @endif
-                        </td>
-
-                        <td class="text-right">
-                            <div class="inline-flex gap-2">
-
-                                <a href="{{ route('admin.products.edit', $product) }}"
-                                   class="btn-admin">
-                                    Edit
-                                </a>
-
-                                <form method="POST"
-                                      action="{{ route('admin.products.destroy', $product) }}"
-                                      onsubmit="return confirm('Delete this product?')">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button class="btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-
-                            </div>
-                        </td>
-
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="admin-table-empty">
-                            No products found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-
-        </table>
-    </div>
+    <x-admin.product.table :products="$products" />
 
     <div class="mt-4">
         {{ $products->links() }}

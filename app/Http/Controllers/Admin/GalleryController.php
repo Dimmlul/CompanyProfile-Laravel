@@ -12,9 +12,7 @@ class GalleryController extends Controller
     public function index()
     {
         return view('pages.admin.gallery.index', [
-            'galleries' => Gallery::orderBy('order')
-                ->orderByDesc('created_at')
-                ->paginate(12),
+            'galleries' => Gallery::orderBy('order')->paginate(12),
         ]);
     }
 
@@ -29,23 +27,19 @@ class GalleryController extends Controller
             'title'     => 'nullable|string|max:255',
             'caption'   => 'nullable|string',
             'category'  => 'nullable|string|max:100',
-            'order'     => 'nullable|integer',
+            'image'     => 'required|image|max:2048',
             'is_active' => 'required|in:0,1',
-            'image'     => 'required|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
 
-        $validated['image'] = $request->file('image')->store('gallery', 'public');
-        $validated['order'] = $validated['order'] ?? 0;
+        $validated['order'] = Gallery::max('order') + 1;
         $validated['is_active'] = (bool) $validated['is_active'];
+        $validated['image'] = $request->file('image')->store('gallery', 'public');
 
         Gallery::create($validated);
 
-        return redirect()
-            ->route('admin.gallery.index')
-            ->with('success', 'Gallery created successfully.');
+        return redirect()->route('admin.gallery.index')
+            ->with('success', 'Gallery added');
     }
-
-
 
     public function edit(Gallery $gallery)
     {
@@ -55,42 +49,66 @@ class GalleryController extends Controller
     public function update(Request $request, Gallery $gallery)
     {
         $validated = $request->validate([
-            'title'     => 'nullable|string|max:255',
-            'image'     => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
-            'caption'   => 'nullable|string',
-            'category'  => 'nullable|string|max:100',
-            'order'     => 'nullable|integer',
-            'is_active' => 'required|in:0,1',
+            'title'        => 'nullable|string|max:255',
+            'caption'      => 'nullable|string',
+            'category'     => 'nullable|string|max:100',
+            'is_active'    => 'required|in:0,1',
+            'image'        => 'nullable|image|max:2048',
+            'order_action' => 'nullable|in:top,up,down,bottom',
         ]);
 
-        $validated['order'] = $validated['order'] ?? $gallery->order;
-        $validated['is_active'] = $request->input('is_active', $gallery->is_active);
+        // ==== HANDLE ORDER ====
+        if ($request->order_action) {
+            $this->reorder($gallery, $request->order_action);
+        }
 
+        // ==== IMAGE ====
         if ($request->hasFile('image')) {
-            if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {
-                Storage::disk('public')->delete($gallery->image);
-            }
-
+            Storage::disk('public')->delete($gallery->image);
             $validated['image'] = $request->file('image')->store('gallery', 'public');
         }
 
+        unset($validated['order_action']);
+
         $gallery->update($validated);
 
-        return redirect()
-            ->route('admin.gallery.index')
-            ->with('success', 'Gallery updated successfully.');
+        return redirect()->route('admin.gallery.index')
+            ->with('success', 'Gallery updated');
+    }
+
+    private function reorder(Gallery $gallery, string $action)
+    {
+        $max = Gallery::max('order');
+
+        match ($action) {
+            'top' => Gallery::where('order', '<', $gallery->order)
+                ->increment('order'),
+
+            'bottom' => Gallery::where('order', '>', $gallery->order)
+                ->decrement('order'),
+
+            'up' => Gallery::where('order', $gallery->order - 1)
+                ->increment('order'),
+
+            'down' => Gallery::where('order', $gallery->order + 1)
+                ->decrement('order'),
+        };
+
+        $gallery->order = match ($action) {
+            'top'    => 1,
+            'bottom' => $max,
+            'up'     => max(1, $gallery->order - 1),
+            'down'   => min($max, $gallery->order + 1),
+        };
+
+        $gallery->save();
     }
 
     public function destroy(Gallery $gallery)
     {
-        if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {
-            Storage::disk('public')->delete($gallery->image);
-        }
-
+        Storage::disk('public')->delete($gallery->image);
         $gallery->delete();
 
-        return redirect()
-            ->route('admin.gallery.index')
-            ->with('success', 'Gallery deleted successfully.');
+        return back()->with('success', 'Gallery deleted');
     }
 }

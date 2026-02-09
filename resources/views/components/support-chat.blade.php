@@ -45,7 +45,7 @@
         </span>
 
         <span class="hidden sm:block">
-            Live Support
+            Got Questions?
         </span>
     </button>
 

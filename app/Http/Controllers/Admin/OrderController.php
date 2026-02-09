@@ -12,7 +12,9 @@ class OrderController extends Controller
     {
         abort_if(!Auth::user()?->isAdmin(), 403);
 
-        $orders = Order::latest()->paginate(20);
+         $orders = Order::with(['items.product', 'user'])
+        ->latest()
+        ->paginate(20);
 
         return view('pages.admin.orders.index', compact('orders'));
     }

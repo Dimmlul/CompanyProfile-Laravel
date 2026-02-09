@@ -10,6 +10,9 @@
     type="image/png"
     href="{{ asset('storage/' . $companyProfile->logo) }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 
     {{-- Alpine Store (GLOBAL – untuk sidebar & theme) --}}
     <script>
@@ -57,7 +60,7 @@
 </head>
 
 <body
-    class="h-full bg-app-bg text-app-text"
+    class="h-full bg-app-bg text-app-text admin-scope"
     x-data
     x-init="
         const checkScreen = () => {

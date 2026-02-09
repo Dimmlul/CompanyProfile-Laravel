@@ -1,10 +1,8 @@
-{{-- FILE: resources/views/pages/admin/gallery/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Gallery')
 
 @section('content')
-
 <x-common.component-card title="Gallery">
 
     {{-- HEADER --}}
@@ -13,6 +11,7 @@
             Manage gallery images
         </p>
 
+        {{-- ✅ ADD IMAGE BUTTON --}}
         <a href="{{ route('admin.gallery.create') }}"
            class="btn-primary">
             + Add Image
@@ -20,37 +19,29 @@
     </div>
 
     {{-- GRID --}}
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
         @forelse ($galleries as $gallery)
-            <div class="rounded-xl border border-[var(--color-border-soft)] admin-scope overflow-hidden">
+            <div class="rounded-xl border border-white/10 overflow-hidden">
 
                 <img
                     src="{{ asset('storage/'.$gallery->image) }}"
                     class="h-40 w-full object-cover"
-                    alt="{{ $gallery->title }}"
                 >
 
-                <div class="p-3 space-y-1">
+                <div class="p-3 space-y-1 text-sm">
 
-                    <p class="text-sm font-medium">
+                    <p class="font-medium">
                         {{ $gallery->title ?? 'Untitled' }}
                     </p>
 
-                    <p class="text-xs text-text-muted">
-                        {{ $gallery->category ?? '-' }}
+                    <p class="text-xs text-app-muted">
+                        Order: {{ $gallery->order }}
                     </p>
 
-                    @if ($gallery->is_active)
-                        <span class="badge badge-success">Active</span>
-                    @else
-                        <span class="badge badge-muted">Inactive</span>
-                    @endif
-
                     <div class="mt-3 flex justify-between gap-2">
-
                         <a href="{{ route('admin.gallery.edit', $gallery) }}"
-                           class="btn-admin text-xs px-3 py-1.5">
+                           class="btn-admin text-xs">
                             Edit
                         </a>
 
@@ -60,12 +51,12 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="btn-danger text-xs px-3 py-1.5">
+                            <button class="btn-danger text-xs">
                                 Delete
                             </button>
                         </form>
-
                     </div>
+
                 </div>
             </div>
         @empty
@@ -81,5 +72,4 @@
     </div>
 
 </x-common.component-card>
-
 @endsection

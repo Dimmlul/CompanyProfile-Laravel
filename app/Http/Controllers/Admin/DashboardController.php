@@ -40,7 +40,10 @@ class DashboardController extends Controller
             'totalClients' => Client::count(),
             'activeClients' => Client::where('is_active', true)->count(),
 
-            'recentOrders' => Order::latest()->limit(5)->get(),
-        ]);
+            'recentOrders' => Order::with(['items.product', 'user'])
+            ->latest()
+            ->limit(5)
+            ->get(),
+                ]);
     }
 }

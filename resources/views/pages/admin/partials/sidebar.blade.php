@@ -1,26 +1,9 @@
-{{-- resources/views/pages/admin/partials/sidebar.blade.php --}}
-{{-- Admin Sidebar Navigation --}}
-
 @php
     use App\Models\CompanyProfile;
-    use Illuminate\Support\Str;
-
     $companyProfile = CompanyProfile::first();
 @endphp
 
 <aside
-    x-data="{
-        openContent: false,
-        init() {
-            this.$watch('$store.sidebar.isExpanded', value => {
-                if (value) {
-                    this.openContent = true
-                } else {
-                    this.openContent = false
-                }
-            })
-        }
-    }"
     @mouseenter="
         if (window.innerWidth >= 1280 && !$store.sidebar.isPinned) {
             $store.sidebar.isExpanded = true
@@ -31,216 +14,111 @@
             $store.sidebar.isExpanded = false
         }
     "
+
     class="fixed top-0 left-0 z-50 h-screen
            admin-scope
            border-r border-[var(--color-border-soft)]
-           bg-[var(--color-bg-sidebar)]
            transition-[width] duration-300 ease-out
-           xl:translate-x-0"
-    :class="{
-        'xl:w-[290px]': $store.sidebar.isExpanded,
-        'xl:w-[90px]': !$store.sidebar.isExpanded,
+           xl:translate-x-0
+           overflow-y-auto"   {{-- 🔥 SCROLL FIX --}}
 
-        'w-[290px] translate-x-0': $store.sidebar.isMobileOpen,
+    :class="{
+        'xl:w-[280px]': $store.sidebar.isExpanded,
+        'xl:w-[88px]': !$store.sidebar.isExpanded,
+        'w-[280px] translate-x-0': $store.sidebar.isMobileOpen,
         '-translate-x-full': !$store.sidebar.isMobileOpen
     }"
 >
 
-    <!-- ==========================================================
-    | LOGO AREA
-    ========================================================== -->
-    <div
-        class="flex h-16 items-center gap-3 px-6
-               border-b border-[var(--color-border-soft)]
-               transition-all duration-300"
-    >
-        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-white overflow-hidden shrink-0">
-            @if ($companyProfile?->logo)
-                <img src="{{ asset('storage/'.$companyProfile->logo) }}"
-                     class="h-full w-full object-contain">
-            @else
-                <span class="text-sm font-bold text-indigo-600">
-                    {{ Str::upper(Str::substr($companyProfile->company_name ?? 'CP', 0, 2)) }}
-                </span>
-            @endif
+    {{-- BRAND --}}
+    <x-admin.sidebar.brand :company-profile="$companyProfile" />
+
+    {{-- NAV --}}
+    <nav class="mt-4 px-3 pb-6 text-sm space-y-6">
+
+        {{-- ========== MENU ========= --}}
+        <div class="space-y-0.5">
+
+            <x-admin.sidebar.label>Menu</x-admin.sidebar.label>
+
+            <x-admin.sidebar.item
+                href="{{ route('admin.dashboard') }}"
+                :active="request()->is('admin/dashboard*')"
+                icon="dashboard"
+            >
+                Dashboard
+            </x-admin.sidebar.item>
+
+            <x-admin.sidebar.item
+                href="{{ route('admin.company-profile.index') }}"
+                :active="request()->is('admin/company-profile*')"
+                icon="company"
+            >
+                Company Profile
+            </x-admin.sidebar.item>
+
+            <x-admin.sidebar.item
+                href="{{ route('admin.orders.index') }}"
+                :active="request()->is('admin/orders*')"
+                icon="orders"
+            >
+                Orders
+            </x-admin.sidebar.item>
+
+            <x-admin.sidebar.item
+                href="{{ route('admin.messages.index') }}"
+                :active="request()->is('admin/messages*')"
+                icon="inbox"
+            >
+                Inbox
+            </x-admin.sidebar.item>
         </div>
 
-        <span
-            x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            x-transition.opacity.duration.200ms
-            class="text-lg font-semibold tracking-wide truncate"
-        >
-            {{ $companyProfile->company_name ?? 'Admin Panel' }}
-        </span>
-    </div>
+        {{-- ========== CONTENT ========= --}}
+        <div class="space-y-0.5">
 
-    <!-- ==========================================================
-    | NAVIGATION
-    ========================================================== -->
-    <nav class="mt-6 px-4 text-sm">
+            <x-admin.sidebar.label>Content</x-admin.sidebar.label>
 
-        <p
-            x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            x-transition.opacity
-            class="mb-3 px-3 text-xs uppercase tracking-widest text-[var(--color-text-muted)]"
-        >
-            Menu
-        </p>
-
-        @php
-            $itemBase = "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200";
-            $itemInactive = "text-[var(--color-text-muted)]
-                             hover:bg-[rgba(255,255,255,0.06)]
-                             hover:text-[var(--color-text-main)]";
-            $itemActive = "bg-[var(--color-brand-soft)]
-                           text-[var(--color-text-main)]
-                           shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]";
-        @endphp
-
-        <!-- DASHBOARD -->
-        <a href="{{ route('admin.dashboard') }}"
-           class="{{ $itemBase }} mb-1"
-           :class="isActive('/admin/dashboard') ? '{{ $itemActive }}' : '{{ $itemInactive }}'">
-            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M3 12h7V3H3v9zm11 9h7v-7h-7v7zM3 21h7v-7H3v7zm11-9h7V3h-7v9z"/>
-            </svg>
-
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  x-transition.opacity
-                  class="font-medium">
-                Dashboard
-            </span>
-        </a>
-
-        <!-- COMPANY PROFILE -->
-        <a href="{{ route('admin.company-profile.index') }}"
-           class="{{ $itemBase }} mb-4"
-           :class="isActive('/admin/company-profile') ? '{{ $itemActive }}' : '{{ $itemInactive }}'">
-            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M3 21h18M9 8h1m4 0h1M4 21V4a1 1 0 011-1h14a1 1 0 011 1v17"/>
-            </svg>
-
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  x-transition.opacity
-                  class="font-medium">
-                Company Profile
-            </span>
-        </a>
-
-        <!-- ORDERS -->
-        <a href="{{ route('admin.orders.index') }}"
-           class="{{ $itemBase }} mb-4"
-           :class="isActive('/admin/orders') ? '{{ $itemActive }}' : '{{ $itemInactive }}'">
-            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M5 8h14l-1.5 12.5a2 2 0 01-2 1.5H8.5a2 2 0 01-2-1.5L5 8z"/>
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M9 8V6a3 3 0 016 0v2"/>
-            </svg>
-
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  x-transition.opacity
-                  class="font-medium">
-                Orders
-            </span>
-        </a>
-
-        <!-- MESSAGES -->
-<a href="{{ route('admin.messages.index') }}"
-   class="{{ $itemBase }} mb-4"
-   :class="isActive('/admin/messages') ? '{{ $itemActive }}' : '{{ $itemInactive }}'">
-
-    <!-- ICON -->
-    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-         viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M8 10h.01M12 10h.01M16 10h.01M21 12
-                 c0 4.418-4.03 8-9 8
-                 a9.77 9.77 0 01-4-.8
-                 L3 20l1.8-4
-                 A7.82 7.82 0 013 12
-                 c0-4.418 4.03-8 9-8
-                 s9 3.582 9 8z"/>
-    </svg>
-
-    <!-- LABEL -->
-    <span
-        x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-        x-transition.opacity
-        class="flex items-center gap-2 font-medium"
-    >
-        Messages
-
-        {{-- UNREAD BADGE --}}
-        @if ($unreadMessages > 0)
-            <span
-                class="ml-1 inline-flex items-center justify-center
-                       min-w-[20px] h-5 px-1.5
-                       rounded-full
-                       bg-[var(--color-danger)]
-                       text-[11px] font-semibold text-white"
+            <x-admin.sidebar.item
+                href="{{ route('admin.articles.index') }}"
+                :active="request()->is('admin/articles*')"
+                icon="article"
             >
-                {{ $unreadMessages }}
-            </span>
-        @endif
-    </span>
-</a>
+                Articles
+            </x-admin.sidebar.item>
 
+            <x-admin.sidebar.item
+                href="{{ route('admin.products.index') }}"
+                :active="request()->is('admin/products*')"
+                icon="product"
+            >
+                Products
+            </x-admin.sidebar.item>
 
-        <!-- CONTENT -->
-        <p
-            x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-            x-transition.opacity
-            class="mb-3 px-3 text-xs uppercase tracking-widest text-[var(--color-text-muted)]"
-        >
-            Content
-        </p>
+            <x-admin.sidebar.item
+                href="{{ route('admin.events.index') }}"
+                :active="request()->is('admin/events*')"
+                icon="event"
+            >
+                Events
+            </x-admin.sidebar.item>
 
-        <!-- CONTENT TOGGLE -->
-        <button
-            type="button"
-            @click="openContent = !openContent"
-            class="{{ $itemBase }} w-full {{ $itemInactive }}"
-        >
-            <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0l-4 6H8l-4-6m16 0H4"/>
-            </svg>
+            <x-admin.sidebar.item
+                href="{{ route('admin.gallery.index') }}"
+                :active="request()->is('admin/gallery*')"
+                icon="gallery"
+            >
+                Gallery
+            </x-admin.sidebar.item>
 
-            <span x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                  x-transition.opacity
-                  class="font-medium">
-                Content
-            </span>
+            <x-admin.sidebar.item
+                href="{{ route('admin.clients.index') }}"
+                :active="request()->is('admin/clients*')"
+                icon="client"
+            >
+                Clients
+            </x-admin.sidebar.item>
 
-            <svg x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-                 class="ml-auto h-4 w-4 transition-transform duration-200"
-                 :class="openContent ? 'rotate-180' : ''"
-                 fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
-
-        <!-- SUB MENU -->
-        <div
-            x-cloak
-            x-show="openContent && ($store.sidebar.isExpanded || $store.sidebar.isMobileOpen)"
-            x-transition.opacity.duration.200ms
-            class="mt-2 ml-6 pl-4 border-l border-[var(--color-border-soft)] space-y-1"
-        >
-            <a href="{{ route('admin.articles.index') }}" class="{{ $itemBase }} text-sm {{ $itemInactive }}">Articles</a>
-            <a href="{{ route('admin.products.index') }}" class="{{ $itemBase }} text-sm {{ $itemInactive }}">Products</a>
-            <a href="{{ route('admin.events.index') }}" class="{{ $itemBase }} text-sm {{ $itemInactive }}">Events</a>
-            <a href="{{ route('admin.gallery.index') }}" class="{{ $itemBase }} text-sm {{ $itemInactive }}">Gallery</a>
-            <a href="{{ route('admin.clients.index') }}" class="{{ $itemBase }} text-sm {{ $itemInactive }}">Clients</a>
         </div>
 
     </nav>
