@@ -1,59 +1,471 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+---
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🚀 Company Profile & Digital Product Platform (Laravel)
 
-## About Laravel
+A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**, designed for businesses that sell **digital services, templates, or downloadable products**, complete with:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* Public company profile website
+* Digital product marketplace
+* Secure checkout & Midtrans payment
+* Automatic digital delivery (file / external link)
+* Admin dashboard
+* User dashboard
+* Contact system using EmailJS (no SMTP)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project is suitable for:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Software houses
+* Digital agencies
+* SaaS landing pages
+* Digital product sellers
+* Internal company profile + admin system
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 📑 Table of Contents
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. [Project Overview](#-project-overview)
+2. [Why Ngrok Is Required](#-why-ngrok-is-required)
+3. [Main Features Overview](#-main-features-overview)
+4. [Menu & Feature Explanation](#-menu--feature-explanation)
 
-## Laravel Sponsors
+   * [Public Website](#-public-website-client-side)
+   * [User Area](#-user-area-authenticated)
+   * [Order & Payment](#-order--payment-system)
+   * [Digital Product Delivery](#-digital-product-delivery)
+   * [Admin Panel](#-admin-panel)
+5. [Tech Stack](#-tech-stack)
+6. [Project Structure](#-project-structure-very-detailed)
+7. [Installation Guide](#-installation-guide)
+8. [Frontend Build (Vite)](#-frontend-build-vite)
+9. [Ngrok Setup](#-ngrok-setup)
+10. [Midtrans Payment Setup](#-midtrans-payment-setup)
+11. [EmailJS Contact Setup](#-emailjs-contact-setup)
+12. [User Flow](#-user-flow)
+13. [Admin Flow](#-admin-flow)
+14. [Security Notes](#-security-notes)
+15. [Future Improvements](#-future-improvements)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 📌 Project Overview
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+This application combines a **marketing website** and a **transactional digital product system** into one unified platform.
 
-## Contributing
+### Core Goals
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* Showcase company profile professionally
+* Sell digital products or services
+* Automate payment confirmation
+* Automatically unlock downloads after payment
+* Clearly separate concerns between **Admin**, **User**, and **Public**
 
-## Code of Conduct
+The system follows **Laravel best practices**, **clean Blade architecture**, and **scalable folder structure**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🌍 Why Ngrok Is Required
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### ❓ Why not localhost only?
 
-## License
+Some third-party services **cannot access `localhost`**, including:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Service           | Reason                                  |
+| ----------------- | --------------------------------------- |
+| Midtrans Callback | Needs public URL to send payment status |
+| EmailJS           | Requires public origin                  |
+| Webhooks          | Cannot reach local machine              |
+
+---
+
+### ✅ What Ngrok Solves
+
+Ngrok exposes your local Laravel server to the internet:
+
+* Local: [http://localhost:8000](http://localhost:8000)
+* Public: [https://xxxx.ngrok-free.dev](https://xxxx.ngrok-free.dev)
+
+This allows:
+
+* Midtrans to send **server-to-server callbacks**
+* EmailJS to function correctly
+* Full end-to-end payment testing in local environment
+
+**Ngrok is mandatory for local Midtrans testing.**
+
+---
+
+## ✨ Main Features Overview
+
+| Area     | Features                                     |
+| -------- | -------------------------------------------- |
+| Public   | Company profile, products, articles, contact |
+| User     | Orders, downloads, profile                   |
+| Admin    | Product, content, orders, messages           |
+| Payment  | Midtrans Snap                                |
+| Delivery | File download or external link               |
+| Contact  | EmailJS (no SMTP)                            |
+
+---
+
+## 📂 Menu & Feature Explanation
+
+### 🌐 Public Website (Client Side)
+
+Accessible **without login**.
+
+**Menus**
+
+* **Home** – Landing page with company overview
+* **About / Vision & Mission** – Company identity & direction
+* **Articles** – Blog / news content
+* **Events** – Company or marketing events
+* **Products** – Digital products or services catalog
+* **Contact** – Contact form powered by EmailJS
+
+**Contact Form**
+
+* No SMTP or backend email server
+* Uses EmailJS (frontend only)
+* Works for guest & authenticated users
+
+---
+
+### 👤 User Area (Authenticated)
+
+Accessible after login.
+
+**Menus**
+
+* **Cart**
+
+  * Add / remove products
+  * Update quantity
+
+* **Checkout**
+
+  * Create order
+  * Redirect to Midtrans Snap
+
+* **Orders**
+
+  * Order history
+  * Order detail
+  * Download file / open external link after payment
+
+* **Profile**
+
+  * Update user information
+
+* **Messages**
+
+  * Contact admin
+  * Reply to admin messages
+
+---
+
+### 🛒 Order & Payment System
+
+**Flow**
+
+1. User adds product to cart
+2. Checkout generates an order
+3. Midtrans Snap opens
+4. Payment completed
+5. Midtrans sends callback
+6. Order status updated automatically
+
+**Payment Status**
+
+* `pending`
+* `paid`
+* `expired`
+* `failed`
+
+---
+
+### 📦 Digital Product Delivery
+
+Each product supports **two delivery modes**.
+
+#### 📁 File Delivery
+
+* Admin uploads ZIP / asset file
+* Stored in `storage/app/public/templates`
+* Download button unlocked **only after payment**
+
+#### 🔗 External Link Delivery
+
+* Admin provides URL (GitHub, Google Drive, Figma, etc.)
+* Link visible after payment
+* Optional fallback link (e.g. [https://github.com/](https://github.com/))
+
+---
+
+### 🛠 Admin Panel
+
+Accessible via `/admin`.
+
+**Menus & Features**
+
+* **Products**
+
+  * Create / edit / delete products
+  * Upload preview image
+  * Set price & active status
+  * Choose delivery type (file / link)
+  * Manual ordering (top / up / down / bottom)
+
+* **Articles & Events**
+
+  * Content management
+  * Slug-based routing
+
+* **Orders**
+
+  * View all orders
+  * Monitor payment status
+  * Inspect Midtrans response
+
+* **Messages**
+
+  * Inbox from users
+  * Mark as read
+  * Reply messages
+
+---
+
+## 🧱 Tech Stack
+
+| Layer      | Technology              |
+| ---------- | ----------------------- |
+| Backend    | Laravel 12              |
+| Frontend   | Blade + Tailwind CSS v4 |
+| Database   | MySQL                   |
+| Payment    | Midtrans Snap           |
+| Contact    | EmailJS                 |
+| Build Tool | Vite                    |
+| Tunnel     | Ngrok                   |
+| Storage    | Laravel Filesystem      |
+
+---
+
+## 🗂 Project Structure (Very Detailed)
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/        # Admin panel logic
+│   │   ├── Client/       # Public website logic
+│   │   ├── User/         # User dashboard logic
+│   │   └── Auth/         # Authentication logic
+│   └── Middleware/       # Request filters & guards
+│
+├── Models/
+│   ├── User.php
+│   ├── Product.php
+│   ├── Order.php
+│   ├── OrderItem.php
+│   ├── Cart.php
+│   ├── Message.php
+│   ├── Article.php
+│   ├── Event.php
+│   └── CompanyProfile.php
+│
+resources/
+├── views/
+│   ├── layouts/          # Base layouts (app, admin)
+│   ├── pages/
+│   │   ├── admin/        # Admin pages
+│   │   ├── client/       # Public pages
+│   │   └── user/         # User pages
+│   └── components/       # Reusable Blade components
+│
+routes/
+├── web.php               # All web routes
+│
+database/
+├── migrations/           # Database schema
+├── seeders/              # Demo / initial data
+│
+storage/
+├── app/public/
+│   ├── products/         # Product images
+│   └── templates/        # Downloadable digital files
+```
+
+---
+
+## ⚙ Installation Guide
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/yourusername/project-name.git
+cd project-name
+```
+
+---
+
+### 2️⃣ Environment Setup
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit `.env`:
+
+```env
+APP_NAME="Company Profile"
+APP_ENV=local
+APP_URL=http://localhost
+
+DB_DATABASE=companyprofile
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+### 3️⃣ Install Dependencies
+
+```bash
+composer install
+npm install
+```
+
+---
+
+### 4️⃣ Database
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+---
+
+### 5️⃣ Storage
+
+```bash
+php artisan storage:link
+```
+
+---
+
+## 🎨 Frontend Build (Vite)
+
+Development mode:
+
+```bash
+npm run dev
+```
+
+Production / Ngrok:
+
+```bash
+npm run build
+```
+
+**Why `npm run build` with Ngrok?**
+
+* Ensures assets are optimized
+* Prevents asset mismatch on public URLs
+* Required for production-like testing
+
+---
+
+## 🌍 Ngrok Setup
+
+Download Ngrok:
+[https://ngrok.com/download](https://ngrok.com/download)
+
+Run:
+
+```bash
+ngrok http 8000
+```
+
+Update `.env`:
+
+```env
+APP_URL=https://xxxx.ngrok-free.dev
+```
+
+---
+
+## 💳 Midtrans Payment Setup
+
+```env
+MIDTRANS_SERVER_KEY=SB-Mid-server-xxxx
+MIDTRANS_CLIENT_KEY=SB-Mid-client-xxxx
+MIDTRANS_IS_PRODUCTION=false
+```
+
+Callback URL (Midtrans Dashboard):
+
+[https://your-ngrok-url.ngrok-free.dev/midtrans/callback](https://your-ngrok-url.ngrok-free.dev/midtrans/callback)
+
+---
+
+## ✉ EmailJS Contact Setup
+
+1. Create account: [https://www.emailjs.com](https://www.emailjs.com)
+2. Create:
+
+   * Email Service
+   * Email Template
+   * Public Key
+
+`.env`:
+
+```env
+EMAILJS_PUBLIC_KEY=xxxx
+EMAILJS_SERVICE_ID=xxxx
+EMAILJS_TEMPLATE_ID=xxxx
+```
+
+---
+
+## 🔄 User Flow
+
+1. User registers / logs in
+2. Browse products
+3. Add to cart
+4. Checkout & pay
+5. Midtrans callback updates order
+6. Download / link unlocked
+7. Contact admin if needed
+
+---
+
+## 🛠 Admin Flow
+
+1. Login at `/admin`
+2. Manage products & content
+3. Upload file or set external link
+4. Monitor orders
+5. Reply to user messages
+
+---
+
+## 🔐 Security Notes
+
+* Order access restricted by `user_id`
+* Downloads available only after payment
+* CSRF protection enabled
+* Admin routes protected by authentication
+
+---
+
+## 🚀 Future Improvements
+
+* Expiring download links
+* Multi-file delivery per product
+* Role-based admin permissions
+* Docker deployment
+* REST API / mobile app support
+
+---
