@@ -93,7 +93,7 @@
         {{-- GALLERIES --}}
         <x-admin.dashboard.stat-card
             title="Galleries"
-            subtitle="Active {{ $activeGalleries }}"
+            subtitle="Active {{ $activeGalleries }} / {{ $totalGalleries }}"
             :value="$totalGalleries"
         >
             <x-slot:icon>

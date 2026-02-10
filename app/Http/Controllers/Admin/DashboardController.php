@@ -59,7 +59,7 @@ class DashboardController extends Controller
              * Gallery statistics
              * Note: Only active galleries are considered.
              */
-            'totalGalleries' => Gallery::where('is_active', true)->count(),
+            'totalGalleries' => Gallery::count(),
             'activeGalleries' => Gallery::where('is_active', true)->count(),
 
             /**
