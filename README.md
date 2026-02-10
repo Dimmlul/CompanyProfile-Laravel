@@ -1,24 +1,25 @@
 ---
 
+
 # 🚀 Company Profile & Digital Product Platform (Laravel)
 
 A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**, designed for businesses that sell **digital services, templates, or downloadable products**, complete with:
 
-* Public company profile website
-* Digital product marketplace
-* Secure checkout & Midtrans payment
-* Automatic digital delivery (file / external link)
-* Admin dashboard
-* User dashboard
-* Contact system using EmailJS (no SMTP)
+- Public company profile website  
+- Digital product marketplace  
+- Secure checkout & Midtrans payment  
+- Automatic digital delivery (file / external link)  
+- Admin dashboard  
+- User dashboard  
+- Contact system using EmailJS (no SMTP)
 
 This project is suitable for:
 
-* Software houses
-* Digital agencies
-* SaaS landing pages
-* Digital product sellers
-* Internal company profile + admin system
+- Software houses  
+- Digital agencies  
+- SaaS landing pages  
+- Digital product sellers  
+- Internal company profile + admin system  
 
 ---
 
@@ -28,12 +29,11 @@ This project is suitable for:
 2. [Why Ngrok Is Required](#-why-ngrok-is-required)
 3. [Main Features Overview](#-main-features-overview)
 4. [Menu & Feature Explanation](#-menu--feature-explanation)
-
-   * [Public Website](#-public-website-client-side)
-   * [User Area](#-user-area-authenticated)
-   * [Order & Payment](#-order--payment-system)
-   * [Digital Product Delivery](#-digital-product-delivery)
-   * [Admin Panel](#-admin-panel)
+   - [Public Website](#-public-website-client-side)
+   - [User Area](#-user-area-authenticated)
+   - [Order & Payment](#-order--payment-system)
+   - [Digital Product Delivery](#-digital-product-delivery)
+   - [Admin Panel](#-admin-panel)
 5. [Tech Stack](#-tech-stack)
 6. [Project Structure](#-project-structure-very-detailed)
 7. [Installation Guide](#-installation-guide)
@@ -54,13 +54,13 @@ This application combines a **marketing website** and a **transactional digital 
 
 ### Core Goals
 
-* Showcase company profile professionally
-* Sell digital products or services
-* Automate payment confirmation
-* Automatically unlock downloads after payment
-* Clearly separate concerns between **Admin**, **User**, and **Public**
+- Showcase company profile professionally  
+- Sell digital products or services  
+- Automate payment confirmation  
+- Automatically unlock downloads after payment  
+- Clearly separate concerns between **Admin**, **User**, and **Public**
 
-The system follows **Laravel best practices**, **clean Blade architecture**, and **scalable folder structure**.
+The system follows **Laravel best practices**, **clean Blade architecture**, and a **scalable folder structure**.
 
 ---
 
@@ -70,11 +70,11 @@ The system follows **Laravel best practices**, **clean Blade architecture**, and
 
 Some third-party services **cannot access `localhost`**, including:
 
-| Service           | Reason                                  |
-| ----------------- | --------------------------------------- |
-| Midtrans Callback | Needs public URL to send payment status |
-| EmailJS           | Requires public origin                  |
-| Webhooks          | Cannot reach local machine              |
+| Service            | Reason                                  |
+|--------------------|------------------------------------------|
+| Midtrans Callback  | Needs a public URL to send payment status |
+| EmailJS            | Requires a public origin                 |
+| Webhooks           | Cannot reach local machine               |
 
 ---
 
@@ -82,163 +82,154 @@ Some third-party services **cannot access `localhost`**, including:
 
 Ngrok exposes your local Laravel server to the internet:
 
-* Local: [http://localhost:8000](http://localhost:8000)
-* Public: [https://xxxx.ngrok-free.dev](https://xxxx.ngrok-free.dev)
+- Local: <http://localhost:8000>  
+- Public: <https://xxxx.ngrok-free.dev>
 
 This allows:
 
-* Midtrans to send **server-to-server callbacks**
-* EmailJS to function correctly
-* Full end-to-end payment testing in local environment
+- Midtrans to send **server-to-server callbacks**
+- EmailJS to work correctly
+- Full end-to-end payment testing locally
 
-**Ngrok is mandatory for local Midtrans testing.**
+> **Ngrok is mandatory for local Midtrans testing.**
 
 ---
 
 ## ✨ Main Features Overview
 
-| Area     | Features                                     |
-| -------- | -------------------------------------------- |
-| Public   | Company profile, products, articles, contact |
-| User     | Orders, downloads, profile                   |
-| Admin    | Product, content, orders, messages           |
-| Payment  | Midtrans Snap                                |
-| Delivery | File download or external link               |
-| Contact  | EmailJS (no SMTP)                            |
+| Area     | Features                                      |
+|----------|-----------------------------------------------|
+| Public   | Company profile, products, articles, contact  |
+| User     | Orders, downloads, profile                    |
+| Admin    | Product, content, orders, messages            |
+| Payment  | Midtrans Snap                                 |
+| Delivery | File download or external link                |
+| Contact  | EmailJS (no SMTP)                             |
 
 ---
 
 ## 📂 Menu & Feature Explanation
 
-### 🌐 Public Website (Client Side)
+## 🌐 Public Website (Client Side)
 
 Accessible **without login**.
 
-**Menus**
+### Menus
 
-* **Home** – Landing page with company overview
-* **About / Vision & Mission** – Company identity & direction
-* **Articles** – Blog / news content
-* **Events** – Company or marketing events
-* **Products** – Digital products or services catalog
-* **Contact** – Contact form powered by EmailJS
+- **Home** – Landing page with company overview  
+- **About / Vision & Mission** – Company identity & direction  
+- **Articles** – Blog / news content  
+- **Events** – Company or marketing events  
+- **Products** – Digital products or services catalog  
+- **Contact** – Contact form powered by EmailJS  
 
-**Contact Form**
+### Contact Form
 
-* No SMTP or backend email server
-* Uses EmailJS (frontend only)
-* Works for guest & authenticated users
+- No SMTP or backend email server  
+- Uses EmailJS (frontend only)  
+- Works for guest & authenticated users  
 
 ---
 
-### 👤 User Area (Authenticated)
+## 👤 User Area (Authenticated)
 
 Accessible after login.
 
-**Menus**
+### Menus
 
-* **Cart**
+#### Cart
+- Add / remove products  
+- Update quantity  
 
-  * Add / remove products
-  * Update quantity
+#### Checkout
+- Create order  
+- Redirect to Midtrans Snap  
 
-* **Checkout**
+#### Orders
+- Order history  
+- Order detail  
+- Download file / open external link after payment  
 
-  * Create order
-  * Redirect to Midtrans Snap
+#### Profile
+- Update user information  
 
-* **Orders**
-
-  * Order history
-  * Order detail
-  * Download file / open external link after payment
-
-* **Profile**
-
-  * Update user information
-
-* **Messages**
-
-  * Contact admin
-  * Reply to admin messages
+#### Messages
+- Contact admin  
+- Reply to admin messages  
 
 ---
 
-### 🛒 Order & Payment System
+## 🛒 Order & Payment System
 
-**Flow**
+### Flow
 
-1. User adds product to cart
-2. Checkout generates an order
-3. Midtrans Snap opens
-4. Payment completed
-5. Midtrans sends callback
-6. Order status updated automatically
+1. User adds product to cart  
+2. Checkout generates an order  
+3. Midtrans Snap opens  
+4. Payment completed  
+5. Midtrans sends callback  
+6. Order status updated automatically  
 
-**Payment Status**
+### Payment Status
 
-* `pending`
-* `paid`
-* `expired`
-* `failed`
+- `pending`  
+- `paid`  
+- `expired`  
+- `failed`  
 
 ---
 
-### 📦 Digital Product Delivery
+## 📦 Digital Product Delivery
 
 Each product supports **two delivery modes**.
 
-#### 📁 File Delivery
+### 📁 File Delivery
 
-* Admin uploads ZIP / asset file
-* Stored in `storage/app/public/templates`
-* Download button unlocked **only after payment**
+- Admin uploads ZIP / asset file  
+- Stored in `storage/app/public/templates`  
+- Download unlocked **only after payment**
 
-#### 🔗 External Link Delivery
+### 🔗 External Link Delivery
 
-* Admin provides URL (GitHub, Google Drive, Figma, etc.)
-* Link visible after payment
-* Optional fallback link (e.g. [https://github.com/](https://github.com/))
+- Admin provides URL (GitHub, Google Drive, Figma, etc.)  
+- Link visible after payment  
+- Optional fallback link (e.g. <https://github.com/>)
 
 ---
 
-### 🛠 Admin Panel
+## 🛠 Admin Panel
 
 Accessible via `/admin`.
 
-**Menus & Features**
+### Menus & Features
 
-* **Products**
+#### Products
+- Create / edit / delete products  
+- Upload preview image  
+- Set price & active status  
+- Choose delivery type (file / link)  
+- Manual ordering (top / up / down / bottom)  
 
-  * Create / edit / delete products
-  * Upload preview image
-  * Set price & active status
-  * Choose delivery type (file / link)
-  * Manual ordering (top / up / down / bottom)
+#### Articles & Events
+- Content management  
+- Slug-based routing  
 
-* **Articles & Events**
+#### Orders
+- View all orders  
+- Monitor payment status  
+- Inspect Midtrans response  
 
-  * Content management
-  * Slug-based routing
-
-* **Orders**
-
-  * View all orders
-  * Monitor payment status
-  * Inspect Midtrans response
-
-* **Messages**
-
-  * Inbox from users
-  * Mark as read
-  * Reply messages
+#### Messages
+- Inbox from users  
+- Mark as read  
+- Reply messages  
 
 ---
 
 ## 🧱 Tech Stack
 
 | Layer      | Technology              |
-| ---------- | ----------------------- |
+|------------|-------------------------|
 | Backend    | Laravel 12              |
 | Frontend   | Blade + Tailwind CSS v4 |
 | Database   | MySQL                   |
@@ -293,7 +284,7 @@ storage/
 ├── app/public/
 │   ├── products/         # Product images
 │   └── templates/        # Downloadable digital files
-```
+````
 
 ---
 
@@ -305,8 +296,6 @@ storage/
 git clone https://github.com/yourusername/project-name.git
 cd project-name
 ```
-
----
 
 ### 2️⃣ Environment Setup
 
@@ -371,9 +360,9 @@ npm run build
 
 **Why `npm run build` with Ngrok?**
 
-* Ensures assets are optimized
+* Ensures optimized assets
 * Prevents asset mismatch on public URLs
-* Required for production-like testing
+* Recommended for production-like testing
 
 ---
 
@@ -447,7 +436,7 @@ EMAILJS_TEMPLATE_ID=xxxx
 2. Manage products & content
 3. Upload file or set external link
 4. Monitor orders
-5. Reply to user messages
+5. Reply user messages
 
 ---
 
@@ -457,15 +446,5 @@ EMAILJS_TEMPLATE_ID=xxxx
 * Downloads available only after payment
 * CSRF protection enabled
 * Admin routes protected by authentication
-
----
-
-## 🚀 Future Improvements
-
-* Expiring download links
-* Multi-file delivery per product
-* Role-based admin permissions
-* Docker deployment
-* REST API / mobile app support
 
 ---
