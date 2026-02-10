@@ -1,6 +1,3 @@
----
-
-
 # 🚀 Company Profile & Digital Product Platform (Laravel)
 
 A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**, designed for businesses that sell **digital services, templates, or downloadable products**, complete with:
