@@ -8,7 +8,12 @@ use App\Models\Gallery;
 class GalleryController extends Controller
 {
     /**
-     * Display gallery on client side.
+     * Display the gallery page on the client side.
+     *
+     * Responsibilities:
+     * - Retrieve gallery items ordered by the custom `order` column
+     * - Provide all gallery data without pagination
+     * - Render the client gallery page
      */
     public function index()
     {

@@ -10,6 +10,11 @@ class Client extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * These fields can be safely filled using create() or update().
+     */
     protected $fillable = [
         'name',
         'logo',
@@ -19,15 +24,27 @@ class Client extends Model
         'is_active',
     ];
 
+    /**
+     * Attribute casting configuration.
+     *
+     * - order is cast to integer for proper sorting
+     * - is_active is cast to boolean for status checks
+     */
     protected $casts = [
         'order'     => 'integer',
         'is_active' => 'boolean',
     ];
 
     /**
-     * Scope to retrieve only active clients.
-     * Ensures that inactive clients are hidden
-     * from public-facing pages.
+     * Query scope: active clients.
+     *
+     * Responsibilities:
+     * - Retrieve only clients marked as active
+     * - Hide inactive clients from public-facing pages
+     * - Simplify reuse across queries
+     *
+     * Usage example:
+     * Client::active()->orderBy('order')->get();
      */
     public function scopeActive($query)
     {

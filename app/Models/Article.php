@@ -10,6 +10,11 @@ class Article extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * These fields can be safely filled using create() or update().
+     */
     protected $fillable = [
         'title',
         'slug',
@@ -21,13 +26,22 @@ class Article extends Model
         'is_published',
     ];
 
+    /**
+     * Attribute casting configuration.
+     *
+     * - is_published is cast to boolean
+     * - published_at is cast to a Carbon datetime instance
+     */
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
 
     /**
-     * Use slug instead of id for route model binding.
+     * Use the article slug instead of the ID for route model binding.
+     *
+     * This allows URLs like:
+     * /articles/my-article-title
      */
     public function getRouteKeyName()
     {
@@ -35,7 +49,15 @@ class Article extends Model
     }
 
     /**
-     * Generate unique slug.
+     * Generate a unique slug based on the article title.
+     *
+     * Responsibilities:
+     * - Convert the title into a URL-friendly slug
+     * - Ensure slug uniqueness in the database
+     * - Append an incremental suffix if a duplicate slug exists
+     *
+     * @param string   $title     The article title
+     * @param int|null $ignoreId  Optional article ID to exclude (used on update)
      */
     private static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
     {
@@ -56,13 +78,23 @@ class Article extends Model
     }
 
     /**
-     * Model events.
+     * Register model event hooks.
+     *
+     * Events handled:
+     * - creating: generate slug and auto-generate excerpt if missing
+     * - updating: regenerate slug if the title has changed
      */
     protected static function booted()
     {
         static::creating(function ($article) {
+            /**
+             * Generate a unique slug when creating a new article.
+             */
             $article->slug = static::generateUniqueSlug($article->title);
 
+            /**
+             * Automatically generate an excerpt if none is provided.
+             */
             if (empty($article->excerpt)) {
                 $article->excerpt = Str::limit(
                     strip_tags($article->content),
@@ -72,6 +104,9 @@ class Article extends Model
         });
 
         static::updating(function ($article) {
+            /**
+             * Regenerate the slug only if the title has changed.
+             */
             if ($article->isDirty('title')) {
                 $article->slug = static::generateUniqueSlug(
                     $article->title,
@@ -82,7 +117,11 @@ class Article extends Model
     }
 
     /**
-     * Scope: published articles.
+     * Query scope: published articles.
+     *
+     * Returns only articles that:
+     * - Are marked as published
+     * - Have a published_at timestamp
      */
     public function scopePublished($query)
     {

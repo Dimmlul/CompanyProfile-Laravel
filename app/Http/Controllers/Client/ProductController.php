@@ -7,20 +7,43 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * Display the client products listing page.
+     *
+     * Responsibilities:
+     * - Retrieve a small set of the newest active products
+     * - Retrieve all active products with pagination
+     * - Apply ordering for consistent product display
+     * - Render the client products index page
+     */
     public function index()
     {
-        // ===============================
-        // NEWEST PRODUCTS
-        // ===============================
+        /**
+         * ===============================
+         * NEWEST PRODUCTS
+         *
+         * Criteria:
+         * - Only active products
+         * - Ordered by latest creation date
+         * - Limited to a small featured subset
+         * ===============================
+         */
         $newestProducts = Product::query()
             ->where('is_active', true)
             ->latest()
             ->limit(3)
             ->get();
 
-        // ===============================
-        // ALL PRODUCTS (PAGINATED)
-        // ===============================
+        /**
+         * ===============================
+         * ALL PRODUCTS (PAGINATED)
+         *
+         * Criteria:
+         * - Only active products
+         * - Ordered by custom display order
+         * - Paginated for client-side browsing
+         * ===============================
+         */
         $products = Product::query()
             ->where('is_active', true)
             ->orderBy('order')
@@ -37,10 +60,18 @@ class ProductController extends Controller
      * ===============================
      * PRODUCT DETAIL
      * ===============================
+     *
+     * Display a single product detail page.
+     *
+     * Responsibilities:
+     * - Ensure the product is active and publicly accessible
+     * - Render the client product detail page
      */
     public function show(Product $product)
     {
-        // pastikan hanya produk aktif yang bisa diakses
+        /**
+         * Restrict access to inactive products.
+         */
         if (! $product->is_active) {
             abort(404);
         }

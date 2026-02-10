@@ -12,24 +12,20 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
+
             $table->string('slug')->unique();
 
             $table->text('description')->nullable();
             $table->longText('content')->nullable();
-
-            // IMAGE / PREVIEW
             $table->string('image')->nullable();
-
-            // PRICE
             $table->decimal('price', 10, 2)->default(0);
 
-            // TEMPLATE DELIVERY
             $table->enum('delivery_type', ['file', 'link'])->default('file');
-            $table->string('download_path')->nullable(); // storage path
-            $table->string('download_url')->nullable();  // external link
+            $table->string('download_path')->nullable();
+            $table->string('download_url')->nullable();
 
-            // STATUS & ORDER
             $table->boolean('is_active')->default(true);
+            
             $table->integer('order')->default(0);
 
             $table->timestamps();

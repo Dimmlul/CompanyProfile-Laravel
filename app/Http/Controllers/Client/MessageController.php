@@ -9,77 +9,121 @@ use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
-    // START PAGE
+    /**
+     * Display the starting page for the client message system.
+     *
+     * Responsibilities:
+     * - Render the initial page where a client can start a new message thread
+     */
     public function create()
     {
         return view('pages.client.messages.start');
     }
 
-    // CREATE THREAD
-public function store(Request $request)
-{
-    $request->validate([
-        'name'    => 'required|string|max:100',
-        'email'   => 'required|email|max:255',
-        'message' => 'required|string|max:3000',
-    ]);
+    /**
+     * Create a new client message thread.
+     *
+     * Responsibilities:
+     * - Validate incoming client data
+     * - Generate a unique client token for the conversation
+     * - Create the root message for the thread
+     * - Persist the client token in a long-lived cookie
+     * - Redirect the client to the message thread view
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'    => 'required|string|max:100',
+            'email'   => 'required|email|max:255',
+            'message' => 'required|string|max:3000',
+        ]);
 
-    $token = Str::uuid()->toString();
+        /**
+         * Generate a unique token to identify the client conversation.
+         */
+        $token = Str::uuid()->toString();
 
-    Message::create([
-        'sender'       => 'client',
-        'client_token' => $token,
-        'client_name'  => $request->name,
-        'client_email' => $request->email,
-        'message'      => $request->message,
-        'is_read'      => false,
-    ]);
+        /**
+         * Create the root message for the client thread.
+         */
+        Message::create([
+            'sender'       => 'client',
+            'client_token' => $token,
+            'client_name'  => $request->name,
+            'client_email' => $request->email,
+            'message'      => $request->message,
+            'is_read'      => false,
+        ]);
 
-    // 🔑 SIMPAN TOKEN
-    cookie()->queue(
-        cookie('support_chat_token', $token, 60 * 24 * 30)
-    );
+        /**
+         * Persist the client token in a cookie to maintain session continuity.
+         * The cookie is stored for 30 days.
+         */
+        cookie()->queue(
+            cookie('support_chat_token', $token, 60 * 24 * 30)
+        );
 
-    return redirect()->route('client.messages.show', $token);
-}
-
-
-
-    // SHOW THREAD
-public function show(string $token)
-{
-    $message = Message::where('client_token', $token)
-        ->whereNull('parent_id')
-        ->first();
-
-    // ❗ kalau token tidak valid → redirect, BUKAN 403
-    if (! $message) {
-        return redirect()
-            ->route('client.messages.start')
-            ->with('error', 'Chat session not found.');
+        return redirect()->route('client.messages.show', $token);
     }
 
-    // ⬅️ simpan token lagi (biar awet)
-    cookie()->queue(
-        cookie('support_chat_token', $token, 60 * 24 * 30)
-    );
+    /**
+     * Display a client message thread.
+     *
+     * Responsibilities:
+     * - Retrieve the root message using the client token
+     * - Gracefully handle invalid or expired tokens
+     * - Refresh the client token cookie for session continuity
+     * - Mark unread admin replies as read
+     * - Render the client message thread view
+     */
+    public function show(string $token)
+    {
+        $message = Message::where('client_token', $token)
+            ->whereNull('parent_id')
+            ->first();
 
-    // mark admin replies as read
-    Message::where('parent_id', $message->id)
-        ->where('sender', 'admin')
-        ->where('is_read', false)
-        ->update(['is_read' => true]);
+        /**
+         * If the token is invalid, redirect the client back to the start page.
+         * A redirect is used instead of a 403 to provide a better user experience.
+         */
+        if (! $message) {
+            return redirect()
+                ->route('client.messages.start')
+                ->with('error', 'Chat session not found.');
+        }
 
-    return view('pages.client.messages.show', [
-        'message' => $message,
-        'replies' => $message->replies,
-        'token'   => $token,
-    ]);
-}
+        /**
+         * Refresh the client token cookie to extend its validity.
+         */
+        cookie()->queue(
+            cookie('support_chat_token', $token, 60 * 24 * 30)
+        );
 
+        /**
+         * Mark all unread admin replies in this thread as read.
+         */
+        Message::where('parent_id', $message->id)
+            ->where('sender', 'admin')
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
 
+        return view('pages.client.messages.show', [
+            'message' => $message,
+            'replies' => $message->replies,
+            'token'   => $token,
+        ]);
+    }
 
-    // CLIENT REPLY
+    /**
+     * Submit a client reply to an existing message thread.
+     *
+     * Responsibilities:
+     * - Validate reply input (message and/or attachment)
+     * - Ensure the reply contains content or a file
+     * - Attach the reply to the existing client thread
+     * - Handle optional file uploads
+     * - Persist the reply to the database
+     */
     public function reply(Request $request, string $token)
     {
         $request->validate([
@@ -87,10 +131,17 @@ public function show(string $token)
             'file'    => 'nullable|file|max:5120',
         ]);
 
+        /**
+         * Safety check:
+         * A reply must contain either a text message or a file attachment.
+         */
         if (! $request->filled('message') && ! $request->hasFile('file')) {
             return back()->withErrors(['message' => 'Message or file required']);
         }
 
+        /**
+         * Retrieve the root message for the client thread.
+         */
         $root = Message::where('client_token', $token)
             ->whereNull('parent_id')
             ->firstOrFail();
@@ -98,12 +149,19 @@ public function show(string $token)
         $path = null;
         $type = null;
 
+        /**
+         * Handle optional file attachment upload.
+         * Determine whether the attachment is an image or a generic file.
+         */
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $path = $file->store('messages', 'public');
             $type = str_contains($file->getMimeType(), 'image') ? 'image' : 'file';
         }
 
+        /**
+         * Create the client reply and attach it to the existing thread.
+         */
         Message::create([
             'parent_id'       => $root->id,
             'sender'          => 'client',

@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * These fields support threaded messaging between:
+     * - Admin
+     * - Authenticated users
+     * - Guest clients
+     */
     protected $fillable = [
         'parent_id',
         'sender',
@@ -20,36 +28,75 @@ class Message extends Model
         'is_read',
     ];
 
+    /**
+     * Attribute casting configuration.
+     *
+     * - is_read is cast to boolean for read/unread state tracking
+     */
     protected $casts = [
         'is_read' => 'boolean',
     ];
 
     /* =====================
-     | RELATIONS
+     | RELATIONSHIPS
      ===================== */
+
+    /**
+     * Get all replies for this message.
+     *
+     * Relationship:
+     * - A message can have many replies
+     * - Replies are ordered from oldest to newest
+     */
     public function replies()
     {
         return $this->hasMany(Message::class, 'parent_id')->oldest();
     }
 
+    /**
+     * Get the parent message of this reply.
+     *
+     * Relationship:
+     * - A reply belongs to a single parent message
+     */
     public function parent()
     {
         return $this->belongsTo(Message::class, 'parent_id');
     }
 
+    /**
+     * Get the user associated with this message.
+     *
+     * Relationship:
+     * - Only applicable when the sender is an authenticated user
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
     /* =====================
-     | HELPERS
+     | HELPER METHODS
      ===================== */
+
+    /**
+     * Determine whether the message was sent by a guest client.
+     *
+     * A message is considered a client message if it has a client token.
+     */
     public function isClient(): bool
     {
         return ! is_null($this->client_token);
     }
 
+    /**
+     * Get the display name for the message sender.
+     *
+     * Behavior:
+     * - Admin messages display as "Admin"
+     * - User messages display the user's name
+     * - Client messages display the provided client name
+     */
     public function displayName(): string
     {
         return match ($this->sender) {

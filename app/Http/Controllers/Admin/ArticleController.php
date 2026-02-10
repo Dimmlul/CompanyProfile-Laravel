@@ -6,16 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    
     /**
-     * Display a listing of articles.
+     * Display a paginated list of articles.
      *
-     * Menampilkan halaman index artikel dengan pagination.
+     * Responsibilities:
+     * - Retrieve articles ordered by latest
+     * - Apply pagination
+     * - Render the admin articles index page
      */
     public function index()
     {
+        /**
+         * Retrieve the currently authenticated user.
+         */
+        $user = Auth::user();
+
+        /**
+         * Prevent non-admin users from accessing the admin dashboard.
+         */
+
+        abort_if(!$user?->isAdmin(), 403);
         return view('pages.admin.articles.index', [
             'articles' => Article::latest()->paginate(10),
         ]);
@@ -24,7 +39,8 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new article.
      *
-     * Menampilkan form tambah artikel.
+     * Responsibilities:
+     * - Render the article creation form
      */
     public function create()
     {
@@ -34,10 +50,11 @@ class ArticleController extends Controller
     /**
      * Store a newly created article in storage.
      *
-     * Menyimpan artikel baru ke database.
-     * - Validasi input
-     * - Upload thumbnail (jika ada)
-     * - Handle publish / draft
+     * Responsibilities:
+     * - Validate incoming request data
+     * - Handle thumbnail upload (if provided)
+     * - Apply publish / draft logic
+     * - Persist article data to the database
      */
     public function store(Request $request)
     {
@@ -52,7 +69,8 @@ class ArticleController extends Controller
         ]);
 
         /**
-         * Handle thumbnail upload
+         * Handle thumbnail upload.
+         * If a thumbnail is provided, store it in public storage.
          */
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $request
@@ -61,9 +79,9 @@ class ArticleController extends Controller
         }
 
         /**
-         * Publish logic
-         * - Jika publish dan tanggal kosong → set now()
-         * - Jika draft → published_at = null
+         * Publish state handling:
+         * - If published and publish date is empty, set it to current time
+         * - If draft, force published_at to null
          */
         if ($validated['is_published'] && empty($validated['published_at'])) {
             $validated['published_at'] = now();
@@ -83,7 +101,9 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified article.
      *
-     * Menampilkan form edit artikel.
+     * Responsibilities:
+     * - Load the article data
+     * - Render the edit form
      */
     public function edit(Article $article)
     {
@@ -95,9 +115,11 @@ class ArticleController extends Controller
     /**
      * Update the specified article in storage.
      *
-     * Mengupdate data artikel:
-     * - Replace thumbnail jika ada upload baru
-     * - Update publish status & tanggal
+     * Responsibilities:
+     * - Validate updated input data
+     * - Replace thumbnail if a new one is uploaded
+     * - Update publish status and publish date
+     * - Persist changes to the database
      */
     public function update(Request $request, Article $article)
     {
@@ -112,11 +134,14 @@ class ArticleController extends Controller
         ]);
 
         /**
-         * Handle thumbnail replacement
+         * Handle thumbnail replacement.
+         * If a new thumbnail is uploaded:
+         * - Delete the old thumbnail from storage
+         * - Store the new thumbnail
          */
         if ($request->hasFile('thumbnail')) {
 
-            // Hapus thumbnail lama jika ada
+            // Remove existing thumbnail if it exists
             if ($article->thumbnail && Storage::disk('public')->exists($article->thumbnail)) {
                 Storage::disk('public')->delete($article->thumbnail);
             }
@@ -127,7 +152,7 @@ class ArticleController extends Controller
         }
 
         /**
-         * Publish logic
+         * Publish state handling.
          */
         if ($validated['is_published'] && empty($validated['published_at'])) {
             $validated['published_at'] = now();
@@ -147,11 +172,13 @@ class ArticleController extends Controller
     /**
      * Remove the specified article from storage.
      *
-     * Menghapus artikel beserta thumbnail-nya.
+     * Responsibilities:
+     * - Delete the article thumbnail (if exists)
+     * - Remove the article record from the database
      */
     public function destroy(Article $article)
     {
-        // Hapus thumbnail jika ada
+        // Delete thumbnail file if it exists
         if ($article->thumbnail && Storage::disk('public')->exists($article->thumbnail)) {
             Storage::disk('public')->delete($article->thumbnail);
         }

@@ -11,19 +11,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            // USER
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-            // CUSTOMER INFO
             $table->string('customer_email');
 
-            // ORDER INFO
             $table->string('order_number')->unique();
-            $table->integer('total');
+            $table->integer('total');                               // gross amount midtrans
 
-            // PAYMENT
             $table->string('payment_status')->default('pending');
             $table->string('payment_token')->nullable();
             $table->string('payment_method')->nullable();

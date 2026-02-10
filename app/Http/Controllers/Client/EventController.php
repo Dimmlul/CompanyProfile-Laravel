@@ -8,15 +8,30 @@ use Carbon\Carbon;
 
 class EventController extends Controller
 {
+    /**
+     * Display the client events listing page.
+     *
+     * Responsibilities:
+     * - Separate upcoming and past events
+     * - Apply different sorting strategies for each group
+     * - Paginate both datasets independently
+     * - Render the client events index page
+     */
     public function index()
     {
+        /**
+         * Define today's date for event comparison.
+         */
         $today = Carbon::today();
 
         /**
          * ===============================
          * UPCOMING EVENTS
-         * - Hari ini & yang akan datang
-         * - Urut dari yang PALING DEKAT
+         *
+         * Criteria:
+         * - Active events only
+         * - Events happening today or in the future
+         * - Sorted by the nearest upcoming date first
          * ===============================
          */
         $upcomingEvents = Event::query()
@@ -28,8 +43,11 @@ class EventController extends Controller
         /**
          * ===============================
          * PAST EVENTS
-         * - Yang sudah lewat
-         * - Urut dari yang PALING BARU
+         *
+         * Criteria:
+         * - Active events only
+         * - Events that have already ended
+         * - Sorted by the most recent past date first
          * ===============================
          */
         $pastEvents = Event::query()
@@ -44,9 +62,19 @@ class EventController extends Controller
         ));
     }
 
+    /**
+     * Display a single event detail page.
+     *
+     * Responsibilities:
+     * - Ensure the event is active and publicly accessible
+     * - Render the client event detail page
+     */
     public function show(Event $event)
     {
-        abort_if(!$event->is_active, 404);
+        /**
+         * Prevent access to inactive events.
+         */
+        abort_if(! $event->is_active, 404);
 
         return view('pages.client.events.show', compact('event'));
     }

@@ -29,8 +29,8 @@ class GallerySeeder extends Seeder
         );
 
         Storage::disk('public')->put(
-            'gallery/system.png',
-            File::get(database_path('seeders/assets/gallery/system.png'))
+            'gallery/develop2.png',
+            File::get(database_path('seeders/assets/gallery/develop2.png'))
         );
 
         Storage::disk('public')->put(
@@ -83,7 +83,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Design Review Process',
-            'image' => 'gallery/system.png',
+            'image' => 'gallery/develop2.png',
             'caption' => 'UI/UX design review and feedback session.',
             'category' => 'design',
             'order' => 4,

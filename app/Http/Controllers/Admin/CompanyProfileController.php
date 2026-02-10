@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class CompanyProfileController extends Controller
 {
+
+    /**
+     * Display the company profile management page.
+     *
+     * Responsibilities:
+     * - Retrieve the existing company profile (single-record setup)
+     * - Render the admin company profile page
+     */
     public function index()
     {
         return view('pages.admin.company-profile.index', [
@@ -16,6 +24,15 @@ class CompanyProfileController extends Controller
         ]);
     }
 
+    /**
+     * Store or update the company profile data.
+     *
+     * Responsibilities:
+     * - Validate incoming request data
+     * - Handle logo upload and replacement (if provided)
+     * - Ensure only one company profile record exists
+     * - Persist company profile information to the database
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,8 +49,18 @@ class CompanyProfileController extends Controller
             'email'        => 'nullable|email|max:255',
         ]);
 
+        /**
+         * Retrieve the existing company profile.
+         * The application enforces a single-record pattern.
+         */
         $companyProfile = CompanyProfile::first();
 
+        /**
+         * Handle logo upload.
+         * If a new logo is uploaded:
+         * - Remove the existing logo file from storage
+         * - Store the new logo in public storage
+         */
         if ($request->hasFile('logo')) {
             if ($companyProfile?->logo) {
                 Storage::disk('public')->delete($companyProfile->logo);
@@ -44,6 +71,10 @@ class CompanyProfileController extends Controller
                 ->store('company', 'public');
         }
 
+        /**
+         * Update or create the company profile.
+         * This ensures that only one record (ID = 1) exists.
+         */
         CompanyProfile::updateOrCreate(
             ['id' => 1],
             $validated

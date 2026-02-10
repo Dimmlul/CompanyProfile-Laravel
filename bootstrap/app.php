@@ -12,16 +12,23 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
-        // ✅ TRUST PROXIES (WAJIB untuk ngrok)
+        // TRUST PROXIES (ngrok)
         $middleware->trustProxies(
             at: \App\Http\Middleware\TrustProxies::class
         );
 
-        // ✅ CSRF EXCEPTION CARA LARAVEL 12
+        // CSRF EXCEPTION
         $middleware->validateCsrfTokens(except: [
             'midtrans/callback',
         ]);
+
+        //  ROUTE MIDDLEWARE
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\IsAdmin::class,
+        ]);
     })
+
+
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })

@@ -1,5 +1,3 @@
-<!-- resources/views/pages/admin/dashboard/index.blade.php -->
-
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')
@@ -8,11 +6,11 @@
 <div class="mt-4">
 
     {{-- PAGE HEADER --}}
-    <div>
-        <h1 class="text-xl font-semibold text-app-text mb-8">
+    <div class="mb-10">
+        <h1 class="text-xl font-semibold text-app-text">
             Dashboard
         </h1>
-        <p class="text-sm text-app-muted mb-6">
+        <p class="mt-2 text-sm text-app-muted">
             Overview of content, activity, and recent orders
         </p>
     </div>
@@ -26,7 +24,9 @@
             subtitle="Published {{ $publishedArticles }} / {{ $totalArticles }}"
             :value="$totalArticles"
         >
-            <x-slot:icon>📄</x-slot:icon>
+            <x-slot:icon>
+                <x-common.icon name="article" class="h-6 w-6 text-indigo-400" />
+            </x-slot:icon>
 
             <x-slot:viewAll>
                 <x-common.button.link :href="route('admin.articles.index')">
@@ -48,7 +48,9 @@
             subtitle="Active {{ $activeProducts }} / {{ $totalProducts }}"
             :value="$totalProducts"
         >
-            <x-slot:icon>📦</x-slot:icon>
+            <x-slot:icon>
+                <x-common.icon name="product" class="h-6 w-6 text-indigo-400" />
+            </x-slot:icon>
 
             <x-slot:viewAll>
                 <x-common.button.link :href="route('admin.products.index')">
@@ -70,7 +72,9 @@
             subtitle="Active {{ $activeEvents }} / {{ $totalEvents }}"
             :value="$totalEvents"
         >
-            <x-slot:icon>📅</x-slot:icon>
+            <x-slot:icon>
+                <x-common.icon name="event" class="h-6 w-6 text-indigo-400" />
+            </x-slot:icon>
 
             <x-slot:viewAll>
                 <x-common.button.link :href="route('admin.events.index')">
@@ -92,7 +96,9 @@
             subtitle="Active {{ $activeGalleries }}"
             :value="$totalGalleries"
         >
-            <x-slot:icon>🖼️</x-slot:icon>
+            <x-slot:icon>
+                <x-common.icon name="gallery" class="h-6 w-6 text-indigo-400" />
+            </x-slot:icon>
 
             <x-slot:viewAll>
                 <x-common.button.link :href="route('admin.gallery.index')">
@@ -114,7 +120,9 @@
             subtitle="Active {{ $activeClients }} / {{ $totalClients }}"
             :value="$totalClients"
         >
-            <x-slot:icon>👥</x-slot:icon>
+            <x-slot:icon>
+                <x-common.icon name="client" class="h-6 w-6 text-indigo-400" />
+            </x-slot:icon>
 
             <x-slot:viewAll>
                 <x-common.button.link :href="route('admin.clients.index')">
@@ -133,7 +141,7 @@
     </div>
 
     {{-- RECENT ORDERS --}}
-    <div class="pt-17">
+    <div class="mt-12">
         <x-admin.dashboard.recent-orders :orders="$recentOrders" />
     </div>
 

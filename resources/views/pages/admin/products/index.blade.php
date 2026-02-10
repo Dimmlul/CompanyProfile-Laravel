@@ -6,6 +6,10 @@
 
 <x-common.component-card title="Products">
 
+    {{-- ALERT --}}
+    <x-common.alert />
+    <x-common.alert type="success" />
+
     <div class="mb-4 flex items-center justify-between">
         <p class="text-sm text-text-muted">
             Manage products

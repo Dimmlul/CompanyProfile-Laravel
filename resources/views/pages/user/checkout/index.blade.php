@@ -93,7 +93,7 @@
                         required
                         value="{{ old('email', auth()->user()->email ?? '') }}"
                         placeholder="you@example.com"
-                        class="client-input w-full rounded-xl px-4 py-3 text-sm"
+                        class="client-input w-full rounded-xl px-4 py-3 text-sm bg-app-bg border border-card-border text-white"
                     >
 
                     @error('email')
@@ -112,7 +112,7 @@
                        font-semibold text-lg
                        transition hover:bg-indigo-600 active:scale-[0.98]"
             >
-                Proceed to Secure Payment →
+                Proceed to Secure Payment
             </button>
 
             <p class="mt-4 text-center text-xs text-app-muted">
@@ -124,7 +124,7 @@
         <div class="mt-6 text-center">
             <a href="{{ route('cart.index') }}"
                class="text-sm text-indigo-400 hover:underline">
-                ← Back to Cart
+                 Back to Cart
             </a>
         </div>
 

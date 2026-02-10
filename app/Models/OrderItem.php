@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * These fields represent individual items within an order
+     * and can be safely filled using create() or update().
+     */
     protected $fillable = [
         'order_id',
         'product_id',
@@ -13,12 +19,24 @@ class OrderItem extends Model
         'qty',
     ];
 
+    /**
+     * Attribute casting configuration.
+     *
+     * - price is cast to decimal with 2 decimal places
+     *   to ensure accurate monetary calculations
+     */
     protected $casts = [
         'price' => 'decimal:2',
     ];
 
     /**
-     * Total price for this item
+     * Accessor: total price for this order item.
+     *
+     * Calculates the total cost based on:
+     * - unit price
+     * - quantity purchased
+     *
+     * @return float
      */
     public function getTotalAttribute()
     {
@@ -26,7 +44,10 @@ class OrderItem extends Model
     }
 
     /**
-     * Relationship to Order
+     * Get the order that this item belongs to.
+     *
+     * Relationship:
+     * - An order item belongs to a single order
      */
     public function order()
     {
@@ -34,7 +55,10 @@ class OrderItem extends Model
     }
 
     /**
-     * Relationship to Product
+     * Get the product associated with this order item.
+     *
+     * Relationship:
+     * - An order item belongs to a single product
      */
     public function product()
     {

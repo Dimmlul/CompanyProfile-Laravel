@@ -10,19 +10,27 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
     /**
-     * Contact page
+     * Display the contact page.
+     *
+     * Responsibilities:
+     * - Retrieve the company profile data (single-record setup)
+     * - Render the client contact page
      */
     public function contact()
     {
-       $companyProfile = CompanyProfile::query()->firstOrFail();
+        $companyProfile = CompanyProfile::query()->firstOrFail();
 
         return view('pages.client.contact.index', compact('companyProfile'));
     }
 
     /**
-     * Handle contact form
-     * - Simpan ke DB
-     * - Bisa guest
+     * Handle the contact form submission.
+     *
+     * Responsibilities:
+     * - Validate incoming contact form data
+     * - Allow submissions from guest users
+     * - Store the message in the database
+     * - Return a JSON response for frontend handling
      */
     public function send(Request $request)
     {
@@ -33,6 +41,10 @@ class ContactController extends Controller
             'message'    => 'required|string|max:3000',
         ]);
 
+        /**
+         * Persist the contact message.
+         * Messages submitted through this form are treated as unread by default.
+         */
         Message::create([
             'name'    => $data['from_name'],
             'email'   => $data['from_email'],
