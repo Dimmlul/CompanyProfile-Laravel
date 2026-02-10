@@ -26,12 +26,16 @@ class ProductSeeder extends Seeder
         Storage::disk('public')->put('products/digital.jpeg', File::get(database_path('seeders/assets/products/digital.jpeg')));
         Storage::disk('public')->put('products/maintain.jpg', File::get(database_path('seeders/assets/products/maintain.jpg')));
 
+        $link = 'https://dribbble.com/shots/popular/';
+
         Product::create([
             'name' => 'Company Profile Website',
             'description' => 'Professional company profile website.',
             'content' => 'A modern website to represent your brand identity.',
             'image' => 'products/comprof.png',
             'price' => 2500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 1,
             'is_active' => true,
         ]);
@@ -42,6 +46,8 @@ class ProductSeeder extends Seeder
             'content' => 'Sell products online with a scalable platform.',
             'image' => 'products/ecom.jpeg',
             'price' => 7500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 2,
             'is_active' => true,
         ]);
@@ -52,6 +58,8 @@ class ProductSeeder extends Seeder
             'content' => 'Custom-built solutions for business processes.',
             'image' => 'products/custom.jpeg',
             'price' => 12000000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 3,
             'is_active' => true,
         ]);
@@ -62,6 +70,8 @@ class ProductSeeder extends Seeder
             'content' => 'Optimized landing pages for marketing campaigns.',
             'image' => 'products/landing.jpeg',
             'price' => 1800000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 4,
             'is_active' => true,
         ]);
@@ -72,6 +82,8 @@ class ProductSeeder extends Seeder
             'content' => 'Design consistency for digital products.',
             'image' => 'products/ui.png',
             'price' => 4500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 5,
             'is_active' => true,
         ]);
@@ -82,6 +94,8 @@ class ProductSeeder extends Seeder
             'content' => 'Manage data efficiently with a dashboard system.',
             'image' => 'products/admin.jpeg',
             'price' => 6500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 6,
             'is_active' => true,
         ]);
@@ -92,6 +106,8 @@ class ProductSeeder extends Seeder
             'content' => 'Build a strong and consistent digital brand.',
             'image' => 'products/digital.jpeg',
             'price' => 3500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 7,
             'is_active' => true,
         ]);
@@ -102,6 +118,8 @@ class ProductSeeder extends Seeder
             'content' => 'Ensure website performance and security.',
             'image' => 'products/maintain.jpg',
             'price' => 1500000,
+            'delivery_type' => 'link',
+            'download_url' => $link,
             'order' => 8,
             'is_active' => true,
         ]);
