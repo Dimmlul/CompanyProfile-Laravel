@@ -73,7 +73,14 @@
                     icon="inbox"
                 >
                     Inbox
+
+                    @if (!empty($unreadInboxCount) && $unreadInboxCount > 0)
+                        <x-slot:badge>
+                            {{ $unreadInboxCount }}
+                        </x-slot:badge>
+                    @endif
                 </x-admin.sidebar.item>
+
 
                 <x-admin.sidebar.item
                     href="{{ route('admin.users.index') }}"

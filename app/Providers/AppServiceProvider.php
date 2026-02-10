@@ -29,67 +29,60 @@ class AppServiceProvider extends ServiceProvider
      * - Share global view data (company profile & unread messages)
      * - Enforce HTTPS scheme in production and local environments
      */
-    public function boot(): void
-    {
-        /**
-         * Global view composer.
-         *
-         * This composer runs for all views and injects:
-         * - Company profile data
-         * - Unread message count (user-specific or guest fallback)
-         */
-        View::composer('*', function ($view) {
-            /**
-             * Share company profile data globally.
-             *
-             * Used for:
-             * - Header branding
-             * - Footer information
-             * - Public company pages
-             */
-            $view->with(
-                'companyProfile',
-                CompanyProfile::first()
-            );
-
-            /**
-             * Handle unread message count.
-             *
-             * Behavior:
-             * - Authenticated users:
-             *   Count root message threads that have unread admin replies
-             *
-             * - Guests:
-             *   Fallback count of unread messages (used defensively)
-             */
-            if (Auth::check()) {
-                $unreadMessages = Message::where('user_id', Auth::id())
-                    ->whereNull('parent_id')
-                    ->whereHas('replies', function ($q) {
-                        $q->where('sender', 'admin')
-                          ->where('is_read', false);
-                    })
-                    ->count();
-
-                $view->with('unreadMessages', $unreadMessages);
-            } else {
-                $view->with(
-                    'unreadMessages',
-                    Message::where('is_read', false)->count()
-                );
-            }
-        });
+public function boot(): void
+{
+    View::composer('*', function ($view) {
 
         /**
-         * Force HTTPS scheme in production and local environments.
-         *
-         * This ensures:
-         * - Correct asset URLs
-         * - Proper URL generation
-         * - Compatibility with reverse proxies and HTTPS tunneling
+         * =============================
+         * GLOBAL COMPANY PROFILE
+         * =============================
          */
-        if (app()->environment('production', 'local')) {
-            URL::forceScheme('https');
+        $view->with(
+            'companyProfile',
+            CompanyProfile::first()
+        );
+
+        /**
+         * =============================
+         * USER INBOX (FRONTEND)
+         * =============================
+         */
+        if (Auth::check() && !Auth::user()->isAdmin()) {
+            $unreadMessages = Message::where('user_id', Auth::id())
+                ->whereNull('parent_id')
+                ->whereHas('replies', function ($q) {
+                    $q->where('sender', 'admin')
+                      ->where('is_read', false);
+                })
+                ->count();
+
+            $view->with('unreadMessages', $unreadMessages);
         }
+
+        /**
+         * =============================
+         * ADMIN INBOX BADGE (SIDEBAR)
+         * =============================
+         */
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $unreadInboxCount = Message::whereNull('parent_id')
+                ->whereHas('replies', function ($q) {
+                    $q->whereIn('sender', ['user', 'client'])
+                      ->where('is_read', false);
+                })
+                ->count();
+
+            $view->with('unreadInboxCount', $unreadInboxCount);
+        }
+    });
+
+    /**
+     * Force HTTPS
+     */
+    if (app()->environment('production', 'local')) {
+        URL::forceScheme('https');
     }
+}
+
 }
