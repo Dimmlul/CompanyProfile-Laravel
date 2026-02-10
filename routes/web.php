@@ -148,12 +148,11 @@ Route::get('/gallery', [ClientGalleryController::class, 'index'])
 Route::get('/clients', [ClientClientController::class, 'index'])
     ->name('clients');
 
-Route::get('/contact', fn () => view('pages.client.contact.index'))
+Route::get('/contact', [ClientContactController::class, 'contact'])
     ->name('contact');
 
-// CONTACT SUBMIT (USER + GUEST)
-Route::post('/contact/message', [ClientContactController::class, 'send'])
-    ->name('contact.message.send');
+Route::post('/contact/send', [ClientContactController::class, 'send'])
+    ->name('contact.send');
 
 
 Route::prefix('messages')->name('client.messages.')->group(function () {

@@ -3,15 +3,26 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyProfile;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
     /**
+     * Contact page
+     */
+    public function contact()
+    {
+       $companyProfile = CompanyProfile::query()->firstOrFail();
+
+        return view('pages.client.contact.index', compact('companyProfile'));
+    }
+
+    /**
      * Handle contact form
-     * - Semua message masuk DB
-     * - Tidak peduli login / guest
+     * - Simpan ke DB
+     * - Bisa guest
      */
     public function send(Request $request)
     {
@@ -23,16 +34,16 @@ class ContactController extends Controller
         ]);
 
         Message::create([
-            'name'     => $data['from_name'],
-            'email'    => $data['from_email'],
-            'subject'  => $data['subject'] ?: 'No Subject',
-            'message'  => $data['message'],
-            'is_read'  => false,
+            'name'    => $data['from_name'],
+            'email'   => $data['from_email'],
+            'subject' => $data['subject'] ?: 'No Subject',
+            'message' => $data['message'],
+            'is_read' => false,
         ]);
 
         return response()->json([
             'status'  => 'ok',
-            'message' => 'Message sent successfully.',
+            'message' => 'Message saved successfully.',
         ]);
     }
 }

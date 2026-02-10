@@ -20,7 +20,8 @@
                         >
                     @endif
 
-                    <span class="text-lg font-semibold text-white leading-none">
+                    <span class="text-lg font-semibold text-white leading-none overflow-hidden
+                                 truncate">
                         {{ $companyProfile->company_name ?? 'Company' }}
                     </span>
                 </a>

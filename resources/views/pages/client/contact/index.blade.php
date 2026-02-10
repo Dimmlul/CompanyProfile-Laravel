@@ -11,7 +11,7 @@
             <h1 class="text-4xl font-semibold text-white">
                 Get in Touch
             </h1>
-            <p class="mt-4 text-app-muted">
+            <p class="mt-4 text-app-muted leading-relaxed">
                 Have a project in mind or just want to say hello?
                 Our team at
                 <span class="font-medium text-white">
@@ -21,11 +21,71 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
 
             {{-- COMPANY INFO --}}
-            <div class="space-y-6 text-sm text-app-muted">
-                {{ $companyProfile->about }}
+            <div class="space-y-8">
+
+                {{-- ABOUT --}}
+                <div class="text-sm leading-relaxed text-app-muted">
+                    {{ $companyProfile->about }}
+                </div>
+
+                {{-- DIVIDER --}}
+                <div class="h-px w-full bg-white/10"></div>
+
+                {{-- CONTACT DETAILS --}}
+                <div class="grid grid-cols-1 gap-5 text-sm">
+
+                    {{-- ADDRESS --}}
+                    <div>
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
+                            Address
+                        </p>
+                        <p class="font-medium text-white leading-relaxed">
+                            {{ $companyProfile->address }}
+                        </p>
+                    </div>
+
+                    {{-- EMAIL --}}
+                    <div>
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
+                            Email
+                        </p>
+                        <a
+                            href="mailto:{{ $companyProfile->email }}"
+                            class="font-medium text-white hover:underline"
+                        >
+                            {{ $companyProfile->email }}
+                        </a>
+                    </div>
+
+                    {{-- PHONE --}}
+                    <div>
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
+                            Phone
+                        </p>
+                        <a
+                            href="tel:{{ $companyProfile->phone }}"
+                            class="font-medium text-white hover:underline"
+                        >
+                            {{ $companyProfile->phone }}
+                        </a>
+                    </div>
+
+                    {{-- FAX --}}
+                    @if(!empty($companyProfile->fax))
+                    <div>
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
+                            Fax
+                        </p>
+                        <p class="font-medium text-white">
+                            {{ $companyProfile->fax }}
+                        </p>
+                    </div>
+                    @endif
+
+                </div>
             </div>
 
             {{-- CONTACT FORM --}}
@@ -92,7 +152,7 @@
                         type="submit"
                         class="w-full rounded-lg bg-white py-3
                                text-sm font-semibold text-gray-900
-                               hover:bg-gray-200 transition"
+                               transition hover:bg-gray-200"
                     >
                         Send Message
                     </button>

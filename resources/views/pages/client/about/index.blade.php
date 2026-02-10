@@ -8,23 +8,51 @@
 <section class="relative bg-app-bg border-b border-white/5">
     <div class="mx-auto max-w-7xl px-6 py-24">
 
-        <div class="max-w-3xl">
-            <span class="mb-4 inline-block text-sm font-medium tracking-wide text-indigo-400">
-                About Us
-            </span>
+        <div class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
 
-            <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-white">
-                {{ $companyProfile->company_name ?? 'Our Company' }}
-            </h1>
+            {{-- LEFT : TEXT --}}
+            <div class="max-w-3xl">
+                <span class="mb-4 inline-block text-sm font-medium tracking-wide text-indigo-400">
+                    About Us
+                </span>
 
-            <p class="mt-6 text-base leading-relaxed text-app-muted">
-                {!! nl2br(e($companyProfile->about ??
-                'We are a digital studio focused on building meaningful and scalable digital solutions that support long-term business growth.')) !!}
-            </p>
+                <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-white">
+                    {{ $companyProfile->company_name ?? 'Our Company' }}
+                </h1>
+
+                <p class="mt-6 text-base leading-relaxed text-app-muted">
+                    {!! nl2br(e(
+                        $companyProfile->about ??
+                        'We are a digital studio focused on building meaningful and scalable digital solutions that support long-term business growth.'
+                    )) !!}
+                </p>
+            </div>
+
+            {{-- RIGHT : LOGO --}}
+            <div class="flex justify-center md:justify-end">
+                @if(!empty($companyProfile->logo))
+                    <div class="flex h-40 w-40 items-center justify-center rounded-2xl
+                                bg-slate-900/60 border border-white/10 p-6">
+                        <img
+                            src="{{ asset('storage/' . $companyProfile->logo) }}"
+                            alt="{{ $companyProfile->company_name }} Logo"
+                            class="max-h-full max-w-full object-contain"
+                        >
+                    </div>
+                @else
+                    {{-- Fallback --}}
+                    <div class="flex h-40 w-40 items-center justify-center rounded-2xl
+                                bg-slate-900/40 border border-white/10 text-sm text-app-muted">
+                        Company Logo
+                    </div>
+                @endif
+            </div>
+
         </div>
 
     </div>
 </section>
+
 
 {{-- ================= WHO WE ARE ================= --}}
 <section class="bg-app-bg">
