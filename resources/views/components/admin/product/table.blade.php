@@ -3,7 +3,7 @@
 @php use Illuminate\Support\Str; @endphp
 
 <div class="overflow-x-auto">
-    <table class="admin-table">
+    <table class="admin-table w-full">
 
         <thead>
             <tr>
@@ -28,9 +28,7 @@
                                 class="h-12 w-16 rounded object-cover border border-white/10"
                             >
                         @else
-                            <span class="text-xs text-app-muted">
-                                No image
-                            </span>
+                            <span class="text-xs text-app-muted">No image</span>
                         @endif
                     </td>
 
@@ -54,9 +52,7 @@
                         @endif
                     </td>
 
-                    <td>
-                        {{ $product->order }}
-                    </td>
+                    <td>{{ $product->order }}</td>
 
                     <td class="text-right">
                         <div class="inline-flex gap-2">

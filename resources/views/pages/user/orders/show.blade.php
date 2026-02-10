@@ -1,75 +1,138 @@
 @extends('layouts.app')
 
-@section('title','Order Detail')
+@section('title', 'Order ' . $order->order_number)
 
 @section('content')
-<section class="py-16 bg-app-bg">
-    <div class="max-w-4xl mx-auto px-6">
+<section class="bg-app-bg py-20">
+    <div class="max-w-5xl mx-auto px-6">
 
-        <h1 class="text-2xl font-semibold text-white mb-6">
-            Order Detail
-        </h1>
-
-        {{-- ORDER INFO --}}
-        <div class="bg-card border border-card-border rounded-xl p-6 mb-6">
-            <p class="text-sm text-app-muted">Order ID</p>
-            <p class="text-white font-medium mb-4">
-                {{ $order->order_number }}
+        {{-- HEADER --}}
+        <div class="mb-10">
+            <h1 class="text-2xl font-semibold text-white">
+                Order Detail
+            </h1>
+            <p class="mt-2 text-sm text-app-muted">
+                Order ID: {{ $order->order_number }}
             </p>
+        </div>
 
-            <p class="text-sm text-app-muted">Status</p>
+        {{-- STATUS --}}
+        <div class="mb-6">
             @if($order->payment_status === 'paid')
-                <span class="inline-block mt-1 px-4 py-1 rounded-full
-                    bg-green-500/20 text-green-400">
+                <span class="inline-flex px-4 py-1 rounded-full text-sm
+                             bg-green-500/20 text-green-400">
                     Paid
                 </span>
             @elseif($order->payment_status === 'pending')
-                <span class="inline-block mt-1 px-4 py-1 rounded-full
-                    bg-yellow-500/20 text-yellow-400">
+                <span class="inline-flex px-4 py-1 rounded-full text-sm
+                             bg-yellow-500/20 text-yellow-400">
                     Pending
                 </span>
             @else
-                <span class="inline-block mt-1 px-4 py-1 rounded-full
-                    bg-red-500/20 text-red-400">
+                <span class="inline-flex px-4 py-1 rounded-full text-sm
+                             bg-red-500/20 text-red-400">
                     Failed
                 </span>
             @endif
         </div>
 
         {{-- ITEMS --}}
-        <div class="bg-card border border-card-border rounded-xl p-6 mb-6">
-            <h2 class="text-white font-semibold mb-4">Items</h2>
+        <div class="space-y-6">
+            @foreach($order->items as $item)
+                @php
+                    $product = $item->product;
+                @endphp
 
-            <div class="space-y-3">
-                @foreach($order->items as $item)
-                    <div class="flex justify-between text-app-muted">
-                        <span>
-                            {{ $item->product->name }} × {{ $item->qty }}
-                        </span>
-                        <span>
-                            Rp {{ number_format($item->price * $item->qty) }}
-                        </span>
+                <div class="bg-card border border-card-border rounded-2xl p-6">
+                    <div class="flex gap-6">
+
+                        {{-- IMAGE --}}
+                        <div class="shrink-0">
+                            <img
+                                src="{{ $product->image
+                                    ? asset('storage/'.$product->image)
+                                    : 'https://via.placeholder.com/150' }}"
+                                class="w-24 h-24 rounded-xl object-cover
+                                       border border-card-border"
+                                alt="{{ $product->name }}"
+                            >
+                        </div>
+
+                        {{-- INFO --}}
+                        <div class="flex-1 space-y-2">
+
+                            <h2 class="text-lg font-semibold text-white">
+                                {{ $product->name }}
+                            </h2>
+
+                            <p class="text-sm text-app-muted">
+                                Quantity: {{ $item->qty }}
+                            </p>
+
+                            <p class="text-sm text-app-muted">
+                                Price: Rp {{ number_format($item->price) }}
+                            </p>
+
+                            {{-- DOWNLOAD / LINK --}}
+                            @if($order->payment_status === 'paid')
+                                <div class="pt-4 flex flex-wrap gap-3">
+
+                                    {{-- FILE DOWNLOAD --}}
+                                    @if(
+                                        $product->delivery_type === 'file'
+                                        && $product->download_path
+                                    )
+                                        <a
+                                            href="{{ asset('storage/'.$product->download_path) }}"
+                                            download
+                                            class="inline-flex items-center gap-2
+                                                   px-4 py-2 rounded-lg
+                                                   bg-indigo-500 text-white text-sm
+                                                   hover:bg-indigo-600 transition"
+                                        >
+                                             Download File
+                                        </a>
+
+                                    {{-- LINK --}}
+                                    @elseif(
+                                        $product->delivery_type === 'link'
+                                    )
+                                        <a
+                                            href="{{ $product->download_url ?? 'https://github.com/' }}"
+                                            target="_blank"
+                                            class="inline-flex items-center gap-2
+                                                   px-4 py-2 rounded-lg
+                                                   bg-indigo-500 text-white text-sm
+                                                   hover:bg-indigo-600 transition"
+                                        >
+                                            Open Link
+                                        </a>
+
+                                    {{-- FALLBACK --}}
+                                    @else
+                                        <span class="text-xs text-app-muted">
+                                            Download not available yet
+                                        </span>
+                                    @endif
+
+                                </div>
+                            @else
+                                <p class="text-xs text-app-muted pt-3">
+                                    Available after payment completed
+                                </p>
+                            @endif
+
+                        </div>
                     </div>
-                @endforeach
-            </div>
-
-            <div class="border-t border-card-border mt-4 pt-4
-                        flex justify-between font-semibold text-white">
-                <span>Total</span>
-                <span>Rp {{ number_format($order->total) }}</span>
-            </div>
+                </div>
+            @endforeach
         </div>
 
-        {{-- CONTINUE PAYMENT --}}
-        @if($order->payment_status !== 'paid')
-            <div class="text-center">
-                <a href="{{ route('checkout.payment', $order) }}"
-                   class="inline-block px-8 py-3 rounded-xl
-                          bg-indigo-500 text-white hover:bg-indigo-600 transition">
-                    Continue Payment
-                </a>
-            </div>
-        @endif
+        {{-- TOTAL --}}
+        <div class="mt-10 flex justify-between text-lg font-semibold text-white">
+            <span>Total</span>
+            <span>Rp {{ number_format($order->total) }}</span>
+        </div>
 
     </div>
 </section>

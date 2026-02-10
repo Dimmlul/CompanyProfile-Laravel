@@ -34,15 +34,9 @@
                     Send Us a Message
                 </h3>
 
-                <form
-                    id="contact-form"
-                    method="POST"
-                    action="{{ route('contact.message.send') }}"
-                    class="space-y-5"
-                >
-                    @csrf
+                <form id="contact-form" class="space-y-5">
 
-                    {{-- EmailJS target --}}
+                    {{-- TARGET EMAIL --}}
                     <input
                         type="hidden"
                         name="to_email"
@@ -71,18 +65,16 @@
                                placeholder:text-app-muted focus:outline-none"
                     >
 
-                    {{-- SUBJECT → ONLY AUTH USER --}}
-                    @auth
-                        <input
-                            type="text"
-                            name="subject"
-                            placeholder="Subject"
-                            required
-                            class="w-full rounded-lg border border-white/10 bg-transparent
-                                   px-4 py-3 text-sm text-white
-                                   placeholder:text-app-muted focus:outline-none"
-                        >
-                    @endauth
+                    {{-- SUBJECT --}}
+                    <input
+                        type="text"
+                        name="subject"
+                        placeholder="Subject"
+                        required
+                        class="w-full rounded-lg border border-white/10 bg-transparent
+                               px-4 py-3 text-sm text-white
+                               placeholder:text-app-muted focus:outline-none"
+                    >
 
                     {{-- MESSAGE --}}
                     <textarea
@@ -118,62 +110,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
     emailjs.init('{{ config('services.emailjs.public_key') }}');
 
-    document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+    const form   = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
 
-        const form   = this;
-        const status = document.getElementById('form-status');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
 
         status.textContent = 'Sending message...';
 
-        fetch(form.action, {
-            method: 'POST',
-            credentials: 'same-origin', // 🔥 INI KUNCI
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-            },
-            body: new FormData(form),
+        emailjs.sendForm(
+            '{{ config('services.emailjs.service_id') }}',
+            '{{ config('services.emailjs.template_id') }}',
+            form
+        )
+        .then(() => {
+            status.textContent = 'Message sent successfully.';
+            form.reset();
         })
-
-        .then(async res => {
-            if (!res.ok) {
-                const text = await res.text();
-                throw text;
-            }
-            return res.json();
-        })
-        .then(res => {
-
-            // AUTH USER → SAVED TO DB
-            if (res.status === 'saved') {
-                status.textContent = res.message;
-                form.reset();
-                return;
-            }
-
-            // GUEST → SEND EMAILJS
-            if (res.status === 'guest') {
-                emailjs.sendForm(
-                    '{{ config('services.emailjs.service_id') }}',
-                    '{{ config('services.emailjs.template_id') }}',
-                    form
-                )
-                .then(() => {
-                    status.textContent = 'Message sent successfully.';
-                    form.reset();
-                })
-                .catch(() => {
-                    status.textContent = 'Failed to send message.';
-                });
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            status.textContent = 'Something went wrong.';
+        .catch(error => {
+            console.error('EMAILJS ERROR:', error);
+            status.textContent = error.text || 'Failed to send message.';
         });
     });
+});
 </script>
 @endpush

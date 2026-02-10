@@ -6,30 +6,36 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
             $table->string('slug')->unique();
+
             $table->text('description')->nullable();
             $table->longText('content')->nullable();
+
+            // IMAGE / PREVIEW
             $table->string('image')->nullable();
-            $table->decimal('price', 10, 2)->nullable();
+
+            // PRICE
+            $table->decimal('price', 10, 2)->default(0);
+
+            // TEMPLATE DELIVERY
+            $table->enum('delivery_type', ['file', 'link'])->default('file');
+            $table->string('download_path')->nullable(); // storage path
+            $table->string('download_url')->nullable();  // external link
+
+            // STATUS & ORDER
             $table->boolean('is_active')->default(true);
             $table->integer('order')->default(0);
-            $table->timestamps();
-            // $table->softDeletes();
-        });
 
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');

@@ -203,6 +203,11 @@ Route::middleware('auth')->group(function () {
         ->name('orders.index');
     Route::get('/orders/{order}', [UserOrderController::class, 'show'])
         ->name('orders.show');
+            // 🔽 DOWNLOAD PRODUCT FILE
+    Route::get(
+        '/orders/{order}/items/{item}/download',
+        [UserOrderController::class, 'download']
+    )->name('orders.items.download');
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'index'])

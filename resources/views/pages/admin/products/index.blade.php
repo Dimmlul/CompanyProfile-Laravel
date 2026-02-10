@@ -16,6 +16,7 @@
         </a>
     </div>
 
+    {{-- TABLE COMPONENT --}}
     <x-admin.product.table :products="$products" />
 
     <div class="mt-4">

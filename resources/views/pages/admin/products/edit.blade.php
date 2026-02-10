@@ -6,6 +6,7 @@
 
 <x-common.component-card title="Edit Product">
 
+    {{-- FORM COMPONENT --}}
     <x-admin.product.form
         :action="route('admin.products.update', $product)"
         method="PUT"

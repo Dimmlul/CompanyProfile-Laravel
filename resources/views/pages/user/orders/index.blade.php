@@ -83,9 +83,6 @@
                                         <p class="text-white font-medium">
                                             {{ auth()->user()->name }}
                                         </p>
-                                        <p class="text-xs">
-                                            South Jakarta, Indonesia
-                                        </p>
                                     </td>
 
                                     {{-- TOTAL --}}

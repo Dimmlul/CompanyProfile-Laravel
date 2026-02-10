@@ -17,6 +17,9 @@ class Product extends Model
         'content',
         'image',
         'price',
+        'delivery_type',
+        'download_path',
+        'download_url',
         'is_active',
         'order',
     ];
@@ -28,7 +31,7 @@ class Product extends Model
     ];
 
     /**
-     * Use slug instead of id for route model binding.
+     * Route binding via slug
      */
     public function getRouteKeyName()
     {
@@ -36,28 +39,20 @@ class Product extends Model
     }
 
     /**
-     * Generate unique slug.
+     * Helpers
      */
-    private static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    public function isFile(): bool
     {
-        $slug = Str::slug($name);
-        $original = $slug;
-        $counter = 1;
+        return $this->delivery_type === 'file';
+    }
 
-        while (
-            static::where('slug', $slug)
-                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
-                ->exists()
-        ) {
-            $counter++;
-            $slug = $original . '-' . $counter;
-        }
-
-        return $slug;
+    public function isLink(): bool
+    {
+        return $this->delivery_type === 'link';
     }
 
     /**
-     * Model events.
+     * Slug generator
      */
     protected static function booted()
     {
@@ -75,21 +70,20 @@ class Product extends Model
         });
     }
 
-    /**
-     * Scope: active products.
-     */
-    public function scopeActive($query)
+    private static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
     {
-        return $query->where('is_active', true);
-    }
+        $slug = Str::slug($name);
+        $original = $slug;
+        $counter = 1;
 
-    public function cartItems()
-    {
-        return $this->hasMany(Cart::class);
-    }
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $slug = $original . '-' . $counter++;
+        }
 
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
+        return $slug;
     }
 }
