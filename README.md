@@ -41,7 +41,6 @@ This project is suitable for:
 12. [User Flow](#-user-flow)
 13. [Admin Flow](#-admin-flow)
 14. [Security Notes](#-security-notes)
-15. [Future Improvements](#-future-improvements)
 
 ---
 
@@ -291,7 +290,7 @@ storage/
 
 ```bash
 git clone https://github.com/Dimmlul/CompanyProfile-Laravel
-cd project-name
+cd CompanyProfile-Laravel
 ```
 
 ### 2️⃣ Environment Setup
