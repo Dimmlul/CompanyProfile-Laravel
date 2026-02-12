@@ -290,7 +290,7 @@ storage/
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/project-name.git
+git clone https://github.com/Dimmlul/CompanyProfile-Laravel
 cd project-name
 ```
 

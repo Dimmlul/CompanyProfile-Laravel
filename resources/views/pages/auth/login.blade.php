@@ -23,7 +23,7 @@
                     label="Email"
                     name="email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="email@example.com"
                     required
                 />
 
