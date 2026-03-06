@@ -1,231 +1,341 @@
 # 🚀 Company Profile & Digital Product Platform (Laravel)
 
-A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**, designed for businesses that sell **digital services, templates, or downloadable products**, complete with:
+A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**.
 
-- Public company profile website  
-- Digital product marketplace  
-- Secure checkout & Midtrans payment  
-- Automatic digital delivery (file / external link)  
-- Admin dashboard  
-- User dashboard  
-- Contact system using EmailJS (no SMTP)
+This platform combines a **company profile website** with a **digital product marketplace**, allowing businesses to showcase their services and sell downloadable digital products within a single system.
 
-This project is suitable for:
+The application includes:
 
-- Software houses  
-- Digital agencies  
-- SaaS landing pages  
-- Digital product sellers  
-- Internal company profile + admin system  
+* Public company profile website
+* Digital product marketplace
+* Secure checkout with Midtrans payment
+* Automatic digital product delivery
+* Admin management panel
+* User account area
+* Contact system powered by EmailJS (no SMTP required)
 
 ---
 
-## 📑 Table of Contents
+# Screenshots
 
-1. [Project Overview](#-project-overview)
-2. [Why Ngrok Is Required](#-why-ngrok-is-required)
-3. [Main Features Overview](#-main-features-overview)
-4. [Menu & Feature Explanation](#-menu--feature-explanation)
-   - [Public Website](#-public-website-client-side)
-   - [User Area](#-user-area-authenticated)
-   - [Order & Payment](#-order--payment-system)
-   - [Digital Product Delivery](#-digital-product-delivery)
-   - [Admin Panel](#-admin-panel)
-5. [Tech Stack](#-tech-stack)
-6. [Project Structure](#-project-structure-very-detailed)
-7. [Installation Guide](#-installation-guide)
-8. [Frontend Build (Vite)](#-frontend-build-vite)
-9. [Ngrok Setup](#-ngrok-setup)
-10. [Midtrans Payment Setup](#-midtrans-payment-setup)
-11. [EmailJS Contact Setup](#-emailjs-contact-setup)
-12. [User Flow](#-user-flow)
-13. [Admin Flow](#-admin-flow)
-14. [Security Notes](#-security-notes)
+## Landing Page
 
----
+![Landing Page](docs/images/LandingPage.png)
 
-## 📌 Project Overview
+## Product Page
 
-This application combines a **marketing website** and a **transactional digital product system** into one unified platform.
+![Products](docs/images/Products.png)
 
-### Core Goals
+## Cart
 
-- Showcase company profile professionally  
-- Sell digital products or services  
-- Automate payment confirmation  
-- Automatically unlock downloads after payment  
-- Clearly separate concerns between **Admin**, **User**, and **Public**
+![Cart](docs/images/Cart.png)
 
-The system follows **Laravel best practices**, **clean Blade architecture**, and a **scalable folder structure**.
+## Checkout
+
+![Checkout](docs/images/Checkout.png)
+
+## Admin Dashboard
+
+![Admin Dashboard](docs/images/AdminDashboard.png)
 
 ---
 
-## 🌍 Why Ngrok Is Required
+# Table of Contents
 
-### ❓ Why not localhost only?
-
-Some third-party services **cannot access `localhost`**, including:
-
-| Service            | Reason                                  |
-|--------------------|------------------------------------------|
-| Midtrans Callback  | Needs a public URL to send payment status |
-| EmailJS            | Requires a public origin                 |
-| Webhooks           | Cannot reach local machine               |
-
----
-
-### ✅ What Ngrok Solves
-
-Ngrok exposes your local Laravel server to the internet:
-
-- Local: <http://localhost:8000>  
-- Public: <https://xxxx.ngrok-free.dev>
-
-This allows:
-
-- Midtrans to send **server-to-server callbacks**
-- EmailJS to work correctly
-- Full end-to-end payment testing locally
-
-> **Ngrok is mandatory for local Midtrans testing.**
+* [Project Overview](#project-overview)
+* [Main Features](#main-features)
+* [Application Areas](#application-areas)
+* [Menu and Feature Explanation](#menu-and-feature-explanation)
+* [Tech Stack](#tech-stack)
+* [Project Structure](#project-structure)
+* [Installation Guide](#installation-guide)
+* [Frontend Build](#frontend-build)
+* [Ngrok Setup](#ngrok-setup)
+* [Midtrans Payment Setup](#midtrans-payment-setup)
+* [EmailJS Setup](#emailjs-setup)
+* [User Flow](#user-flow)
+* [Admin Flow](#admin-flow)
+* [Security Notes](#security-notes)
+* [Documentation Guides](#documentation-guides)
 
 ---
 
-## ✨ Main Features Overview
+# Project Overview
 
-| Area     | Features                                      |
-|----------|-----------------------------------------------|
-| Public   | Company profile, products, articles, contact  |
-| User     | Orders, downloads, profile                    |
-| Admin    | Product, content, orders, messages            |
-| Payment  | Midtrans Snap                                 |
-| Delivery | File download or external link                |
-| Contact  | EmailJS (no SMTP)                             |
+This application combines a **marketing website** and a **transactional digital product platform** into a unified system.
+
+It allows businesses to:
+
+* Present their company profile professionally
+* Publish articles and events
+* Sell digital products
+* Automatically deliver digital downloads after payment
+* Manage products and orders through an admin panel
+
+The system follows **Laravel best practices**, using **clean Blade architecture**, modular controllers, and a scalable project structure.
 
 ---
 
-## 📂 Menu & Feature Explanation
+# Main Features
 
-## 🌐 Public Website (Client Side)
+| Area           | Features                                    |
+| -------------- | ------------------------------------------- |
+| Public Website | Company profile, articles, events, products |
+| User Area      | Cart, orders, downloads, profile            |
+| Admin Panel    | Product management, content management      |
+| Payment        | Midtrans Snap integration                   |
+| Delivery       | File download or external link              |
+| Contact        | EmailJS contact form                        |
 
-Accessible **without login**.
+---
 
-### Menus
+# Application Areas
 
-- **Home** – Landing page with company overview  
-- **About / Vision & Mission** – Company identity & direction  
-- **Articles** – Blog / news content  
-- **Events** – Company or marketing events  
-- **Products** – Digital products or services catalog  
-- **Contact** – Contact form powered by EmailJS  
+The platform consists of **three main areas**.
+
+## Public Website
+
+Accessible without login.
+
+Visitors can:
+
+* View company profile
+* Read articles
+* Browse events
+* Explore digital products
+* Contact the company
+
+---
+
+## User Area (Authenticated)
+
+Users access their account after login.
+
+Login page:
+
+```
+/login
+```
+
+Available features include:
+
+* Cart management
+* Checkout
+* Order history
+* Digital product downloads
+* Profile management
+* Messaging with admin
+
+Note:
+
+The platform **does not include a traditional dashboard page**.
+Users interact with their account through dedicated pages such as **Orders, Cart, and Profile**.
+
+---
+
+## Admin Panel
+
+Admin access:
+
+```
+/admin
+```
+
+Administrators can manage:
+
+* Products
+* Articles
+* Events
+* Orders
+* User messages
+
+Admin routes are protected using authentication and role-based middleware.
+
+---
+
+# Menu and Feature Explanation
+
+## Public Website
+
+Menus available for visitors:
+
+* Home
+* About / Vision & Mission
+* Articles
+* Events
+* Products
+* Contact
 
 ### Contact Form
 
-- No SMTP or backend email server  
-- Uses EmailJS (frontend only)  
-- Works for guest & authenticated users  
+The contact form uses **EmailJS**, meaning:
+
+* No backend SMTP server required
+* Messages are sent from frontend
+* Works for both guests and authenticated users
 
 ---
 
-## 👤 User Area (Authenticated)
+## User Area
 
-Accessible after login.
+### Cart
 
-### Menus
+Users can:
 
-#### Cart
-- Add / remove products  
-- Update quantity  
-
-#### Checkout
-- Create order  
-- Redirect to Midtrans Snap  
-
-#### Orders
-- Order history  
-- Order detail  
-- Download file / open external link after payment  
-
-#### Profile
-- Update user information  
-
-#### Messages
-- Contact admin  
-- Reply to admin messages  
+* Add products
+* Remove products
+* Update quantity
 
 ---
 
-## 🛒 Order & Payment System
+### Checkout
 
-### Flow
-
-1. User adds product to cart  
-2. Checkout generates an order  
-3. Midtrans Snap opens  
-4. Payment completed  
-5. Midtrans sends callback  
-6. Order status updated automatically  
-
-### Payment Status
-
-- `pending`  
-- `paid`  
-- `expired`  
-- `failed`  
+Checkout creates an order and opens the **Midtrans Snap payment popup**.
 
 ---
 
-## 📦 Digital Product Delivery
+### Orders
 
-Each product supports **two delivery modes**.
+Users can:
 
-### 📁 File Delivery
+* View order history
+* Inspect order details
+* Download purchased digital products
 
-- Admin uploads ZIP / asset file  
-- Stored in `storage/app/public/templates`  
-- Download unlocked **only after payment**
-
-### 🔗 External Link Delivery
-
-- Admin provides URL (GitHub, Google Drive, Figma, etc.)  
-- Link visible after payment  
-- Optional fallback link (e.g. <https://github.com/>)
+Downloads are only available after payment confirmation.
 
 ---
 
-## 🛠 Admin Panel
+### Profile
 
-Accessible via `/admin`.
+Users can update personal information such as:
 
-### Menus & Features
-
-#### Products
-- Create / edit / delete products  
-- Upload preview image  
-- Set price & active status  
-- Choose delivery type (file / link)  
-- Manual ordering (top / up / down / bottom)  
-
-#### Articles & Events
-- Content management  
-- Slug-based routing  
-
-#### Orders
-- View all orders  
-- Monitor payment status  
-- Inspect Midtrans response  
-
-#### Messages
-- Inbox from users  
-- Mark as read  
-- Reply messages  
+* Name
+* Email
+* Password
 
 ---
 
-## 🧱 Tech Stack
+### Messages
+
+Users can send inquiries to administrators via the messaging system.
+
+---
+
+# Order and Payment System
+
+### Payment Flow
+
+1. User adds product to cart
+2. User proceeds to checkout
+3. Order is created with status `pending`
+4. Midtrans Snap payment popup appears
+5. User completes payment
+6. Midtrans sends callback to the server
+7. Order status updates automatically
+
+---
+
+### Order Status
+
+| Status  | Description         |
+| ------- | ------------------- |
+| pending | Waiting for payment |
+| paid    | Payment successful  |
+| expired | Payment timeout     |
+| failed  | Payment failed      |
+
+---
+
+# Digital Product Delivery
+
+Products support **two delivery modes**.
+
+## File Delivery
+
+Admin uploads a digital file (ZIP or asset).
+
+Stored in:
+
+```
+storage/app/public/templates
+```
+
+Users can download the file only after successful payment.
+
+---
+
+## External Link Delivery
+
+Admin provides a URL such as:
+
+* GitHub repository
+* Google Drive
+* Figma project
+* Documentation link
+
+The link becomes visible after payment.
+
+---
+
+# Admin Panel
+
+Admin panel is accessible via:
+
+```
+/admin/dashboard
+```
+
+---
+
+## Product Management
+
+Admins can:
+
+* Create products
+* Edit products
+* Delete products
+* Upload preview images
+* Set price and status
+* Choose delivery type
+
+Products can also be manually reordered.
+
+---
+
+## Articles and Events
+
+Admins can publish marketing content including:
+
+* Blog articles
+* Event announcements
+
+Routes use **slug-based URLs**.
+
+---
+
+## Order Monitoring
+
+Admins can view and monitor all transactions.
+
+Information available includes:
+
+* Order details
+* Payment status
+* Midtrans response
+
+---
+
+## Messages
+
+Admins can view and reply to user messages.
+
+---
+
+# Tech Stack
 
 | Layer      | Technology              |
-|------------|-------------------------|
+| ---------- | ----------------------- |
 | Backend    | Laravel 12              |
 | Frontend   | Blade + Tailwind CSS v4 |
 | Database   | MySQL                   |
@@ -237,135 +347,111 @@ Accessible via `/admin`.
 
 ---
 
-## 🗂 Project Structure (Very Detailed)
+# Project Structure
 
-```text
+```
 app/
 ├── Http/
 │   ├── Controllers/
-│   │   ├── Admin/        # Admin panel logic
-│   │   ├── Client/       # Public website logic
-│   │   ├── User/         # User dashboard logic
-│   │   └── Auth/         # Authentication logic
-│   └── Middleware/       # Request filters & guards
-│
-├── Models/
-│   ├── User.php
-│   ├── Product.php
-│   ├── Order.php
-│   ├── OrderItem.php
-│   ├── Cart.php
-│   ├── Message.php
-│   ├── Article.php
-│   ├── Event.php
-│   └── CompanyProfile.php
-│
+│   │   ├── Admin/
+│   │   ├── Client/
+│   │   ├── User/
+│   │   └── Auth/
+│   └── Middleware/
+
+Models/
+├── User.php
+├── Product.php
+├── Order.php
+├── OrderItem.php
+├── Cart.php
+├── Message.php
+├── Article.php
+├── Event.php
+└── CompanyProfile.php
+
 resources/
 ├── views/
-│   ├── layouts/          # Base layouts (app, admin)
+│   ├── layouts/
 │   ├── pages/
-│   │   ├── admin/        # Admin pages
-│   │   ├── client/       # Public pages
-│   │   └── user/         # User pages
-│   └── components/       # Reusable Blade components
-│
+│   │   ├── admin/
+│   │   ├── client/
+│   │   └── user/
+│   └── components/
+
 routes/
-├── web.php               # All web routes
-│
-database/
-├── migrations/           # Database schema
-├── seeders/              # Demo / initial data
-│
-storage/
-├── app/public/
-│   ├── products/         # Product images
-│   └── templates/        # Downloadable digital files
-````
+└── web.php
+
+docs/
+├── images/
+└── guides/
+```
 
 ---
 
-## ⚙ Installation Guide
+# Installation Guide
 
-### 1️⃣ Clone Repository
+Clone repository:
 
 ```bash
 git clone https://github.com/Dimmlul/CompanyProfile-Laravel
 cd CompanyProfile-Laravel
 ```
 
-### 2️⃣ Environment Setup
-
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-Edit `.env`:
-
-```env
-APP_NAME="Company Profile"
-APP_ENV=local
-APP_URL=http://localhost
-
-DB_DATABASE=companyprofile
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
----
-
-### 3️⃣ Install Dependencies
+Install dependencies:
 
 ```bash
 composer install
 npm install
 ```
 
----
+Setup environment:
 
-### 4️⃣ Database
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Configure database inside `.env`.
+
+Run migrations:
 
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
----
-
-### 5️⃣ Storage
+Create storage link:
 
 ```bash
 php artisan storage:link
 ```
 
+Run development server:
+
+```bash
+php artisan serve
+```
+
 ---
 
-## 🎨 Frontend Build (Vite)
+# Frontend Build
 
-Development mode:
+Development:
 
 ```bash
 npm run dev
 ```
 
-Production / Ngrok:
+Production build:
 
 ```bash
 npm run build
 ```
 
-**Why `npm run build` with Ngrok?**
-
-* Ensures optimized assets
-* Prevents asset mismatch on public URLs
-* Recommended for production-like testing
-
 ---
 
-## 🌍 Ngrok Setup
-
-Download Ngrok:
-[https://ngrok.com/download](https://ngrok.com/download)
+# Ngrok Setup
 
 Run:
 
@@ -375,38 +461,45 @@ ngrok http 8000
 
 Update `.env`:
 
-```env
+```
 APP_URL=https://xxxx.ngrok-free.dev
 ```
 
 ---
 
-## 💳 Midtrans Payment Setup
+# Midtrans Payment Setup
 
-```env
-MIDTRANS_SERVER_KEY=SB-Mid-server-xxxx
-MIDTRANS_CLIENT_KEY=SB-Mid-client-xxxx
+Environment variables:
+
+```
+MIDTRANS_SERVER_KEY=xxxx
+MIDTRANS_CLIENT_KEY=xxxx
 MIDTRANS_IS_PRODUCTION=false
 ```
 
-Callback URL (Midtrans Dashboard):
+Callback URL:
 
-[https://your-ngrok-url.ngrok-free.dev/midtrans/callback](https://your-ngrok-url.ngrok-free.dev/midtrans/callback)
+```
+/midtrans/callback
+```
 
 ---
 
-## ✉ EmailJS Contact Setup
+# EmailJS Setup
 
-1. Create account: [https://www.emailjs.com](https://www.emailjs.com)
-2. Create:
+Create account:
 
-   * Email Service
-   * Email Template
-   * Public Key
+https://www.emailjs.com
 
-`.env`:
+Create:
 
-```env
+* Email Service
+* Email Template
+* Public Key
+
+Environment variables:
+
+```
 EMAILJS_PUBLIC_KEY=xxxx
 EMAILJS_SERVICE_ID=xxxx
 EMAILJS_TEMPLATE_ID=xxxx
@@ -414,33 +507,45 @@ EMAILJS_TEMPLATE_ID=xxxx
 
 ---
 
-## 🔄 User Flow
+# User Flow
 
-1. User registers / logs in
+1. User registers or logs in
 2. Browse products
 3. Add to cart
-4. Checkout & pay
-5. Midtrans callback updates order
-6. Download / link unlocked
-7. Contact admin if needed
+4. Checkout
+5. Complete payment
+6. Order status updated
+7. Download product
 
 ---
 
-## 🛠 Admin Flow
+# Admin Flow
 
-1. Login at `/admin`
-2. Manage products & content
-3. Upload file or set external link
-4. Monitor orders
-5. Reply user messages
+1. Login via `/login`
+2. System detects admin role
+3. Redirect to `/admin`
+4. Manage products
+5. Monitor orders
+6. Reply to user messages
+
+---
+
+# Security Notes
+
+Security measures implemented include:
+
+* CSRF protection
+* Authenticated routes
+* Role-based admin access
+* Order ownership validation
+* Protected digital downloads
 
 ---
 
-## 🔐 Security Notes
+# Documentation Guides
 
-* Order access restricted by `user_id`
-* Downloads available only after payment
-* CSRF protection enabled
-* Admin routes protected by authentication
+Additional documentation available in the **docs folder**:
 
----
+- [Authentication Guide](docs/guides/authentication.md)
+- [User Guide](docs/guides/user-guide.md)
+- [Admin Guide](docs/guides/admin-guide.md)
