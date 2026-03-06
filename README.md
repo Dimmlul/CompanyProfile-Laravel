@@ -19,24 +19,24 @@ The application includes:
 # Screenshots
 
 ## Landing Page
+<p align="center">
+  <img src="docs/images/LandingPage.png" width="900">
+</p>
 
-![Landing Page](docs/images/LandingPage.png)
+## Purchase Flow
 
-## Product Page
+| Product | Cart | Checkout |
+|--------|------|----------|
+| <img src="docs/images/Products.png" width="300"> | <img src="docs/images/Cart.png" width="300"> | <img src="docs/images/Checkout.png" width="300"> |
 
-![Products](docs/images/Products.png)
-
-## Cart
-
-![Cart](docs/images/Cart.png)
-
-## Checkout
-
-![Checkout](docs/images/Checkout.png)
+<p align="center">
+User purchase flow: <b>Product → Cart → Checkout</b>
+</p>
 
 ## Admin Dashboard
-
-![Admin Dashboard](docs/images/AdminDashboard.png)
+<p align="center">
+  <img src="docs/images/AdminDashboard.png" width="900">
+</p>
 
 ---
 
