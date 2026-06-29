@@ -10,9 +10,9 @@
             required
             class="h-10 w-full rounded-lg
                    border border-gray-700
-                   bg-[#0b1220]
+                   bg-card-bg
                    px-3 text-sm text-white
-                   focus:border-primary focus:outline-none"
+                   focus:border-brand-main focus:outline-none"
         >
     </div>
 
@@ -25,7 +25,7 @@
             rows="2"
             class="w-full rounded-lg
                    border border-gray-700
-                   bg-[#0b1220]
+                   bg-card-bg
                    px-3 py-2 text-sm text-white"
         ></textarea>
     </div>
@@ -40,7 +40,7 @@
             required
             class="w-full rounded-lg
                    border border-gray-700
-                   bg-[#0b1220]
+                   bg-card-bg
                    px-3 py-2 text-sm text-white"
         ></textarea>
     </div>
@@ -54,10 +54,10 @@
             name="image"
             class="block w-full text-xs text-gray-300
                    file:rounded-md
-                   file:bg-btn-primary
+                   file:bg-brand-main
                    file:px-3 file:py-1.5
-                   file:text-btn-text
-                   hover:file:bg-btn-primary-hover"
+                   file:text-brand-text
+                   hover:file:bg-brand-hover"
         >
     </div>
 
@@ -70,7 +70,7 @@
             name="start_date"
             class="h-10 w-full rounded-lg
                    border border-gray-700
-                   bg-[#0b1220]
+                   bg-card-bg
                    px-3 text-sm text-white"
         >
     </div>
@@ -84,7 +84,7 @@
             name="end_date"
             class="h-10 w-full rounded-lg
                    border border-gray-700
-                   bg-[#0b1220]
+                   bg-card-bg
                    px-3 text-sm text-white"
         >
     </div>

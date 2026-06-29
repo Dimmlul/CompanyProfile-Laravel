@@ -120,8 +120,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/about', [ClientCompanyProfileController::class, 'about'])
     ->name('about');
-Route::get('/vision-mission', [ClientCompanyProfileController::class, 'visionMission'])
-    ->name('vision-mission');
 
 Route::get('/articles', [ClientArticleController::class, 'index'])
     ->name('articles');

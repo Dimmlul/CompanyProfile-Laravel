@@ -1,0 +1,52 @@
+services:
+  app:
+    build: .
+    container_name: laravel_app
+    working_dir: /var/www
+
+    volumes:
+      - .:/var/www
+      - /var/www/node_modules
+      - /var/www/vendor
+
+    ports:
+      - "5173:5173"
+
+    networks:
+      - laravel
+
+  web:
+    image: nginx:alpine
+    container_name: nginx
+
+    ports:
+      - "8000:80"
+
+    volumes:
+      - .:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+
+    depends_on:
+      - app
+
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: companyprofile
+      MYSQL_ROOT_PASSWORD: root
+
+    ports:
+      - "3307:3306"
+
+    networks:
+      - laravel
+
+networks:
+  laravel:

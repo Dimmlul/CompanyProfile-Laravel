@@ -36,9 +36,8 @@
             {{-- MODAL BOX --}}
             <div
                 class="relative w-full max-w-2xl rounded-2xl
-                       border border-white/10
+                       border border-white/10 bg-card-bg
                        shadow-2xl"
-                style="background-color:#0b1220;"
             >
                 <div class="max-h-[80vh] overflow-y-auto p-6">
 

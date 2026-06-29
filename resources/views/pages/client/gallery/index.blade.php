@@ -28,7 +28,7 @@
                 <div
                     class="group relative overflow-hidden rounded-2xl
                            border border-white/10
-                           bg-[#020617]
+                           bg-bg-admin
                            transition
                            hover:border-white/20"
                 >

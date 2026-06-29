@@ -15,9 +15,9 @@
         </label>
         <input type="file" name="image" required
             class="block w-full text-xs
-                   file:rounded-md file:bg-btn-primary
-                   file:px-3 file:py-1.5 file:text-btn-text
-                   hover:file:bg-btn-primary-hover">
+                   file:rounded-md file:bg-brand-main
+                   file:px-3 file:py-1.5 file:text-brand-text
+                   hover:file:bg-brand-hover">
     </div>
 
     <div>

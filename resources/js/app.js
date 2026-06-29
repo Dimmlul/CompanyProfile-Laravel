@@ -1,38 +1,30 @@
 import './bootstrap';
-import Alpine from 'alpinejs'
+import Alpine from 'alpinejs';
 
-window.Alpine = Alpine
+window.Alpine = Alpine;
 
-// HERO REVEAL (GLOBAL)
-window.heroReveal = function () {
-    return {
-        init() {
-            const items = [
-                this.$refs.badge,
-                this.$refs.title,
-                this.$refs.desc,
-                this.$refs.cta,
-            ]
+/**
+ * x-reveal — fade + slide an element in once it scrolls into view.
+ *
+ * The hidden state is applied from JS, so if scripts fail to load the
+ * content still renders normally (progressive enhancement).
+ *
+ *   <div x-data x-reveal>...</div>
+ *   <div x-data x-reveal="{ threshold: 0.3, delay: 150 }">...</div>
+ */
+Alpine.directive('reveal', (el, { expression }) => {
+    const { threshold = 0.15, delay = 0 } = expression ? JSON.parse(expression) : {};
 
-            items.forEach((el, index) => {
-                el.classList.add(
-                    'transition-all',
-                    'duration-700',
-                    'ease-out',
-                    'opacity-0',
-                    'translate-y-4'
-                )
+    el.classList.add('opacity-0', 'translate-y-6', 'transition-all', 'duration-700', 'ease-out');
+    if (delay) el.style.transitionDelay = `${delay}ms`;
 
-                requestAnimationFrame(() => {
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0', 'translate-y-4')
-                        el.classList.add('opacity-100', 'translate-y-0')
-                    }, index * 120)
-                })
-            })
-        }
-    }
-}
+    const observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.classList.remove('opacity-0', 'translate-y-6');
+        observer.unobserve(el);
+    }, { threshold });
 
-Alpine.start()
+    observer.observe(el);
+});
 
+Alpine.start();

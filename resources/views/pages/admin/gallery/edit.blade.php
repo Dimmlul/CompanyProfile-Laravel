@@ -37,10 +37,10 @@
                 "
                 class="block w-full text-sm
                        file:mr-4 file:rounded-lg
-                       file:bg-btn-primary
+                       file:bg-brand-main
                        file:px-4 file:py-2
-                       file:text-btn-text
-                       hover:file:bg-btn-primary-hover"
+                       file:text-brand-text
+                       hover:file:bg-brand-hover"
             >
         </div>
 

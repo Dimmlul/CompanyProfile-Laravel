@@ -27,7 +27,7 @@
                     @else
                         <div
                             class="flex h-10 w-10 items-center justify-center
-                                   rounded-lg bg-btn-primary text-btn-text
+                                   rounded-lg bg-brand-main text-brand-text
                                    font-semibold"
                         >
                             {{ Str::substr($companyProfile->company_name ?? 'N', 0, 1) }}

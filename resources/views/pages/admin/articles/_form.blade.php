@@ -49,10 +49,10 @@
             name="thumbnail"
             class="block w-full text-xs
                    file:rounded-md
-                   file:bg-btn-primary
+                   file:bg-brand-main
                    file:px-3 file:py-1.5
-                   file:text-btn-text
-                   hover:file:bg-btn-primary-hover">
+                   file:text-brand-text
+                   hover:file:bg-brand-hover">
     </div>
 
     <div>

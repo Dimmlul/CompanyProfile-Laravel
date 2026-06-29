@@ -123,7 +123,7 @@
                                     x-transition
                                     class="absolute right-0 mt-3 w-52
                                            rounded-xl border border-white/10
-                                           bg-[#020617]
+                                           bg-bg-admin
                                            shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]
                                            overflow-hidden"
                                 >
@@ -179,7 +179,7 @@
         x-transition
         @click.outside="mobileOpen = false"
         class="md:hidden absolute inset-x-0 top-16
-               bg-[#020617] border-t border-white/10"
+               bg-bg-admin border-t border-white/10"
     >
         <nav class="flex flex-col px-6 py-4 text-sm divide-y divide-white/10">
 

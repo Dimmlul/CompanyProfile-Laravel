@@ -11,48 +11,15 @@ use App\Models\CompanyProfile;
 class HomeController extends Controller
 {
     /**
-     * Display the client homepage.
-     *
-     * Responsibilities:
-     * - Retrieve a curated subset of active gallery items
-     * - Retrieve a curated subset of active products
-     * - Retrieve a curated subset of active clients
-     * - Retrieve the company profile information
-     * - Render the client home page
+     * Display the public homepage with featured galleries, products and clients.
      */
     public function index()
     {
-        /**
-         * Retrieve featured gallery items.
-         * Only active items are shown and ordered by display order.
-         */
-        $galleries = Gallery::where('is_active', true)
-            ->orderBy('order')
-            ->limit(4)
-            ->get();
+        $galleries = Gallery::where('is_active', true)->orderBy('order')->limit(4)->get();
+        $products = Product::where('is_active', true)->orderBy('order')->limit(6)->get();
+        $clients = Client::where('is_active', true)->orderBy('order')->limit(8)->get();
 
-        /**
-         * Retrieve featured products.
-         * Only active products are shown and ordered by display order.
-         */
-        $products = Product::where('is_active', true)
-            ->orderBy('order')
-            ->limit(6)
-            ->get();
-
-        /**
-         * Retrieve featured clients.
-         * Only active clients are shown and ordered by display order.
-         */
-        $clients = Client::where('is_active', true)
-            ->orderBy('order')
-            ->limit(8)
-            ->get();
-
-        /**
-         * Retrieve the company profile.
-         * The application uses a single-record company profile pattern.
-         */
+        // Single-record company profile.
         $companyProfile = CompanyProfile::first();
 
         return view('pages.client.home.index', compact(
