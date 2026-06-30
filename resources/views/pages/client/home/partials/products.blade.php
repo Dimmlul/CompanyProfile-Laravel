@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="flex flex-1 flex-col p-6">
-                        <h3 class="text-lg font-semibold leading-snug text-white">{{ $product->name }}</h3>
+                        <h3 class="text-lg font-semibold leading-snug text-app-heading">{{ $product->name }}</h3>
                         @if (filled($product->excerpt))
                             <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-app-muted">{{ $product->excerpt }}</p>
                         @endif

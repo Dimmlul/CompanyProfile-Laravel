@@ -10,7 +10,7 @@
         </div>
 
         <div x-data x-reveal
-             class="surface grid grid-cols-2 divide-x divide-y divide-white/[0.06] overflow-hidden rounded-2xl
+             class="surface grid grid-cols-2 divide-x divide-y divide-app-border overflow-hidden rounded-2xl
                     sm:grid-cols-3 lg:grid-cols-4">
             @foreach ($clients as $client)
                 <div class="flex items-center justify-center p-8 sm:p-10">

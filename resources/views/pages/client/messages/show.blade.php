@@ -4,50 +4,33 @@
 
 @section('content')
 <section class="bg-app-bg py-24">
-<div class="mx-auto max-w-5xl px-6 space-y-12">
+<div class="mx-auto max-w-5xl space-y-12 px-6">
 
     {{-- BACK --}}
     <div>
-        <a
-            href="{{ route('client.messages.start') }}"
-            class="inline-flex items-center gap-2
-                   text-sm text-app-muted
-                   hover:text-indigo-400 transition"
-        >
-            ← Start new chat
+        <a href="{{ route('client.messages.start') }}"
+           class="inline-flex items-center gap-2 text-sm text-app-muted transition hover:text-app-heading">
+            &larr; Start new chat
         </a>
     </div>
 
     {{-- THREAD --}}
-    <div class="rounded-2xl border border-white/10 bg-white/5 p-8 space-y-6">
+    <div class="surface space-y-6 rounded-2xl p-8">
 
         {{-- ROOT MESSAGE --}}
         <div class="flex justify-end">
-            <div class="max-w-xl rounded-2xl bg-indigo-500 px-5 py-4">
-                <p class="text-xs text-indigo-100 mb-1 text-right">
-                    {{ $message->client_name }}
-                    • {{ $message->created_at->format('d M Y, H:i') }}
+            <div class="max-w-xl rounded-2xl bg-brand-main px-5 py-4">
+                <p class="mb-1 text-right text-xs text-indigo-100">
+                    {{ $message->client_name }} &bull; {{ $message->created_at->format('d M Y, H:i') }}
                 </p>
+                <p class="whitespace-pre-line text-sm text-white">{{ $message->message }}</p>
 
-                <p class="text-sm text-white whitespace-pre-line">
-                    {{ $message->message }}
-                </p>
-
-                {{-- ROOT ATTACHMENT --}}
                 @if ($message->attachment)
                     @if ($message->attachment_type === 'image')
-                        <img
-                            src="{{ asset('storage/'.$message->attachment) }}"
-                            class="mt-3 rounded-lg max-w-xs"
-                        >
+                        <img src="{{ asset('storage/'.$message->attachment) }}" class="mt-3 max-w-xs rounded-lg">
                     @else
-                        <a
-                            href="{{ asset('storage/'.$message->attachment) }}"
-                            target="_blank"
-                            class="mt-3 inline-block text-sm text-white underline"
-                        >
-                            Download file
-                        </a>
+                        <a href="{{ asset('storage/'.$message->attachment) }}" target="_blank"
+                           class="mt-3 inline-block text-sm text-white underline">Download file</a>
                     @endif
                 @endif
             </div>
@@ -55,34 +38,19 @@
 
         {{-- REPLIES --}}
         @foreach ($replies as $reply)
-
             @if ($reply->sender === 'admin')
                 {{-- ADMIN --}}
                 <div class="flex justify-start">
-                    <div class="max-w-xl rounded-2xl bg-white/10 px-5 py-4">
-                        <p class="text-xs text-app-muted mb-1">
-                            Admin • {{ $reply->created_at->format('H:i') }}
-                        </p>
+                    <div class="max-w-xl rounded-2xl bg-app-surface-2 px-5 py-4">
+                        <p class="mb-1 text-xs text-app-muted">Admin &bull; {{ $reply->created_at->format('H:i') }}</p>
+                        <p class="whitespace-pre-line text-sm text-app-heading">{{ $reply->message }}</p>
 
-                        <p class="text-sm text-white whitespace-pre-line">
-                            {{ $reply->message }}
-                        </p>
-
-                        {{-- ADMIN ATTACHMENT --}}
                         @if ($reply->attachment)
                             @if ($reply->attachment_type === 'image')
-                                <img
-                                    src="{{ asset('storage/'.$reply->attachment) }}"
-                                    class="mt-3 rounded-lg max-w-xs"
-                                >
+                                <img src="{{ asset('storage/'.$reply->attachment) }}" class="mt-3 max-w-xs rounded-lg">
                             @else
-                                <a
-                                    href="{{ asset('storage/'.$reply->attachment) }}"
-                                    target="_blank"
-                                    class="mt-3 inline-block text-sm text-indigo-400 underline"
-                                >
-                                    Download file
-                                </a>
+                                <a href="{{ asset('storage/'.$reply->attachment) }}" target="_blank"
+                                   class="mt-3 inline-block text-sm text-brand-accent underline">Download file</a>
                             @endif
                         @endif
                     </div>
@@ -90,84 +58,43 @@
             @else
                 {{-- CLIENT --}}
                 <div class="flex justify-end">
-                    <div class="max-w-xl rounded-2xl bg-indigo-500 px-5 py-4">
-                        <p class="text-xs text-indigo-100 mb-1 text-right">
-                            You • {{ $reply->created_at->format('H:i') }}
-                        </p>
+                    <div class="max-w-xl rounded-2xl bg-brand-main px-5 py-4">
+                        <p class="mb-1 text-right text-xs text-indigo-100">You &bull; {{ $reply->created_at->format('H:i') }}</p>
+                        <p class="whitespace-pre-line text-sm text-white">{{ $reply->message }}</p>
 
-                        <p class="text-sm text-white whitespace-pre-line">
-                            {{ $reply->message }}
-                        </p>
-
-                        {{-- CLIENT ATTACHMENT --}}
                         @if ($reply->attachment)
                             @if ($reply->attachment_type === 'image')
-                                <img
-                                    src="{{ asset('storage/'.$reply->attachment) }}"
-                                    class="mt-3 rounded-lg max-w-xs"
-                                >
+                                <img src="{{ asset('storage/'.$reply->attachment) }}" class="mt-3 max-w-xs rounded-lg">
                             @else
-                                <a
-                                    href="{{ asset('storage/'.$reply->attachment) }}"
-                                    target="_blank"
-                                    class="mt-3 inline-block text-sm text-white underline"
-                                >
-                                    Download file
-                                </a>
+                                <a href="{{ asset('storage/'.$reply->attachment) }}" target="_blank"
+                                   class="mt-3 inline-block text-sm text-white underline">Download file</a>
                             @endif
                         @endif
                     </div>
                 </div>
             @endif
-
         @endforeach
     </div>
 
     {{-- REPLY FORM --}}
-    <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-        <form
-            method="POST"
-            action="{{ route('client.messages.reply', $token) }}"
-            enctype="multipart/form-data"
-            class="space-y-4"
-        >
+    <div class="surface rounded-2xl p-6">
+        <form method="POST" action="{{ route('client.messages.reply', $token) }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
 
-            <textarea
-                name="message"
-                rows="3"
-                class="w-full rounded-xl bg-black/40
-                       border border-white/10
-                       px-4 py-3 text-sm text-white
-                       focus:outline-none focus:border-indigo-500"
-                placeholder="Type your reply..."
-            ></textarea>
+            <textarea name="message" rows="3" placeholder="Type your reply..."
+                      class="w-full rounded-xl border border-app-border bg-transparent px-4 py-3 text-sm
+                             text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none"></textarea>
 
-            <input
-                type="file"
-                name="file"
-                class="block w-full text-sm text-app-muted
-                       file:mr-4 file:rounded-lg
-                       file:border-0
-                       file:bg-indigo-500/20
-                       file:px-4 file:py-2
-                       file:text-sm file:font-semibold
-                       file:text-indigo-400
-                       hover:file:bg-indigo-500/30"
-            >
+            <input type="file" name="file"
+                   class="block w-full text-sm text-app-muted file:mr-4 file:rounded-lg file:border-0
+                          file:bg-brand-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-accent">
 
             @error('message')
-                <p class="text-sm text-red-400">{{ $message }}</p>
+                <p class="text-sm text-danger">{{ $message }}</p>
             @enderror
 
             <div class="flex justify-end">
-                <button
-                    class="rounded-xl bg-indigo-500 px-6 py-2.5
-                           text-sm font-semibold text-white
-                           hover:bg-indigo-600 transition"
-                >
-                    Send
-                </button>
+                <button class="btn-primary">Send</button>
             </div>
         </form>
     </div>

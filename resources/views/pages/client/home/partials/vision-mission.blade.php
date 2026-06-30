@@ -16,10 +16,10 @@
             <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
                 <div class="mb-5 flex items-center gap-3">
                     <span class="text-xs font-semibold tracking-widest text-brand-accent">01</span>
-                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="h-px flex-1 bg-app-border"></span>
                     <span class="text-xs uppercase tracking-widest text-app-muted">Vision</span>
                 </div>
-                <h3 class="mb-3 text-2xl font-semibold text-white">Where we're headed</h3>
+                <h3 class="mb-3 text-2xl font-semibold text-app-heading">Where we're headed</h3>
                 <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->vision }}</p>
             </article>
 
@@ -27,7 +27,7 @@
             <article class="surface surface-hover rounded-2xl p-8 md:row-span-2">
                 <div class="mb-6 flex items-center gap-3">
                     <span class="text-xs font-semibold tracking-widest text-brand-accent">03</span>
-                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="h-px flex-1 bg-app-border"></span>
                     <span class="text-xs uppercase tracking-widest text-app-muted">Strengths</span>
                 </div>
                 <ul class="space-y-5">
@@ -36,7 +36,7 @@
                             <svg class="mt-0.5 h-5 w-5 flex-none text-brand-accent" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span class="text-sm font-medium text-white">{{ $strength }}</span>
+                            <span class="text-sm font-medium text-app-heading">{{ $strength }}</span>
                         </li>
                     @endforeach
                 </ul>
@@ -46,10 +46,10 @@
             <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
                 <div class="mb-5 flex items-center gap-3">
                     <span class="text-xs font-semibold tracking-widest text-brand-accent">02</span>
-                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="h-px flex-1 bg-app-border"></span>
                     <span class="text-xs uppercase tracking-widest text-app-muted">Mission</span>
                 </div>
-                <h3 class="mb-3 text-2xl font-semibold text-white">What we do every day</h3>
+                <h3 class="mb-3 text-2xl font-semibold text-app-heading">What we do every day</h3>
                 <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->mission }}</p>
             </article>
         </div>

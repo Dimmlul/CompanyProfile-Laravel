@@ -6,60 +6,31 @@
 <section class="py-24 bg-app-bg">
     <div class="max-w-xl mx-auto px-6">
 
-        <div
-            class="relative overflow-hidden
-                   bg-card border border-card-border
-                   rounded-2xl p-8 text-center
-                   shadow-lg"
-        >
+        <div class="surface relative overflow-hidden rounded-2xl p-8 text-center shadow-lg">
 
             {{-- Decorative gradient --}}
-            <div
-                class="pointer-events-none absolute inset-x-0 -top-24 h-48
-                       bg-gradient-to-b from-indigo-500/20 to-transparent">
-            </div>
+            <div class="pointer-events-none absolute inset-x-0 -top-24 h-48 bg-gradient-to-b from-brand-main/20 to-transparent"></div>
 
             {{-- Header --}}
             <div class="relative">
-                <h1 class="text-2xl font-semibold text-white mb-2">
-                    Complete Your Payment
-                </h1>
-
-                <p class="text-app-muted text-sm mb-6">
+                <h1 class="mb-2 text-2xl font-semibold text-app-heading">Complete Your Payment</h1>
+                <p class="mb-6 text-sm text-app-muted">
                     Order ID:
-                    <span class="text-white font-medium">
-                        {{ $order->order_number }}
-                    </span>
+                    <span class="font-medium text-app-heading">{{ $order->order_number }}</span>
                 </p>
             </div>
 
             {{-- Amount --}}
-            <div
-                class="relative rounded-xl
-                       bg-app-bg border border-card-border
-                       p-6 mb-6"
-            >
-                <p class="text-sm text-app-muted">
-                    Total Payment
-                </p>
-
-                <p class="mt-1 text-3xl font-bold text-white tracking-wide">
-                    Rp {{ number_format($order->total) }}
-                </p>
+            <div class="relative mb-6 rounded-xl border border-app-border bg-app-surface-2 p-6">
+                <p class="text-sm text-app-muted">Total Payment</p>
+                <p class="mt-1 text-3xl font-bold tracking-wide text-app-heading">Rp {{ number_format($order->total) }}</p>
             </div>
 
             {{-- Pay Button --}}
             <button
                 id="pay-button"
                 type="button"
-                class="group relative w-full
-                       py-3.5 rounded-xl
-                       bg-indigo-500 text-white
-                       font-semibold
-                       transition-all duration-200
-                       hover:bg-indigo-600
-                       active:scale-[0.98]
-                       disabled:opacity-60 disabled:cursor-not-allowed"
+                class="group btn-primary w-full py-3.5 disabled:cursor-not-allowed disabled:opacity-60"
             >
                 <span class="flex items-center justify-center gap-2">
                     <svg

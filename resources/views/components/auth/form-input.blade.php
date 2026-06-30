@@ -6,7 +6,7 @@
 ])
 
 <div>
-    <label class="mb-1.5 block text-sm font-medium text-app-text">
+    <label class="mb-1.5 block text-sm font-medium text-app-heading">
         {{ $label }}
         <span class="text-danger">*</span>
     </label>
@@ -19,13 +19,13 @@
         {{ $attributes->merge([
             'class' => '
                 h-11 w-full rounded-lg
-                bg-slate-900/60
-                border border-white/10
-                px-4 text-app-text
+                bg-transparent
+                border border-app-border
+                px-4 text-app-heading
                 placeholder:text-app-muted
                 outline-none
-                focus:border-brand
-                focus:ring-2 focus:ring-brand/40
+                focus:border-brand-main
+                focus:ring-2 focus:ring-brand-main/30
                 transition
             '
         ]) }}

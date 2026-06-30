@@ -6,20 +6,18 @@
 <section class="bg-app-bg py-16">
     <div class="mx-auto max-w-6xl px-6">
 
-        <div class="flex flex-col md:flex-row gap-12">
+        <div class="flex flex-col gap-12 md:flex-row">
 
             {{-- ================= LEFT : CART LIST ================= --}}
             <div class="flex-1">
 
-                <h1 class="text-3xl font-semibold text-app-text mb-8">
+                <h1 class="mb-8 text-3xl font-semibold text-app-heading">
                     Shopping Cart
-                    <span class="text-sm text-indigo-400 font-medium">
-                        ({{ $carts->count() }} items)
-                    </span>
+                    <span class="text-sm font-medium text-brand-accent">({{ $carts->count() }} items)</span>
                 </h1>
 
                 {{-- HEADER --}}
-                <div class="grid grid-cols-[2fr_1fr_1fr] text-app-muted text-sm font-medium pb-3 border-b border-card-border">
+                <div class="grid grid-cols-[2fr_1fr_1fr] border-b border-app-border pb-3 text-sm font-medium text-app-muted">
                     <p>Product Details</p>
                     <p class="text-center">Subtotal</p>
                     <p class="text-center">Action</p>
@@ -27,131 +25,66 @@
 
                 {{-- CART ITEMS --}}
                 @forelse ($carts as $cart)
-                    <div class="grid grid-cols-[2fr_1fr_1fr] items-center
-                                py-5 border-b border-card-border">
-
-                        {{-- PRODUCT --}}
+                    <div class="grid grid-cols-[2fr_1fr_1fr] items-center border-b border-app-border py-5">
                         <div class="flex items-center gap-5">
-                            <div
-                                class="w-24 h-24 rounded-xl overflow-hidden
-                                       border border-card-border bg-card">
-                                <img
-                                    src="{{ asset('storage/'.$cart->product->image) }}"
-                                    alt="{{ $cart->product->name }}"
-                                    class="w-full h-full object-cover">
+                            <div class="h-24 w-24 overflow-hidden rounded-xl border border-app-border bg-app-surface-2">
+                                <img src="{{ asset('storage/'.$cart->product->image) }}" alt="{{ $cart->product->name }}"
+                                     class="h-full w-full object-cover">
                             </div>
-
                             <div>
-                                <p class="font-semibold text-app-text">
-                                    {{ $cart->product->name }}
-                                </p>
-
-                                <div class="text-sm text-app-muted mt-1 space-y-1">
+                                <p class="font-semibold text-app-heading">{{ $cart->product->name }}</p>
+                                <div class="mt-1 space-y-1 text-sm text-app-muted">
                                     <p>Qty: {{ $cart->qty }}</p>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- SUBTOTAL --}}
-                        <p class="text-center font-medium text-app-text">
+                        <p class="text-center font-medium text-app-heading">
                             Rp {{ number_format($cart->product->price * $cart->qty) }}
                         </p>
 
-                        {{-- ACTION --}}
-                        <form
-                            method="POST"
-                            action="{{ route('cart.destroy', $cart) }}"
-                            class="flex justify-center">
+                        <form method="POST" action="{{ route('cart.destroy', $cart) }}" class="flex justify-center">
                             @csrf
                             @method('DELETE')
-
-                            <button
-                                type="submit"
-                                class="text-red-400 hover:text-red-500 transition"
-                                title="Remove">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor"
-                                     stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M12 9v6m3-3H9m9 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <button type="submit" class="text-danger transition hover:opacity-80" title="Remove">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m9 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </button>
                         </form>
-
                     </div>
                 @empty
-                    <p class="text-app-muted mt-8">
-                        Your cart is empty.
-                    </p>
+                    <p class="mt-8 text-app-muted">Your cart is empty.</p>
                 @endforelse
 
-                {{-- CONTINUE SHOPPING --}}
                 <a href="{{ route('products') }}"
-                   class="inline-flex items-center gap-2 mt-8
-                          text-indigo-400 font-medium
-                          hover:text-indigo-300 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="h-4 w-4"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor"
-                         stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M15 19l-7-7 7-7" />
+                   class="mt-8 inline-flex items-center gap-2 font-medium text-brand-accent transition hover:opacity-80">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
                     Continue Shopping
                 </a>
             </div>
 
             {{-- ================= RIGHT : ORDER SUMMARY ================= --}}
-            <div
-                class="w-full md:max-w-sm
-                       rounded-2xl
-                       border border-card-border
-                       bg-card p-6 h-fit">
-
-                <h2 class="text-xl font-semibold text-app-text mb-6">
-                    Order Summary
-                </h2>
+            <div class="surface h-fit w-full rounded-2xl p-6 md:max-w-sm">
+                <h2 class="mb-6 text-xl font-semibold text-app-heading">Order Summary</h2>
 
                 <div class="space-y-3 text-sm text-app-muted">
-                    <div class="flex justify-between">
-                        <span>Subtotal</span>
-                        <span>Rp {{ number_format($subtotal) }}</span>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <span>Shipping</span>
-                        <span class="text-green-400">Free</span>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <span>Tax</span>
-                        <span>Included</span>
-                    </div>
+                    <div class="flex justify-between"><span>Subtotal</span><span>Rp {{ number_format($subtotal) }}</span></div>
+                    <div class="flex justify-between"><span>Shipping</span><span class="text-success">Free</span></div>
+                    <div class="flex justify-between"><span>Tax</span><span>Included</span></div>
                 </div>
 
-                <div class="border-t border-card-border my-6"></div>
+                <div class="my-6 border-t border-app-border"></div>
 
-                <div class="flex justify-between text-lg font-semibold text-app-text">
+                <div class="flex justify-between text-lg font-semibold text-app-heading">
                     <span>Total</span>
                     <span>Rp {{ number_format($subtotal) }}</span>
                 </div>
 
-                <a
-                    href="{{ route('checkout.index') }}"
-                    class="block text-center mt-6
-                           py-3.5 rounded-xl
-                           bg-indigo-500
-                           text-white font-medium
-                           hover:bg-indigo-600 transition">
-                    Proceed to Checkout
-                </a>
+                <a href="{{ route('checkout.index') }}" class="btn-primary mt-6 w-full py-3.5">Proceed to Checkout</a>
             </div>
-
         </div>
     </div>
 </section>

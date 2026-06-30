@@ -9,7 +9,7 @@
 
         {{-- ================= HEADER ================= --}}
         <div class="mb-14 text-center">
-            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-text">
+            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-heading">
                 Gallery
             </h1>
             <p class="mt-3 max-w-xl mx-auto text-sm text-app-muted">
@@ -25,13 +25,7 @@
 
             @foreach ($galleries as $gallery)
 
-                <div
-                    class="group relative overflow-hidden rounded-2xl
-                           border border-white/10
-                           bg-bg-admin
-                           transition
-                           hover:border-white/20"
-                >
+                <div class="group surface surface-hover relative overflow-hidden rounded-2xl">
 
                     {{-- IMAGE --}}
                     <img

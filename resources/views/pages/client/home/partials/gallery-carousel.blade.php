@@ -17,7 +17,7 @@
         {{-- Expanding panels: each grows on hover (desktop) --}}
         <div x-data x-reveal class="flex h-[300px] gap-3 sm:h-[440px] sm:gap-4">
             @foreach ($galleries as $gallery)
-                <div class="group relative h-full flex-1 overflow-hidden rounded-2xl border border-white/10
+                <div class="group relative h-full flex-1 overflow-hidden rounded-2xl border border-app-border
                             transition-all duration-500 ease-out hover:flex-[3]">
                     <img src="{{ asset('storage/'.$gallery->image) }}" alt="{{ $gallery->title }}"
                          class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">

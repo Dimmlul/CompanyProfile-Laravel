@@ -8,7 +8,7 @@
 
     {{-- HEADER --}}
     <div class="mb-10">
-        <h1 class="text-2xl font-semibold text-app-text">
+        <h1 class="text-2xl font-semibold text-app-heading">
             My Profile
         </h1>
         <p class="mt-2 text-sm text-app-muted">
@@ -28,7 +28,7 @@
     @endif
 
     {{-- CARD --}}
-    <div class="rounded-2xl border border-card-border bg-card p-6">
+    <div class="surface rounded-2xl p-6">
 
         <form method="POST" action="{{ route('profile.update') }}" class="space-y-10">
             @csrf
@@ -53,10 +53,10 @@
             </section>
 
             {{-- DIVIDER --}}
-            <div class="border-t border-card-border pt-8">
+            <div class="border-t border-app-border pt-8">
 
                 <div class="mb-6">
-                    <h2 class="text-sm font-semibold text-app-text">
+                    <h2 class="text-sm font-semibold text-app-heading">
                         Change Password
                     </h2>
                     <p class="mt-1 text-xs text-app-muted">

@@ -33,15 +33,14 @@
         x-show="open"
         x-transition
         x-cloak
-        class="absolute bottom-full right-0 mb-3 w-80 overflow-hidden rounded-2xl
-               border border-white/10 bg-slate-950 shadow-2xl"
+        class="surface absolute bottom-full right-0 mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl"
     >
-        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <div class="flex items-center justify-between border-b border-app-border px-5 py-4">
             <div>
-                <p class="text-sm font-semibold text-white">Customer Support</p>
-                <p class="text-xs text-slate-400">We're online &amp; ready to help</p>
+                <p class="text-sm font-semibold text-app-heading">Customer Support</p>
+                <p class="text-xs text-app-muted">We're online &amp; ready to help</p>
             </div>
-            <button type="button" @click="open = false" class="text-slate-400 transition hover:text-white">
+            <button type="button" @click="open = false" class="text-app-muted transition hover:text-app-heading">
                 &times;
             </button>
         </div>
@@ -76,9 +75,9 @@
             {{-- Contact page --}}
             <a
                 href="{{ route('contact') }}"
-                class="flex items-center justify-center gap-3 rounded-xl bg-slate-900 py-3 text-sm font-medium text-white transition hover:bg-slate-800"
+                class="flex items-center justify-center gap-3 rounded-xl bg-app-surface-2 py-3 text-sm font-medium text-app-heading transition hover:opacity-90"
             >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="4" width="20" height="16" rx="2"/>
                     <path d="m22 6-10 7L2 6"/>

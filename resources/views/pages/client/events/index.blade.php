@@ -8,7 +8,7 @@
 
         {{-- ================= HEADER ================= --}}
         <div class="mb-20 max-w-2xl">
-            <h1 class="text-4xl font-semibold text-white">
+            <h1 class="text-4xl font-semibold text-app-heading">
                 Events
             </h1>
             <p class="mt-4 text-app-muted">
@@ -22,7 +22,7 @@
         <div class="mb-28">
 
             <div class="mb-10">
-                <h2 class="text-2xl font-semibold text-white">
+                <h2 class="text-2xl font-semibold text-app-heading">
                     Upcoming Events
                 </h2>
                 <p class="mt-2 text-sm text-app-muted">
@@ -31,7 +31,7 @@
             </div>
 
             @if ($upcomingEvents->isEmpty())
-                <div class="rounded-xl border border-white/10 bg-white/5 p-10 text-center">
+                <div class="surface rounded-xl p-10 text-center">
                     <p class="text-app-muted">No upcoming events.</p>
                 </div>
             @else
@@ -47,15 +47,15 @@
                         md:flex-row md:items-center md:justify-between">
                 <p class="text-sm text-app-muted">
                     Showing
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $upcomingEvents->firstItem() }}
                     </span>
                     to
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $upcomingEvents->lastItem() }}
                     </span>
                     of
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $upcomingEvents->total() }}
                     </span>
                     upcoming events
@@ -73,7 +73,7 @@
         <div>
 
             <div class="mb-10">
-                <h2 class="text-2xl font-semibold text-white">
+                <h2 class="text-2xl font-semibold text-app-heading">
                     Past Events
                 </h2>
                 <p class="mt-2 text-sm text-app-muted">
@@ -82,7 +82,7 @@
             </div>
 
             @if ($pastEvents->isEmpty())
-                <div class="rounded-xl border border-white/10 bg-white/5 p-10 text-center">
+                <div class="surface rounded-xl p-10 text-center">
                     <p class="text-app-muted">No past events.</p>
                 </div>
             @else
@@ -98,15 +98,15 @@
                         md:flex-row md:items-center md:justify-between">
                 <p class="text-sm text-app-muted">
                     Showing
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $pastEvents->firstItem() }}
                     </span>
                     to
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $pastEvents->lastItem() }}
                     </span>
                     of
-                    <span class="text-white font-medium">
+                    <span class="text-app-heading font-medium">
                         {{ $pastEvents->total() }}
                     </span>
                     past events

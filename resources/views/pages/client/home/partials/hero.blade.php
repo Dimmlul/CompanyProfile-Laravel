@@ -15,8 +15,8 @@
         {{-- ============ LEFT: copy ============ --}}
         <div>
             <a href="{{ route('events') }}" x-data x-reveal
-               class="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5
-                      px-3 py-1 text-xs text-app-muted backdrop-blur transition hover:border-white/25">
+               class="group surface inline-flex items-center gap-2 rounded-full
+                      px-3 py-1 text-xs text-app-muted backdrop-blur transition hover:border-app-text/25">
                 <span class="rounded-full bg-brand-main px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">New</span>
                 See what we're building
                 <svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none"
@@ -26,7 +26,7 @@
             </a>
 
             <h1 x-data x-reveal="{ delay: 80 }"
-                class="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
+                class="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight text-app-heading sm:text-5xl lg:text-[3.5rem]">
                 We craft digital products that
                 <span class="text-brand-accent">move brands forward</span>
             </h1>
@@ -59,20 +59,19 @@
             {{-- soft brand wash behind the frame --}}
             <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand-main/25 via-transparent to-transparent blur-2xl"></div>
 
-            <div class="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+            <div class="relative overflow-hidden rounded-2xl border border-app-border shadow-2xl">
                 <img src="{{ $heroSrc }}" alt="{{ $companyProfile->company_name ?? 'Our work' }}"
                      class="aspect-[4/3] w-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
             </div>
 
             {{-- availability chip --}}
-            <div class="absolute -bottom-5 -left-5 flex items-center gap-2.5 rounded-xl border border-white/10
-                        bg-slate-950/80 px-4 py-3 shadow-xl backdrop-blur">
+            <div class="surface absolute -bottom-5 -left-5 flex items-center gap-2.5 rounded-xl px-4 py-3 shadow-xl backdrop-blur">
                 <span class="relative flex h-2.5 w-2.5">
                     <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400/70"></span>
                     <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400"></span>
                 </span>
-                <span class="text-sm font-medium text-white">Available for new projects</span>
+                <span class="text-sm font-medium text-app-heading">Available for new projects</span>
             </div>
         </div>
     </div>

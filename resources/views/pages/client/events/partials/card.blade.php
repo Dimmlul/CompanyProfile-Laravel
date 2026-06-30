@@ -1,14 +1,9 @@
 <a href="{{ route('events.show', $event->slug) }}"
-   class="group relative flex flex-col sm:flex-row
-          gap-6 rounded-3xl border border-white/10
-          bg-slate-900/60 p-6
-          transition hover:border-indigo-500/40">
+   class="group surface surface-hover relative flex flex-col gap-6 rounded-3xl p-6 sm:flex-row">
 
     {{-- POSTER --}}
-    <div class="relative flex-shrink-0
-                w-full sm:w-40 md:w-44
-                rounded-2xl overflow-hidden
-                bg-slate-900 border border-white/10">
+    <div class="relative w-full flex-shrink-0 overflow-hidden rounded-2xl border border-app-border
+                bg-app-surface-2 sm:w-40 md:w-44">
 
         @if ($event->image)
             <img
@@ -41,7 +36,7 @@
             </div>
 
             {{-- TITLE --}}
-            <h3 class="text-lg font-semibold leading-snug text-white">
+            <h3 class="text-lg font-semibold leading-snug text-app-heading">
                 {{ $event->title }}
             </h3>
 
@@ -62,9 +57,8 @@
         </div>
 
         {{-- CTA --}}
-        <div class="mt-4 text-sm font-medium text-indigo-400
-                    transition group-hover:translate-x-1">
-            View event →
+        <div class="mt-4 text-sm font-medium text-brand-accent transition group-hover:translate-x-1">
+            View event &rarr;
         </div>
     </div>
 </a>
