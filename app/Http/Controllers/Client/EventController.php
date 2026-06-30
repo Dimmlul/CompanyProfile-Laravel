@@ -76,6 +76,13 @@ class EventController extends Controller
          */
         abort_if(! $event->is_active, 404);
 
-        return view('pages.client.events.show', compact('event'));
+        $related = Event::query()
+            ->where('is_active', true)
+            ->whereKeyNot($event->getKey())
+            ->orderByRaw('ABS(DATEDIFF(start_date, ?))', [$event->start_date])
+            ->take(3)
+            ->get();
+
+        return view('pages.client.events.show', compact('event', 'related'));
     }
 }

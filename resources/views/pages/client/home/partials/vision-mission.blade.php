@@ -1,13 +1,10 @@
 <section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
 
-        <div x-data x-reveal class="mb-14 max-w-2xl">
-            <span class="eyebrow">What drives us</span>
-            <h2 class="section-title">Built on a clear direction</h2>
-            <p class="section-subtitle">
-                The principles behind every project we take on — from first call to final handover.
-            </p>
-        </div>
+        <x-section-heading x-data x-reveal class="mb-14"
+            eyebrow="What drives us"
+            title="Built on a clear direction"
+            subtitle="The principles behind every project we take on — from first call to final handover." />
 
         {{-- Bento: tiles of different sizes for a more editorial layout --}}
         <div x-data x-reveal class="grid gap-4 md:grid-cols-3 md:grid-rows-2">

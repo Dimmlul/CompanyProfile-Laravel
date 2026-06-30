@@ -5,140 +5,101 @@
 @section('content')
 
 {{-- ================= HERO ================= --}}
-<section class="relative bg-app-bg border-b border-app-border">
-    <div class="mx-auto max-w-7xl px-6 py-24">
-        <div class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+<section class="relative isolate overflow-hidden bg-app-bg glow-top">
+    <div class="absolute inset-0 -z-10 bg-grid [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"></div>
 
-            {{-- LEFT : TEXT --}}
-            <div class="max-w-3xl">
-                <span class="eyebrow">About Us</span>
-                <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-app-heading">
-                    {{ $companyProfile->company_name ?? 'Our Company' }}
-                </h1>
-                <p class="mt-6 text-base leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->about ??
-                        'We are a digital studio focused on building meaningful and scalable digital solutions that support long-term business growth.'
-                    )) !!}
-                </p>
-            </div>
+    <div class="mx-auto max-w-3xl px-6 pt-32 text-center lg:pt-40">
+        <span x-data x-reveal class="eyebrow">About us</span>
+        <h1 x-data x-reveal="{ delay: 80 }"
+            class="text-4xl font-semibold tracking-tight text-app-heading sm:text-5xl lg:text-6xl">
+            {{ $companyProfile->company_name ?? 'Our Company' }}
+        </h1>
+        <p x-data x-reveal="{ delay: 160 }" class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-app-muted">
+            {!! nl2br(e(
+                $companyProfile->about ??
+                'A digital studio building meaningful, scalable products for teams that care about doing things well.'
+            )) !!}
+        </p>
+    </div>
 
-            {{-- RIGHT : LOGO --}}
-            <div class="flex justify-center md:justify-end">
-                @if(!empty($companyProfile->logo))
-                    <div class="surface flex h-40 w-40 items-center justify-center rounded-2xl p-6">
-                        <img src="{{ asset('storage/' . $companyProfile->logo) }}"
-                             alt="{{ $companyProfile->company_name }} Logo"
-                             class="max-h-full max-w-full object-contain">
-                    </div>
-                @else
-                    <div class="surface flex h-40 w-40 items-center justify-center rounded-2xl text-sm text-app-muted">
-                        Company Logo
-                    </div>
-                @endif
-            </div>
+    {{-- Wide banner --}}
+    <div class="mx-auto mt-16 max-w-7xl px-6 lg:mt-20">
+        <div x-data x-reveal class="overflow-hidden rounded-3xl border border-app-border">
+            <img src="{{ asset('images/hero.jpg') }}" alt="{{ $companyProfile->company_name ?? 'Our work' }}"
+                 class="aspect-[21/9] w-full object-cover">
         </div>
     </div>
 </section>
 
 
-{{-- ================= WHO WE ARE ================= --}}
-<section class="bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6 py-24">
-        <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
+{{-- ================= STORY ================= --}}
+<section class="bg-app-bg py-24 lg:py-28">
+    <div class="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:gap-16">
+        <div x-data x-reveal class="lg:col-span-4">
+            <span class="eyebrow">Our story</span>
+            <h2 class="section-title">Who we are</h2>
+        </div>
 
-            {{-- Main --}}
-            <div class="surface md:col-span-2 rounded-2xl p-10">
-                <h2 class="mb-6 text-2xl font-semibold text-app-heading">Who We Are</h2>
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->who_we_are ??
-                        'We are a multidisciplinary digital studio that collaborates with businesses to design, build, and scale digital products. Our team combines strategic thinking, design excellence, and technical expertise to deliver solutions that solve real-world challenges.'
-                    )) !!}
-                </p>
-            </div>
-
-            {{-- Focus --}}
-            <div class="surface rounded-2xl p-8">
-                <h3 class="mb-6 text-xs font-semibold uppercase tracking-widest text-brand-accent">Our Focus</h3>
-                <ul class="space-y-6 text-sm text-app-muted">
-                    @foreach ([
-                        ['Scalable Systems', 'We build systems designed to grow, focusing on performance, security, and maintainable architecture.'],
-                        ['User-Centered Design', 'Every interface is crafted with clarity, usability, and accessibility as top priorities.'],
-                        ['Long-Term Strategy', 'We help businesses make digital decisions that remain effective beyond short-term trends.'],
-                    ] as [$title, $desc])
-                        <li class="flex gap-4">
-                            <span class="mt-1 h-2 w-2 flex-none rounded-full bg-brand-accent"></span>
-                            <div>
-                                <span class="block font-medium text-app-heading">{{ $title }}</span>
-                                {{ $desc }}
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+        <div x-data x-reveal class="lg:col-span-8">
+            <p class="text-xl leading-relaxed text-app-text">
+                {!! nl2br(e(
+                    $companyProfile->who_we_are ??
+                    'We are a multidisciplinary studio that partners with businesses to design, build, and scale digital products. We bring together strategy, design, and engineering to ship work that solves real problems — and keeps working long after launch.'
+                )) !!}
+            </p>
         </div>
     </div>
 </section>
+
 
 {{-- ================= VISION & MISSION ================= --}}
-<section class="bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6 py-24">
-        <h2 class="mb-12 text-3xl font-semibold text-app-heading">Vision &amp; Mission</h2>
+<section class="bg-app-bg pb-24 lg:pb-28">
+    <div class="mx-auto max-w-7xl px-6">
+        <div class="border-t border-app-border pt-16">
+            <div class="grid gap-12 md:grid-cols-2 md:gap-0 md:divide-x md:divide-app-border">
+                <div x-data x-reveal class="md:pr-14">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-brand-accent">Vision</span>
+                    <p class="mt-5 text-2xl font-medium leading-snug text-app-heading">
+                        {{ $companyProfile->vision
+                            ?? 'To be a trusted digital partner that helps businesses grow through purposeful, lasting technology.' }}
+                    </p>
+                </div>
 
-        <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
-            <div class="surface relative rounded-2xl p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-brand-main"></span>
-                <h3 class="mb-4 text-xl font-semibold text-app-heading">Vision</h3>
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->vision ??
-                        'To become a trusted digital partner that empowers businesses through purposeful, adaptable, and sustainable technology solutions.'
-                    )) !!}
-                </p>
-            </div>
-
-            <div class="surface relative rounded-2xl p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-cyan-500"></span>
-                <h3 class="mb-4 text-xl font-semibold text-app-heading">Mission</h3>
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->mission ??
-                        'Our mission is to design and develop digital products that solve real business challenges while delivering meaningful user experiences and long-term value.'
-                    )) !!}
-                </p>
+                <div x-data x-reveal="{ delay: 100 }" class="md:pl-14">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-brand-accent">Mission</span>
+                    <p class="mt-5 text-2xl font-medium leading-snug text-app-heading">
+                        {{ $companyProfile->mission
+                            ?? 'To design and build digital products that solve real problems and deliver meaningful, long-term value.' }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-{{-- ================= COMPANY INFO ================= --}}
-<section class="bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6 py-24">
-        <h2 class="mb-10 text-3xl font-semibold text-app-heading">Company Information</h2>
 
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-            @php
-                $items = [
-                    ['label' => 'Address', 'value' => $companyProfile->address ?? null],
-                    ['label' => 'Phone', 'value' => $companyProfile->phone ?? null],
-                    ['label' => 'Fax', 'value' => $companyProfile->fax ?? null],
-                    ['label' => 'Email', 'value' => $companyProfile->email ?? null],
-                ];
-            @endphp
-
-            @foreach ($items as $item)
-                @if ($item['value'])
-                    <div class="surface rounded-xl p-6">
-                        <span class="mb-2 block text-xs font-semibold uppercase tracking-widest text-brand-accent">
-                            {{ $item['label'] }}
-                        </span>
-                        <p class="text-sm text-app-muted">{{ $item['value'] }}</p>
-                    </div>
-                @endif
-            @endforeach
-        </div>
+{{-- ================= CTA + CONTACT ================= --}}
+<x-cta eyebrow="Say hello"
+       title="Let's build something together"
+       subtitle="Tell us about your project — we'll get back to you within one business day.">
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="{{ route('contact') }}" class="btn-primary btn-lg">Start a conversation</a>
+        <a href="{{ route('products') }}" class="btn-outline btn-lg">See our work</a>
     </div>
-</section>
+
+    @if (filled($companyProfile->email) || filled($companyProfile->phone))
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-app-muted">
+            @if (filled($companyProfile->email))
+                <a href="mailto:{{ $companyProfile->email }}" class="transition hover:text-app-heading">{{ $companyProfile->email }}</a>
+            @endif
+            @if (filled($companyProfile->phone))
+                <a href="tel:{{ $companyProfile->phone }}" class="transition hover:text-app-heading">{{ $companyProfile->phone }}</a>
+            @endif
+            @if (filled($companyProfile->address))
+                <span>{{ $companyProfile->address }}</span>
+            @endif
+        </div>
+    @endif
+</x-cta>
 
 @endsection

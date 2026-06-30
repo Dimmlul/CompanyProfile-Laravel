@@ -1,13 +1,10 @@
 <section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
 
-        <div x-data x-reveal class="mb-12 text-center">
-            <span class="eyebrow">Partnerships</span>
-            <h2 class="section-title">Companies we've worked with</h2>
-            <p class="section-subtitle mx-auto max-w-xl">
-                From early-stage startups to established organizations, teams trust us to deliver.
-            </p>
-        </div>
+        <x-section-heading x-data x-reveal align="center" class="mb-12"
+            eyebrow="Partnerships"
+            title="Companies we've worked with"
+            subtitle="From early-stage startups to established organizations, teams trust us to deliver." />
 
         <div x-data x-reveal
              class="surface grid grid-cols-2 divide-x divide-y divide-app-border overflow-hidden rounded-2xl

@@ -76,9 +76,16 @@ class ProductController extends Controller
             abort(404);
         }
 
+        $related = Product::query()
+            ->where('is_active', true)
+            ->whereKeyNot($product->getKey())
+            ->latest()
+            ->take(3)
+            ->get();
+
         return view(
             'pages.client.products.show',
-            compact('product')
+            compact('product', 'related')
         );
     }
 }

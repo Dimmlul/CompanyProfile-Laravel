@@ -2,13 +2,10 @@
     <div class="mx-auto max-w-7xl px-6">
 
         <div x-data x-reveal class="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div class="max-w-xl">
-                <span class="eyebrow">Selected work</span>
-                <h2 class="section-title">A look at what we've made</h2>
-                <p class="section-subtitle">
-                    Recent projects we're proud of. Hover a panel to take a closer look.
-                </p>
-            </div>
+            <x-section-heading
+                eyebrow="Selected work"
+                title="A look at what we've made"
+                subtitle="Recent projects we're proud of. Hover a panel to take a closer look." />
             <a href="{{ route('gallery') }}" class="btn-ghost btn-sm self-start sm:self-auto">
                 View full gallery &rarr;
             </a>
@@ -33,9 +30,9 @@
                         <h3 class="mt-1 text-lg font-semibold leading-tight text-white sm:text-2xl">
                             {{ $gallery->title }}
                         </h3>
-                        @if (filled($gallery->description))
+                        @if (filled($gallery->caption))
                             <p class="mt-2 max-w-md text-sm text-white/70 opacity-0 transition-opacity delay-75 duration-300 group-hover:opacity-100">
-                                {{ $gallery->description }}
+                                {{ $gallery->caption }}
                             </p>
                         @endif
                     </div>

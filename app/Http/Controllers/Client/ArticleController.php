@@ -34,8 +34,22 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('pages.client.articles.show', [
-            'article' => $article,
-        ]);
+        $previous = Article::published()
+            ->where('published_at', '<', $article->published_at)
+            ->latest('published_at')
+            ->first();
+
+        $next = Article::published()
+            ->where('published_at', '>', $article->published_at)
+            ->oldest('published_at')
+            ->first();
+
+        $related = Article::published()
+            ->whereKeyNot($article->getKey())
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('pages.client.articles.show', compact('article', 'previous', 'next', 'related'));
     }
 }
