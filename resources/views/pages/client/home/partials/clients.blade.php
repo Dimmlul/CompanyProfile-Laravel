@@ -1,31 +1,22 @@
-<section class="bg-app-bg py-28">
+<section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
 
-        <div x-data x-reveal class="mb-16 text-center">
-            <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                Partnerships
-            </span>
-            <h2 class="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Trusted by our clients
-            </h2>
-            <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-app-muted">
-                We work with startups, growing businesses, and established organizations
-                to deliver reliable digital solutions.
+        <div x-data x-reveal class="mb-12 text-center">
+            <span class="eyebrow">Partnerships</span>
+            <h2 class="section-title">Companies we've worked with</h2>
+            <p class="section-subtitle mx-auto max-w-xl">
+                From early-stage startups to established organizations, teams trust us to deliver.
             </p>
         </div>
 
-        <div class="grid grid-cols-2 gap-x-10 gap-y-14 sm:grid-cols-3 md:grid-cols-4">
+        <div x-data x-reveal
+             class="surface grid grid-cols-2 divide-x divide-y divide-white/[0.06] overflow-hidden rounded-2xl
+                    sm:grid-cols-3 lg:grid-cols-4">
             @foreach ($clients as $client)
-                <div class="group aspect-[3/2] rounded-2xl border border-white/10 bg-slate-900/40 p-3
-                            transition-all duration-300 hover:-translate-y-1 hover:border-white/25">
-                    <div class="flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-white/[0.03]">
-                        <img
-                            src="{{ asset('storage/'.$client->logo) }}"
-                            alt="{{ $client->name }}"
-                            class="h-[85%] w-[85%] object-contain opacity-80 transition-all duration-300
-                                   group-hover:scale-105 group-hover:opacity-100"
-                        >
-                    </div>
+                <div class="flex items-center justify-center p-8 sm:p-10">
+                    <img src="{{ asset('storage/'.$client->logo) }}" alt="{{ $client->name }}"
+                         class="h-9 w-auto max-w-[140px] object-contain opacity-50 grayscale transition duration-300
+                                hover:opacity-100 hover:grayscale-0">
                 </div>
             @endforeach
         </div>

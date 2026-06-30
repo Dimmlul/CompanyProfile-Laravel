@@ -1,44 +1,57 @@
-<section class="bg-app-bg py-28">
+<section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
 
-        <div x-data x-reveal class="mb-16 max-w-3xl">
-            <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                Direction &amp; Values
-            </span>
-            <h2 class="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Vision, mission &amp; our strengths
-            </h2>
-            <p class="mt-4 leading-relaxed text-app-muted">
-                The principles that guide every decision we make.
+        <div x-data x-reveal class="mb-14 max-w-2xl">
+            <span class="eyebrow">What drives us</span>
+            <h2 class="section-title">Built on a clear direction</h2>
+            <p class="section-subtitle">
+                The principles behind every project we take on — from first call to final handover.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        {{-- Bento: tiles of different sizes for a more editorial layout --}}
+        <div x-data x-reveal class="grid gap-4 md:grid-cols-3 md:grid-rows-2">
 
-            {{-- Vision --}}
-            <div x-data x-reveal class="relative h-full rounded-2xl border border-white/10 bg-slate-900/60 p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-indigo-500"></span>
-                <h3 class="mb-4 text-xl font-semibold text-white">Our vision</h3>
-                <p class="leading-relaxed text-app-muted">{{ $companyProfile->vision }}</p>
-            </div>
+            {{-- Vision (wide) --}}
+            <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
+                <div class="mb-5 flex items-center gap-3">
+                    <span class="text-xs font-semibold tracking-widest text-brand-accent">01</span>
+                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="text-xs uppercase tracking-widest text-app-muted">Vision</span>
+                </div>
+                <h3 class="mb-3 text-2xl font-semibold text-white">Where we're headed</h3>
+                <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->vision }}</p>
+            </article>
 
-            {{-- Mission --}}
-            <div x-data x-reveal="{ delay: 100 }" class="relative h-full rounded-2xl border border-white/10 bg-slate-900/60 p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-cyan-400"></span>
-                <h3 class="mb-4 text-xl font-semibold text-white">Our mission</h3>
-                <p class="leading-relaxed text-app-muted">{{ $companyProfile->mission }}</p>
-            </div>
-
-            {{-- Strengths --}}
-            <div x-data x-reveal="{ delay: 200 }" class="h-full rounded-2xl border border-white/10 bg-slate-900/60 p-10">
-                <h3 class="mb-6 text-xs font-semibold uppercase tracking-widest text-indigo-400">Our strengths</h3>
-                <ul class="space-y-4 text-sm text-app-muted">
-                    <li class="text-white">Thoughtful execution</li>
-                    <li class="text-white">Scalable by design</li>
-                    <li class="text-white">Long-term partnership</li>
-                    <li class="text-white">Clear communication</li>
+            {{-- Strengths (tall, right column) --}}
+            <article class="surface surface-hover rounded-2xl p-8 md:row-span-2">
+                <div class="mb-6 flex items-center gap-3">
+                    <span class="text-xs font-semibold tracking-widest text-brand-accent">03</span>
+                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="text-xs uppercase tracking-widest text-app-muted">Strengths</span>
+                </div>
+                <ul class="space-y-5">
+                    @foreach (['Thoughtful execution', 'Scalable by design', 'Long-term partnership', 'Clear communication'] as $strength)
+                        <li class="flex items-start gap-3">
+                            <svg class="mt-0.5 h-5 w-5 flex-none text-brand-accent" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-sm font-medium text-white">{{ $strength }}</span>
+                        </li>
+                    @endforeach
                 </ul>
-            </div>
+            </article>
+
+            {{-- Mission (wide) --}}
+            <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
+                <div class="mb-5 flex items-center gap-3">
+                    <span class="text-xs font-semibold tracking-widest text-brand-accent">02</span>
+                    <span class="h-px flex-1 bg-white/10"></span>
+                    <span class="text-xs uppercase tracking-widest text-app-muted">Mission</span>
+                </div>
+                <h3 class="mb-3 text-2xl font-semibold text-white">What we do every day</h3>
+                <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->mission }}</p>
+            </article>
         </div>
     </div>
 </section>

@@ -161,12 +161,7 @@
                             </div>
                         @endif
                     @else
-                        <a href="{{ route('login') }}"
-                           class="rounded-lg border border-white/20
-                                  px-4 py-2 text-sm text-white
-                                  hover:bg-indigo-500/10 hover:border-indigo-400 transition">
-                            Login
-                        </a>
+                        <a href="{{ route('login') }}" class="btn-outline btn-sm">Login</a>
                     @endauth
                 </div>
             </div>

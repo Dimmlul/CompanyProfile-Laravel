@@ -80,6 +80,11 @@
     --color-app-text:  var(--color-text-main);
     --color-app-muted: var(--color-text-muted);
 
+    /* Public site surface aliases (so bg-app-* utilities actually resolve) */
+    --color-app-bg:      var(--color-bg-client);
+    --color-app-surface: #0f1729;
+    --color-app-border:  var(--color-border-soft);
+
 
     /* ===============================================================
     | BRAND COLORS
@@ -88,6 +93,7 @@
     ============================================================== */
     --color-brand-main:  #4f46e5;     /* Primary action */
     --color-brand-hover: #4338ca;     /* Hover state */
+    --color-brand-accent:#818cf8;     /* Lighter accent on dark surfaces */
     --color-brand-soft:  rgba(79,70,229,0.15);
     --color-brand-text:  #ffffff;
 
@@ -202,41 +208,145 @@
     | ---------------------------------------------------------------
     | Shared button styles
     ============================================================== */
-    .btn-primary {
-        @apply inline-flex items-center justify-center
+    /* Shared shape for every button variant */
+    .btn-primary,
+    .btn-outline,
+    .btn-ghost,
+    .btn-admin,
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2
                rounded-lg px-5 py-2.5
-               text-sm font-semibold transition;
+               text-sm font-semibold whitespace-nowrap
+               transition-colors duration-200;
+    }
+
+    .btn-primary:focus-visible,
+    .btn-outline:focus-visible,
+    .btn-ghost:focus-visible,
+    .btn-admin:focus-visible,
+    .btn-danger:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79,70,229,0.45);
+    }
+
+    /* Primary — main call to action */
+    .btn-primary {
         background-color: var(--color-brand-main);
         color: var(--color-brand-text);
     }
+    .btn-primary:hover { background-color: var(--color-brand-hover); }
 
-    .btn-primary:hover {
-        background-color: var(--color-brand-hover);
+    /* Outline — secondary action on dark surfaces */
+    .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--color-border-strong);
+        color: var(--color-app-text);
+    }
+    .btn-outline:hover {
+        background-color: rgba(255,255,255,0.06);
+        border-color: rgba(255,255,255,0.28);
     }
 
+    /* Ghost — low-emphasis / tertiary */
+    .btn-ghost {
+        background-color: transparent;
+        color: var(--color-app-muted);
+    }
+    .btn-ghost:hover {
+        background-color: rgba(255,255,255,0.06);
+        color: var(--color-app-text);
+    }
+
+    /* Admin — neutral subtle button used inside the panel */
     .btn-admin {
-        @apply inline-flex items-center justify-center
-               rounded-lg px-4 py-2
-               text-sm font-medium transition;
+        @apply font-medium;
         background-color: rgba(255,255,255,0.06);
         border: 1px solid var(--color-border-soft);
         color: var(--color-text-main);
     }
+    .btn-admin:hover { background-color: rgba(255,255,255,0.12); }
 
-    .btn-admin:hover {
-        background-color: rgba(255,255,255,0.12);
-    }
-
+    /* Danger — destructive action */
     .btn-danger {
-        @apply inline-flex items-center justify-center
-               rounded-lg px-4 py-2
-               text-sm font-semibold transition;
         background-color: var(--color-danger);
         color: #ffffff;
     }
+    .btn-danger:hover { background-color: var(--color-danger-hover); }
 
-    .btn-danger:hover {
-        background-color: var(--color-danger-hover);
+    /* Size modifiers */
+    .btn-sm { @apply px-3.5 py-2 text-xs; }
+    .btn-lg { @apply h-12 px-7; }
+
+
+    /* ===============================================================
+    | SECTION HEADINGS (PUBLIC SITE)
+    | ---------------------------------------------------------------
+    | Reusable building blocks for section headers so the
+    | eyebrow + title + subtitle pattern stays consistent.
+    ============================================================== */
+    .eyebrow {
+        @apply mb-3 inline-block text-xs font-semibold uppercase tracking-widest;
+        color: var(--color-brand-accent);
+    }
+
+    .section-title {
+        @apply text-3xl font-semibold tracking-tight md:text-4xl;
+        color: #ffffff;
+    }
+
+    .section-subtitle {
+        @apply mt-4 text-sm leading-relaxed;
+        color: var(--color-app-muted);
+    }
+
+
+    /* ===============================================================
+    | DECOR (PUBLIC SITE)
+    | ---------------------------------------------------------------
+    | Subtle, reusable background textures. Used sparingly so the
+    | site feels designed rather than "effect-stacked".
+    ============================================================== */
+
+    /* Faint blueprint grid */
+    .bg-grid {
+        background-image:
+            linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+    }
+
+    /* Soft brand glow, anchored to the top */
+    .glow-top::before {
+        content: "";
+        position: absolute;
+        inset: -20% 0 auto 0;
+        height: 60%;
+        background: radial-gradient(60% 60% at 50% 0%, rgba(79,70,229,0.22), transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Fade a section's bottom edge into the page background */
+    .fade-bottom::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 30%;
+        background: linear-gradient(to bottom, transparent, var(--color-app-bg));
+        pointer-events: none;
+    }
+
+    /* Hairline card surface used across the public site */
+    .surface {
+        background-color: rgba(255,255,255,0.02);
+        border: 1px solid var(--color-border-soft);
+    }
+    .surface-hover {
+        transition: border-color .3s, background-color .3s, transform .3s;
+    }
+    .surface-hover:hover {
+        background-color: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.16);
     }
 
 

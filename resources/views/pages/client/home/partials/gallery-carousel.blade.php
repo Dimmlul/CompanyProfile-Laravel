@@ -1,40 +1,46 @@
-<section class="bg-app-bg py-24">
+<section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
-        <div class="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-950
-                    px-6 py-16 shadow-2xl md:px-12 md:py-20">
 
-            <div x-data x-reveal class="mb-14 text-center">
-                <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                    Our work
-                </span>
-                <h2 class="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                    Our latest creations
-                </h2>
-                <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/70">
-                    A selection of recent projects we're proud of. Hover to take a closer look.
+        <div x-data x-reveal class="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div class="max-w-xl">
+                <span class="eyebrow">Selected work</span>
+                <h2 class="section-title">A look at what we've made</h2>
+                <p class="section-subtitle">
+                    Recent projects we're proud of. Hover a panel to take a closer look.
                 </p>
             </div>
+            <a href="{{ route('gallery') }}" class="btn-ghost btn-sm self-start sm:self-auto">
+                View full gallery &rarr;
+            </a>
+        </div>
 
-            {{-- Expanding panels: each item grows on hover (desktop) --}}
-            <div class="mx-auto flex h-[420px] w-full max-w-5xl items-center gap-6">
-                @foreach ($galleries as $gallery)
-                    <div class="group relative h-full w-56 flex-grow overflow-hidden rounded-2xl
-                                border border-white/10 transition-all duration-500 hover:w-full">
-                        <img
-                            src="{{ asset('storage/'.$gallery->image) }}"
-                            alt="{{ $gallery->title }}"
-                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        >
-                        <div class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/40
-                                    to-transparent p-10 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <h3 class="text-2xl font-semibold leading-tight">{{ $gallery->title }}</h3>
-                            @if (filled($gallery->description))
-                                <p class="mt-2 max-w-md text-sm text-white/80">{{ $gallery->description }}</p>
-                            @endif
-                        </div>
+        {{-- Expanding panels: each grows on hover (desktop) --}}
+        <div x-data x-reveal class="flex h-[300px] gap-3 sm:h-[440px] sm:gap-4">
+            @foreach ($galleries as $gallery)
+                <div class="group relative h-full flex-1 overflow-hidden rounded-2xl border border-white/10
+                            transition-all duration-500 ease-out hover:flex-[3]">
+                    <img src="{{ asset('storage/'.$gallery->image) }}" alt="{{ $gallery->title }}"
+                         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+
+                    {{-- vertical label when collapsed, full caption when expanded --}}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-5 sm:p-8">
+                        <span class="text-xs uppercase tracking-widest text-brand-accent
+                                     opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            Featured
+                        </span>
+                        <h3 class="mt-1 text-lg font-semibold leading-tight text-white sm:text-2xl">
+                            {{ $gallery->title }}
+                        </h3>
+                        @if (filled($gallery->description))
+                            <p class="mt-2 max-w-md text-sm text-white/70 opacity-0 transition-opacity delay-75 duration-300 group-hover:opacity-100">
+                                {{ $gallery->description }}
+                            </p>
+                        @endif
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>
