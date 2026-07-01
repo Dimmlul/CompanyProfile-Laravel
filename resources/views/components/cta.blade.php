@@ -6,6 +6,7 @@
     'label' => 'Get in touch',
 ])
 
+{{-- Reusable closing call-to-action band. Pass buttons via the slot, or use :href for a default button. --}}
 <section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
         <div x-data x-reveal

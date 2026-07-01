@@ -13,7 +13,17 @@ window.Alpine = Alpine;
  *   <div x-data x-reveal="{ threshold: 0.3, delay: 150 }">...</div>
  */
 Alpine.directive('reveal', (el, { expression }) => {
-    const { threshold = 0.15, delay = 0 } = expression ? JSON.parse(expression) : {};
+    // Accept JS object-literal syntax (e.g. { delay: 80 }), not just JSON.
+    // Wrapped so a malformed expression can never throw and halt Alpine init.
+    let options = {};
+    if (expression) {
+        try {
+            options = (new Function(`return (${expression})`))() || {};
+        } catch (e) {
+            options = {};
+        }
+    }
+    const { threshold = 0.15, delay = 0 } = options;
 
     el.classList.add('opacity-0', 'translate-y-6', 'transition-all', 'duration-700', 'ease-out');
     if (delay) el.style.transitionDelay = `${delay}ms`;

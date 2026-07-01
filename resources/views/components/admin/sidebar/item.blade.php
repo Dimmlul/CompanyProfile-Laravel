@@ -9,8 +9,8 @@
     class="flex items-center justify-between gap-3
            rounded-xl px-3 py-2 transition
            {{ $active
-                ? 'bg-indigo-500/10 text-indigo-400'
-                : 'text-app-muted hover:bg-white/5 hover:text-white'
+                ? 'bg-indigo-500/10 text-brand-accent'
+                : 'text-app-muted hover:bg-app-surface-2 hover:text-app-heading'
            }}"
 >
     <div class="flex items-center gap-3">
@@ -37,7 +37,7 @@
                    bg-indigo-500/20
                    px-2 py-0.5
                    text-xs font-medium
-                   text-indigo-400"
+                   text-brand-accent"
         >
             {{ $badge }}
         </span>

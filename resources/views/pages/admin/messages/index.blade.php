@@ -7,95 +7,62 @@
 
     {{-- HEADER --}}
     <div>
-        <h1 class="text-2xl font-semibold text-white">
-            Inbox Messages
-        </h1>
-        <p class="mt-1 text-sm text-app-muted">
-            Conversations from users & clients
-        </p>
+        <h1 class="text-xl font-semibold text-app-heading">Inbox</h1>
+        <p class="mt-1 text-sm text-app-muted">Conversations from users &amp; clients</p>
     </div>
 
     {{-- LIST --}}
-    <div class="space-y-4">
-
+    <div class="space-y-3">
         @forelse ($messages as $message)
             @php
-                $unread = ($message->unread_user_replies ?? 0)
-                        + ($message->unread_client_replies ?? 0);
+                $unread = ($message->unread_user_replies ?? 0) + ($message->unread_client_replies ?? 0);
+                $name = $message->sender === 'client'
+                    ? ($message->client_name ?? 'Client')
+                    : ($message->user?->name ?? 'User #'.$message->user_id);
+                $initial = strtoupper(mb_substr($name, 0, 1));
             @endphp
 
-            <a
-                href="{{ route('admin.messages.show', $message) }}"
-                class="group block rounded-2xl
-                       border border-white/10
-                       bg-white/5 backdrop-blur
-                       p-6 transition
-                       hover:bg-white/10"
-            >
-                <div class="flex items-start justify-between gap-6">
+            <a href="{{ route('admin.messages.show', $message) }}"
+               class="group surface surface-hover flex items-start gap-4 rounded-2xl p-5">
 
-                    {{-- LEFT --}}
-                    <div class="min-w-0 space-y-1">
-                        <p class="font-medium text-white truncate">
-                            {{ $message->subject ?? 'Support Chat' }}
-                        </p>
+                {{-- avatar --}}
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-semibold text-brand-accent">
+                    {{ $initial }}
+                </span>
 
-                        <p class="text-sm text-app-muted">
-                            @if ($message->sender === 'client')
-                                Client: {{ $message->client_name }}
-                            @else
-                                User #{{ $message->user_id }}
-                            @endif
-                        </p>
-
-                        <p class="line-clamp-2 text-sm text-app-muted">
-                            {{ $message->message }}
-                        </p>
+                {{-- body --}}
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                        <p class="truncate font-medium text-app-heading">{{ $message->subject ?? 'Support chat' }}</p>
+                        <span class="shrink-0 rounded-full bg-app-surface-2 px-2 py-0.5 text-[11px] font-medium text-app-muted">
+                            {{ $message->sender === 'client' ? 'Client' : 'User' }}
+                        </span>
                     </div>
+                    <p class="mt-0.5 text-sm text-app-muted">{{ $name }}</p>
+                    <p class="mt-1 line-clamp-1 text-sm text-app-muted">{{ $message->message }}</p>
+                </div>
 
-                    {{-- RIGHT --}}
-                    <div class="shrink-0 text-right space-y-2">
-                        <p class="text-xs text-app-muted">
-                            {{ $message->created_at->format('d M Y') }}
-                        </p>
-
-                        @if ($unread > 0)
-                            <span
-                                class="inline-flex items-center rounded-full
-                                       bg-red-500/20 px-2.5 py-0.5
-                                       text-xs font-semibold text-red-400"
-                            >
-                                {{ $unread }} New
-                            </span>
-                        @else
-                            <span class="text-xs text-app-muted">
-                                Read
-                            </span>
-                        @endif
-                    </div>
-
+                {{-- meta --}}
+                <div class="shrink-0 space-y-2 text-right">
+                    <p class="text-xs text-app-muted">{{ $message->created_at->format('d M Y') }}</p>
+                    @if ($unread > 0)
+                        <span class="inline-flex items-center rounded-full bg-brand-main px-2.5 py-0.5 text-xs font-semibold text-white">
+                            {{ $unread }} new
+                        </span>
+                    @endif
                 </div>
             </a>
         @empty
-            <div
-                class="rounded-2xl border border-white/10
-                       bg-white/5 backdrop-blur
-                       p-12 text-center"
-            >
-                <p class="text-app-muted">
-                    No messages yet.
-                </p>
-            </div>
+            <x-empty-state
+                icon="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                title="No messages yet"
+                description="Conversations from users and clients will appear here." />
         @endforelse
-
     </div>
 
     {{-- PAGINATION --}}
     @if ($messages->hasPages())
-        <div class="pt-6">
-            {{ $messages->links() }}
-        </div>
+        <div class="pt-2">{{ $messages->links() }}</div>
     @endif
-
 </div>
 @endsection

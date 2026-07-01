@@ -15,7 +15,7 @@
 
     {{-- CURRENT / PREVIEW IMAGE --}}
     <div x-data="{ preview: '{{ asset('storage/'.$gallery->image) }}' }">
-        <label class="mb-1.5 block text-sm font-medium text-app-text">
+        <label class="mb-1.5 block text-sm font-medium text-app-heading">
             Image Preview
         </label>
 
@@ -73,7 +73,7 @@
 
     {{-- ORDER POSITION --}}
     <div>
-        <label class="mb-1.5 block text-sm font-medium text-app-text">
+        <label class="mb-1.5 block text-sm font-medium text-app-heading">
             Order Position
         </label>
 
@@ -95,7 +95,7 @@
 
     {{-- STATUS --}}
     <div>
-        <label class="mb-2 block text-sm font-medium text-app-text">
+        <label class="mb-2 block text-sm font-medium text-app-heading">
             Status
         </label>
 

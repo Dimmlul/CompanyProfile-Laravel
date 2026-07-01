@@ -1,5 +1,6 @@
 @props(['article'])
 
+{{-- Reusable article preview card (blog grid + "more articles"). --}}
 <a href="{{ route('articles.show', $article->slug) }}"
    class="group surface surface-hover flex flex-col overflow-hidden rounded-2xl">
 

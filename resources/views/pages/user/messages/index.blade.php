@@ -33,7 +33,12 @@
                     </div>
                 </a>
             @empty
-                <p class="text-center text-app-muted">No conversations yet.</p>
+                <x-empty-state
+                    icon="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                    title="No conversations yet"
+                    description="Start a chat with our team and your conversation will appear here.">
+                    <a href="{{ route('client.messages.start') }}" class="btn-primary btn-sm">Start a chat</a>
+                </x-empty-state>
             @endforelse
         </div>
 

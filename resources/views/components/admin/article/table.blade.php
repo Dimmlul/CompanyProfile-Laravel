@@ -46,7 +46,7 @@
                     </td>
 
                     {{-- TITLE --}}
-                    <td class="font-medium text-app-text">
+                    <td class="font-medium text-app-heading">
                         {{ $article->title }}
                     </td>
 

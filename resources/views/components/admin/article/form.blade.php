@@ -41,7 +41,7 @@
         @if ($article?->thumbnail)
             <img
                 src="{{ asset('storage/'.$article->thumbnail) }}"
-                class="h-24 rounded-lg border border-white/10 object-cover"
+                class="h-24 rounded-lg border border-app-border object-cover"
             >
         @endif
 

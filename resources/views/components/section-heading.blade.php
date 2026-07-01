@@ -5,6 +5,7 @@
     'align' => 'left',   // left | center
 ])
 
+{{-- Reusable section header: eyebrow + title + subtitle (align left or center). --}}
 <div {{ $attributes->class([
     'max-w-2xl',
     'mx-auto text-center' => $align === 'center',

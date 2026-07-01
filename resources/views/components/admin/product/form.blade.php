@@ -50,14 +50,14 @@
             x-data="{ preview: '{{ $product?->image ? asset('storage/'.$product->image) : '' }}' }"
             class="space-y-2"
         >
-            <label class="text-sm font-medium text-app-text">
+            <label class="text-sm font-medium text-app-heading">
                 Preview Image
             </label>
 
             <template x-if="preview">
                 <img
                     :src="preview"
-                    class="h-24 w-32 rounded-lg object-cover border border-white/10"
+                    class="h-24 w-32 rounded-lg object-cover border border-app-border"
                 >
             </template>
 
@@ -79,7 +79,7 @@
 
         {{-- DELIVERY TYPE --}}
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-app-text">
+            <label class="block text-sm font-medium text-app-heading">
                 Delivery Type
             </label>
 
@@ -108,7 +108,7 @@
 
         {{-- FILE UPLOAD --}}
         <div x-show="delivery === 'file'" x-transition>
-            <label class="block text-sm font-medium text-app-text mb-1">
+            <label class="block text-sm font-medium text-app-heading mb-1">
                 Template File (ZIP / RAR)
             </label>
 
@@ -118,7 +118,7 @@
                     <a
                         href="{{ asset('storage/'.$product->download_path) }}"
                         target="_blank"
-                        class="text-indigo-400 underline"
+                        class="text-brand-accent underline"
                     >
                         Download
                     </a>
@@ -145,7 +145,7 @@
 
         {{-- STATUS --}}
         <div>
-            <label class="block text-sm font-medium text-app-text mb-2">
+            <label class="block text-sm font-medium text-app-heading mb-2">
                 Status
             </label>
 
@@ -175,7 +175,7 @@
         {{-- ORDER --}}
         @if ($showOrder)
             <div>
-                <label class="block text-sm font-medium text-app-text mb-2">
+                <label class="block text-sm font-medium text-app-heading mb-2">
                     Order Position
                 </label>
 

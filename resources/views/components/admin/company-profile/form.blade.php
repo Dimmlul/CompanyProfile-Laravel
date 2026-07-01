@@ -51,6 +51,17 @@
             :value="$companyProfile?->address"
         />
 
+        {{-- Map coordinates for the location map on the contact page --}}
+        <div>
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <x-common.form.input label="Latitude" name="latitude" type="number" step="any" placeholder="-6.2088" :value="$companyProfile?->latitude" />
+                <x-common.form.input label="Longitude" name="longitude" type="number" step="any" placeholder="106.8456" :value="$companyProfile?->longitude" />
+            </div>
+            <p class="mt-1.5 text-xs text-app-muted">
+                Optional. In Google Maps, right-click the location &rarr; click the latitude, longitude numbers to copy them.
+            </p>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
             <x-common.form.input
                 label="Phone"

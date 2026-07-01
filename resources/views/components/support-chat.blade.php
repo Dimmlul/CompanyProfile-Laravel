@@ -58,6 +58,18 @@
                 {{ $chatToken ? 'Continue Chat' : 'Chat with Admin' }}
             </a>
 
+            {{-- Logged-in users: jump to their message history --}}
+            @auth
+                <a href="{{ route('user.messages.index') }}"
+                   class="flex items-center justify-center gap-3 rounded-xl bg-app-surface-2 py-3 text-sm font-medium text-app-heading transition hover:opacity-90">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6h16M4 12h16M4 18h10"/>
+                    </svg>
+                    My messages
+                </a>
+            @endauth
+
             {{-- WhatsApp --}}
             <a
                 href="{{ $waLink ?? '#' }}"

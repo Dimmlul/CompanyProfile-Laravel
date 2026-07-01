@@ -1,52 +1,31 @@
-<!-- resources/views/components/admin/header/user-menu.blade.php -->
+{{-- Account menu: initial avatar that opens a dropdown with logout. --}}
+<div x-data="{ open: false }" class="relative border-l border-app-border pl-3">
 
-<div
-    x-data="{ open: false }"
-    class="relative flex items-center gap-3
-           pl-3 border-l border-[var(--color-border-soft)]"
->
+    {{-- Trigger: circular initial avatar --}}
     <button
         @click="open = !open"
         @click.outside="open = false"
-        class="flex items-center gap-2"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-soft text-sm font-semibold text-brand-accent"
+        aria-label="Account menu"
     >
-        <img
-            src="https://i.pinimg.com/736x/c4/34/d8/c434d8c366517ca20425bdc9ad8a32de.jpg"
-            class="h-9 w-9 rounded-full object-cover
-                   border border-[var(--color-border-soft)]"
-            alt="Avatar"
-        >
-
-        <span class="hidden sm:block text-sm font-medium">
-            {{ auth()->user()->name ?? 'Admin' }}
-        </span>
-
-        <svg class="hidden sm:block h-4 w-4"
-             fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M19 9l-7 7-7-7"/>
-        </svg>
+        {{ strtoupper(mb_substr(auth()->user()->name ?? 'A', 0, 1)) }}
     </button>
 
+    {{-- Dropdown --}}
     <div
-        x-cloak
         x-show="open"
+        x-cloak
         x-transition
-        class="absolute right-0 top-12 w-44
-               rounded-lg
-               admin-scope
-               border border-[var(--color-border-soft)]
-               shadow-lg py-1"
+        class="surface absolute right-0 top-12 w-52 overflow-hidden rounded-xl shadow-lg"
     >
+        <div class="border-b border-app-border px-4 py-3">
+            <p class="truncate text-sm font-medium text-app-heading">{{ auth()->user()->name ?? 'Admin' }}</p>
+            <p class="truncate text-xs text-app-muted">{{ auth()->user()->email }}</p>
+        </div>
+
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button
-                type="submit"
-                class="w-full text-left px-4 py-2
-                       text-sm text-red-400
-                       hover:bg-[rgba(255,255,255,0.08)]"
-            >
+            <button type="submit" class="w-full px-4 py-2.5 text-left text-sm text-danger hover:bg-app-surface-2">
                 Logout
             </button>
         </form>

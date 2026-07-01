@@ -3,6 +3,7 @@
     'label' => 'Back',
 ])
 
+{{-- Reusable "back" link with a left arrow. --}}
 <a href="{{ $href }}"
    {{ $attributes->class('group inline-flex items-center gap-2 text-sm font-medium text-app-muted transition hover:text-app-heading') }}>
     <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"

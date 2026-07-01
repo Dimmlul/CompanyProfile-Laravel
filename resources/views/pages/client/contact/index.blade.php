@@ -50,6 +50,18 @@
                         </div>
                     @endif
                 </div>
+
+                {{-- Location map (Leaflet) --}}
+                @if (filled($companyProfile->address) || (filled($companyProfile->latitude) && filled($companyProfile->longitude)))
+                    <div>
+                        <p class="mb-2 text-xs uppercase tracking-wide text-app-muted">Find us</p>
+                        <x-map
+                            :lat="$companyProfile->latitude"
+                            :lng="$companyProfile->longitude"
+                            :address="$companyProfile->address"
+                            :label="$companyProfile->company_name" />
+                    </div>
+                @endif
             </div>
 
             {{-- CONTACT FORM --}}

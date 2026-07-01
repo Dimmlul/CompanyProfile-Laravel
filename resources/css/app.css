@@ -166,6 +166,12 @@
         color: var(--color-app-text);
     }
 
+    /* Brand-colored native form controls */
+    input[type="radio"],
+    input[type="checkbox"] {
+        accent-color: var(--color-brand-main);
+    }
+
     /* Text selection styling */
     ::selection {
         background-color: var(--color-brand-soft);
@@ -191,7 +197,28 @@
     --color-brand-accent:  #818cf8;
 }
 
+/* Admin panel — LIGHT by default, flips to dark when <html> has .dark.
+   Scoped to .admin-scope so the public-site tokens are never affected. */
 .admin-scope {
+    --color-app-bg:        #f4f5f8;
+    --color-app-surface:   #ffffff;
+    --color-app-surface-2: #eef1f6;
+    --color-app-heading:   #0f172a;
+    --color-app-text:      #334155;
+    --color-app-muted:     #64748b;
+    --color-app-border:    rgba(15,23,42,0.08);
+    --color-grid-line:     rgba(15,23,42,0.05);
+    --color-brand-accent:  #4f46e5;
+    /* legacy aliases used by admin component classes */
+    --color-text-main:     #1f2937;
+    --color-text-muted:    #64748b;
+    --color-border-soft:   rgba(15,23,42,0.08);
+    --color-border-strong: rgba(15,23,42,0.16);
+    --color-bg-admin:      #f4f5f8;
+    --color-card-bg:       #ffffff;
+}
+
+.dark .admin-scope {
     --color-app-bg:        #0a0e1a;
     --color-app-surface:   #0f1729;
     --color-app-surface-2: #1b2436;
@@ -201,6 +228,12 @@
     --color-app-border:    rgba(255,255,255,0.09);
     --color-grid-line:     rgba(255,255,255,0.04);
     --color-brand-accent:  #818cf8;
+    --color-text-main:     #e5e7eb;
+    --color-text-muted:    #94a3b8;
+    --color-border-soft:   rgba(255,255,255,0.08);
+    --color-border-strong: rgba(255,255,255,0.16);
+    --color-bg-admin:      #0a0e1a;
+    --color-card-bg:       #0b1220;
 }
 
 
@@ -302,11 +335,11 @@
     /* Admin — neutral subtle button used inside the panel */
     .btn-admin {
         @apply font-medium;
-        background-color: rgba(255,255,255,0.06);
-        border: 1px solid var(--color-border-soft);
-        color: var(--color-text-main);
+        background-color: var(--color-app-surface-2);
+        border: 1px solid var(--color-app-border);
+        color: var(--color-app-text);
     }
-    .btn-admin:hover { background-color: rgba(255,255,255,0.12); }
+    .btn-admin:hover { background-color: color-mix(in srgb, var(--color-app-text) 10%, var(--color-app-surface-2)); }
 
     /* Danger — destructive action */
     .btn-danger {
@@ -318,6 +351,18 @@
     /* Size modifiers */
     .btn-sm { @apply px-3.5 py-2 text-xs; }
     .btn-lg { @apply h-12 px-7; }
+
+    /* Square icon-only button (no text padding, so the icon isn't squeezed) */
+    .btn-icon {
+        @apply inline-flex h-10 w-10 items-center justify-center rounded-lg transition-colors;
+        background-color: var(--color-app-surface-2);
+        border: 1px solid var(--color-app-border);
+        color: var(--color-app-text);
+    }
+    .btn-icon:hover {
+        color: var(--color-app-heading);
+        background-color: color-mix(in srgb, var(--color-app-text) 8%, var(--color-app-surface-2));
+    }
 
 
     /* ===============================================================
@@ -404,21 +449,26 @@
     | ---------------------------------------------------------------
     | Standard text input styling
     ============================================================== */
+    /* Text input / textarea — theme-aware on both the public site and admin. */
     .form-input {
         @apply h-11 w-full rounded-lg px-4 text-sm transition;
-        background-color: var(--color-input-bg);
-        border: 1px solid var(--color-input-border);
-        color: var(--color-text-inverse);
+        background-color: var(--color-app-surface);
+        border: 1px solid var(--color-app-border);
+        color: var(--color-app-heading);
+    }
+
+    textarea.form-input {
+        @apply h-auto py-3;
     }
 
     .form-input::placeholder {
-        color: var(--color-input-placeholder);
+        color: var(--color-app-muted);
     }
 
     .form-input:focus {
         outline: none;
-        border-color: var(--color-input-focus);
-        box-shadow: 0 0 0 3px rgba(79,70,229,0.25);
+        border-color: var(--color-brand-main);
+        box-shadow: 0 0 0 3px var(--color-brand-soft);
     }
 
 
@@ -432,16 +482,6 @@
         color: var(--color-text-main);
     }
 
-    .admin-scope .form-input {
-        background-color: var(--color-input-dark-bg);
-        border-color: var(--color-input-dark-border);
-        color: var(--color-text-main);
-    }
-
-    .admin-scope .form-input::placeholder {
-        color: var(--color-input-dark-placeholder);
-    }
-
     /* Hide scrollbar in admin UI */
     .admin-scope ::-webkit-scrollbar {
         width: 0;
@@ -449,12 +489,8 @@
 
     .admin-card {
         @apply rounded-2xl shadow-xl;
-        background: linear-gradient(
-            to bottom,
-            rgba(15,23,42,0.9),
-            rgba(2,6,23,0.95)
-        );
-        border: 1px solid var(--color-border-soft);
+        background-color: var(--color-app-surface);
+        border: 1px solid var(--color-app-border);
     }
 
 
@@ -513,9 +549,9 @@
     ============================================================== */
     .admin-textarea {
         @apply w-full rounded-lg text-sm resize-y transition;
-        background-color: #0b1220;
-        border: 1px solid var(--color-border-soft);
-        color: var(--color-text-main);
+        background-color: var(--color-app-surface);
+        border: 1px solid var(--color-app-border);
+        color: var(--color-app-heading);
 
         /* Text positioning */
         padding-top: 1.4rem;
@@ -528,7 +564,7 @@
     }
 
     .admin-textarea::placeholder {
-        color: rgba(255,255,255,0.45);
+        color: var(--color-app-muted);
     }
 
     .admin-textarea:focus {

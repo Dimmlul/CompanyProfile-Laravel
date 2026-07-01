@@ -1,34 +1,20 @@
-<!-- resources/views/components/admin/dashboard/recent-orders.blade.php -->
-
 @props(['orders'])
 
-<div
-    class="rounded-2xl border border-white/10
-           bg-white/5 p-6 space-y-5"
->
+<div class="surface rounded-2xl p-6">
 
     {{-- HEADER --}}
-    <div class="flex items-center justify-between">
-        <h2 class="text-sm font-semibold text-app-text">
-            Recent Orders
-        </h2>
-
-        <x-common.button.link :href="route('admin.orders.index')">
-            View all
-        </x-common.button.link>
+    <div class="mb-5 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-app-heading">Recent orders</h2>
+        <x-common.button.link :href="route('admin.orders.index')">View all</x-common.button.link>
     </div>
 
     {{-- TABLE --}}
     <div class="overflow-x-auto">
-        <table class="w-full text-sm text-app-muted">
-
+        <table class="admin-table">
             <thead>
-                <tr
-                    class="border-b border-white/10
-                           text-left text-xs tracking-wide"
-                >
-                    <th class="py-3">Order</th>
-                    <th>User</th>
+                <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
                     <th>Products</th>
                     <th>Status</th>
                     <th class="text-right">Action</th>
@@ -37,63 +23,40 @@
 
             <tbody>
                 @forelse ($orders as $order)
-                    <tr class="border-b border-white/5">
-
-                        {{-- ORDER --}}
-                        <td class="py-3 font-mono text-xs text-app-text">
-                            {{ $order->order_number }}
-                        </td>
-
-                        {{-- USER --}}
-                        <td class="text-app-text">
-                            {{ $order->user->name ?? '-' }}
-                        </td>
-
-                        {{-- PRODUCTS --}}
-                        <td class="space-y-1">
+                    @php
+                        $statusClass = match ($order->payment_status) {
+                            'paid'              => 'bg-green-500/15 text-green-600 dark:text-green-400',
+                            'pending'           => 'bg-yellow-500/15 text-yellow-600 dark:text-yellow-400',
+                            'failed', 'expired' => 'bg-red-500/15 text-red-600 dark:text-red-400',
+                            default             => 'bg-app-surface-2 text-app-muted',
+                        };
+                    @endphp
+                    <tr>
+                        <td class="font-mono text-xs">{{ $order->order_number }}</td>
+                        <td>{{ $order->user->name ?? '-' }}</td>
+                        <td>
                             @foreach ($order->items as $item)
-                                <div class="flex items-center gap-1">
-                                    <span class="text-app-muted">•</span>
-                                    <span class="text-app-text">
-                                        {{ $item->product->name }}
-                                    </span>
-                                    <span class="text-xs text-app-muted">
-                                        (x{{ $item->qty }})
-                                    </span>
+                                <div class="text-app-muted">
+                                    <span class="text-app-text">{{ $item->product->name }}</span>
+                                    <span class="text-xs">&times;{{ $item->qty }}</span>
                                 </div>
                             @endforeach
                         </td>
-
-                        {{-- STATUS --}}
                         <td>
-                            <span class="badge badge-muted">
+                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-medium {{ $statusClass }}">
                                 {{ ucfirst($order->payment_status) }}
                             </span>
                         </td>
-
-                        {{-- ACTION --}}
                         <td class="text-right">
-                            <x-common.button.link
-                                :href="route('admin.orders.show', $order)"
-                            >
-                                View
-                            </x-common.button.link>
+                            <x-common.button.link :href="route('admin.orders.show', $order)">View</x-common.button.link>
                         </td>
-
                     </tr>
                 @empty
                     <tr>
-                        <td
-                            colspan="5"
-                            class="py-6 text-center text-app-muted"
-                        >
-                            No recent orders
-                        </td>
+                        <td colspan="5" class="admin-table-empty">No recent orders</td>
                     </tr>
                 @endforelse
             </tbody>
-
         </table>
     </div>
-
 </div>

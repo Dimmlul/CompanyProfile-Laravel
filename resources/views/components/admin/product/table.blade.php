@@ -25,7 +25,7 @@
                         @if ($product->image)
                             <img
                                 src="{{ asset('storage/'.$product->image) }}"
-                                class="h-12 w-16 rounded object-cover border border-white/10"
+                                class="h-12 w-16 rounded object-cover border border-app-border"
                             >
                         @else
                             <span class="text-xs text-app-muted">No image</span>

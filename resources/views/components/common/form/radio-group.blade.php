@@ -5,23 +5,26 @@
     'value' => null,
 ])
 
+{{-- Labeled inline radio group. $options is [value => label]. --}}
 <div class="space-y-2">
-    <label class="text-xs font-medium text-app-muted">
-        {{ $label }}
-    </label>
+    <label class="block text-sm font-medium text-app-heading">{{ $label }}</label>
 
-    <div class="flex gap-6 text-sm text-app-text">
+    <div class="flex flex-wrap gap-6 text-sm text-app-text">
         @foreach ($options as $val => $text)
-            <label class="flex items-center gap-2 cursor-pointer">
+            <label class="flex cursor-pointer items-center gap-2">
                 <input
                     type="radio"
                     name="{{ $name }}"
                     value="{{ $val }}"
-                    {{ (string)old($name, $value) === (string)$val ? 'checked' : '' }}
-                    class="text-brand-500 focus:ring-brand-500/30"
+                    @checked((string) old($name, $value) === (string) $val)
+                    class="h-4 w-4 accent-[var(--color-brand-main)]"
                 >
                 {{ $text }}
             </label>
         @endforeach
     </div>
+
+    @error($name)
+        <p class="mt-1 text-xs text-danger">{{ $message }}</p>
+    @enderror
 </div>

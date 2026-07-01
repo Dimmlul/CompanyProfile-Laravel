@@ -3,102 +3,63 @@
 @section('title', 'Support Chat')
 
 @section('content')
-<section class="bg-app-bg py-24">
-<div class="mx-auto max-w-5xl space-y-12 px-6">
+<section class="bg-app-bg py-16">
+    <div class="mx-auto max-w-3xl px-6">
 
-    {{-- BACK --}}
-    <div>
-        <a href="{{ route('client.messages.start') }}"
-           class="inline-flex items-center gap-2 text-sm text-app-muted transition hover:text-app-heading">
-            &larr; Start new chat
-        </a>
-    </div>
+        <x-back-button :href="route('client.messages.start')" label="Start a new chat" class="mb-6" />
 
-    {{-- THREAD --}}
-    <div class="surface space-y-6 rounded-2xl p-8">
+        <div class="surface overflow-hidden rounded-2xl">
 
-        {{-- ROOT MESSAGE --}}
-        <div class="flex justify-end">
-            <div class="max-w-xl rounded-2xl bg-brand-main px-5 py-4">
-                <p class="mb-1 text-right text-xs text-indigo-100">
-                    {{ $message->client_name }} &bull; {{ $message->created_at->format('d M Y, H:i') }}
-                </p>
-                <p class="whitespace-pre-line text-sm text-white">{{ $message->message }}</p>
+            {{-- HEADER --}}
+            <div class="flex items-center gap-3 border-b border-app-border p-5">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-soft text-brand-accent">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+                    </svg>
+                </span>
+                <div>
+                    <p class="text-sm font-semibold text-app-heading">Customer Support</p>
+                    <p class="text-xs text-app-muted">Conversation as {{ $message->client_name }}</p>
+                </div>
+            </div>
 
-                @if ($message->attachment)
-                    @if ($message->attachment_type === 'image')
-                        <img src="{{ asset('storage/'.$message->attachment) }}" class="mt-3 max-w-xs rounded-lg">
-                    @else
-                        <a href="{{ asset('storage/'.$message->attachment) }}" target="_blank"
-                           class="mt-3 inline-block text-sm text-white underline">Download file</a>
-                    @endif
-                @endif
+            {{-- MESSAGES --}}
+            <div class="space-y-4 p-5 sm:p-6">
+                <x-chat-bubble own
+                    name="You"
+                    :time="$message->created_at->format('d M, H:i')"
+                    :message="$message->message"
+                    :attachment="$message->attachment"
+                    :attachmentType="$message->attachment_type" />
+
+                @foreach ($replies as $reply)
+                    <x-chat-bubble
+                        :own="$reply->sender !== 'admin'"
+                        :name="$reply->sender === 'admin' ? 'Admin' : 'You'"
+                        :time="$reply->created_at->format('d M, H:i')"
+                        :message="$reply->message"
+                        :attachment="$reply->attachment"
+                        :attachmentType="$reply->attachment_type" />
+                @endforeach
+            </div>
+
+            {{-- REPLY --}}
+            <div class="border-t border-app-border p-4">
+                <form method="POST" action="{{ route('client.messages.reply', $token) }}" enctype="multipart/form-data" class="space-y-3">
+                    @csrf
+                    <textarea name="message" rows="2" placeholder="Type your reply..."
+                              class="w-full rounded-xl border border-app-border bg-transparent px-4 py-3 text-sm text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none"></textarea>
+
+                    @error('message') <p class="text-sm text-danger">{{ $message }}</p> @enderror
+
+                    <div class="flex items-center justify-between gap-3">
+                        <input type="file" name="file"
+                               class="block max-w-[60%] text-xs text-app-muted file:mr-3 file:rounded-lg file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-brand-accent">
+                        <button class="btn-primary btn-sm">Send</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        {{-- REPLIES --}}
-        @foreach ($replies as $reply)
-            @if ($reply->sender === 'admin')
-                {{-- ADMIN --}}
-                <div class="flex justify-start">
-                    <div class="max-w-xl rounded-2xl bg-app-surface-2 px-5 py-4">
-                        <p class="mb-1 text-xs text-app-muted">Admin &bull; {{ $reply->created_at->format('H:i') }}</p>
-                        <p class="whitespace-pre-line text-sm text-app-heading">{{ $reply->message }}</p>
-
-                        @if ($reply->attachment)
-                            @if ($reply->attachment_type === 'image')
-                                <img src="{{ asset('storage/'.$reply->attachment) }}" class="mt-3 max-w-xs rounded-lg">
-                            @else
-                                <a href="{{ asset('storage/'.$reply->attachment) }}" target="_blank"
-                                   class="mt-3 inline-block text-sm text-brand-accent underline">Download file</a>
-                            @endif
-                        @endif
-                    </div>
-                </div>
-            @else
-                {{-- CLIENT --}}
-                <div class="flex justify-end">
-                    <div class="max-w-xl rounded-2xl bg-brand-main px-5 py-4">
-                        <p class="mb-1 text-right text-xs text-indigo-100">You &bull; {{ $reply->created_at->format('H:i') }}</p>
-                        <p class="whitespace-pre-line text-sm text-white">{{ $reply->message }}</p>
-
-                        @if ($reply->attachment)
-                            @if ($reply->attachment_type === 'image')
-                                <img src="{{ asset('storage/'.$reply->attachment) }}" class="mt-3 max-w-xs rounded-lg">
-                            @else
-                                <a href="{{ asset('storage/'.$reply->attachment) }}" target="_blank"
-                                   class="mt-3 inline-block text-sm text-white underline">Download file</a>
-                            @endif
-                        @endif
-                    </div>
-                </div>
-            @endif
-        @endforeach
     </div>
-
-    {{-- REPLY FORM --}}
-    <div class="surface rounded-2xl p-6">
-        <form method="POST" action="{{ route('client.messages.reply', $token) }}" enctype="multipart/form-data" class="space-y-4">
-            @csrf
-
-            <textarea name="message" rows="3" placeholder="Type your reply..."
-                      class="w-full rounded-xl border border-app-border bg-transparent px-4 py-3 text-sm
-                             text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none"></textarea>
-
-            <input type="file" name="file"
-                   class="block w-full text-sm text-app-muted file:mr-4 file:rounded-lg file:border-0
-                          file:bg-brand-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-accent">
-
-            @error('message')
-                <p class="text-sm text-danger">{{ $message }}</p>
-            @enderror
-
-            <div class="flex justify-end">
-                <button class="btn-primary">Send</button>
-            </div>
-        </form>
-    </div>
-
-</div>
 </section>
 @endsection

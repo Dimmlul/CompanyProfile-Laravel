@@ -41,6 +41,9 @@
 
     @include('pages.client.partials.footer')
 
+    {{-- Floating support chat (available on every public page) --}}
+    <x-support-chat />
+
     {{-- PAGE SCRIPTS --}}
     @stack('scripts')
 

@@ -1,5 +1,6 @@
 @props(['product'])
 
+{{-- Reusable product card (landing, products grid + "other products"). --}}
 <a href="{{ route('products.show', $product) }}"
    class="group surface surface-hover flex flex-col overflow-hidden rounded-2xl">
 

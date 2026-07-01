@@ -9,6 +9,5 @@
     @include('pages.client.home.partials.products')
     @include('pages.client.home.partials.clients')
     @include('pages.client.home.partials.contact')
-
-    <x-support-chat />
+    @include('pages.client.home.partials.location')
 @endsection

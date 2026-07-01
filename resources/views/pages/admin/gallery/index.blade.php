@@ -22,7 +22,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
         @forelse ($galleries as $gallery)
-            <div class="rounded-xl border border-white/10 overflow-hidden">
+            <div class="rounded-xl border border-app-border overflow-hidden">
 
                 <img
                     src="{{ asset('storage/'.$gallery->image) }}"

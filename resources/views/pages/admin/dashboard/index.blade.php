@@ -6,17 +6,17 @@
 <div class="mt-4">
 
     {{-- PAGE HEADER --}}
-    <div class="mb-10">
-        <h1 class="text-xl font-semibold text-app-text">
+    <div class="mb-8">
+        <h1 class="text-xl font-semibold text-app-heading">
             Dashboard
         </h1>
-        <p class="mt-2 text-sm text-app-muted">
+        <p class="mt-1 text-sm text-app-muted">
             Overview of content, activity, and recent orders
         </p>
     </div>
 
     {{-- STATS --}}
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
         {{-- ARTICLES --}}
         <x-admin.dashboard.stat-card
@@ -25,7 +25,7 @@
             :value="$totalArticles"
         >
             <x-slot:icon>
-                <x-common.icon name="article" class="h-6 w-6 text-indigo-400" />
+                <x-common.icon name="article" class="h-6 w-6 text-brand-accent" />
             </x-slot:icon>
 
             <x-slot:viewAll>
@@ -49,7 +49,7 @@
             :value="$totalProducts"
         >
             <x-slot:icon>
-                <x-common.icon name="product" class="h-6 w-6 text-indigo-400" />
+                <x-common.icon name="product" class="h-6 w-6 text-brand-accent" />
             </x-slot:icon>
 
             <x-slot:viewAll>
@@ -73,7 +73,7 @@
             :value="$totalEvents"
         >
             <x-slot:icon>
-                <x-common.icon name="event" class="h-6 w-6 text-indigo-400" />
+                <x-common.icon name="event" class="h-6 w-6 text-brand-accent" />
             </x-slot:icon>
 
             <x-slot:viewAll>
@@ -97,7 +97,7 @@
             :value="$totalGalleries"
         >
             <x-slot:icon>
-                <x-common.icon name="gallery" class="h-6 w-6 text-indigo-400" />
+                <x-common.icon name="gallery" class="h-6 w-6 text-brand-accent" />
             </x-slot:icon>
 
             <x-slot:viewAll>
@@ -121,7 +121,7 @@
             :value="$totalClients"
         >
             <x-slot:icon>
-                <x-common.icon name="client" class="h-6 w-6 text-indigo-400" />
+                <x-common.icon name="client" class="h-6 w-6 text-brand-accent" />
             </x-slot:icon>
 
             <x-slot:viewAll>

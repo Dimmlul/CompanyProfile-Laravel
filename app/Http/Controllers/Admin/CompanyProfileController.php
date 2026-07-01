@@ -42,6 +42,8 @@ class CompanyProfileController extends Controller
             'vision'       => 'nullable|string',
             'mission'      => 'nullable|string',
             'address'      => 'nullable|string',
+            'latitude'     => 'nullable|numeric|between:-90,90',
+            'longitude'    => 'nullable|numeric|between:-180,180',
             'phone'        => 'nullable|string|max:50',
             'whatsapp'     => 'nullable|string|max:50',
             'instagram'    => 'nullable|string|max:255',

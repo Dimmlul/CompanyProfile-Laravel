@@ -20,14 +20,14 @@
 
         {{-- LOGO --}}
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-app-text">
+            <label class="block text-sm font-medium text-app-heading">
                 Logo
             </label>
 
             @if ($client?->logo)
                 <img
                     src="{{ asset('storage/'.$client->logo) }}"
-                    class="h-16 object-contain rounded border border-white/10"
+                    class="h-16 object-contain rounded border border-app-border"
                 >
             @endif
 
@@ -50,7 +50,7 @@
 
         {{-- STATUS --}}
         <div>
-            <label class="block text-sm font-medium text-app-text mb-2">
+            <label class="block text-sm font-medium text-app-heading mb-2">
                 Status
             </label>
 
@@ -72,7 +72,7 @@
         {{-- ORDER POSITION (EDIT ONLY) --}}
         @if ($method !== 'POST')
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-app-text">
+                <label class="block text-sm font-medium text-app-heading">
                     Order Position
                 </label>
 

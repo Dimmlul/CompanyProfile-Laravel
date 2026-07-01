@@ -3,45 +3,20 @@
     'name',
     'value' => null,
     'rows' => 4,
-    'placeholder' => null,
 ])
 
-<div class="space-y-1">
+{{-- Labeled textarea with validation error. --}}
+<div class="space-y-1.5">
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">{{ $label }}</label>
 
-    {{-- LABEL --}}
-    <label class="text-sm font-medium text-app-muted">
-        {{ $label }}
-    </label>
+    <textarea
+        id="{{ $name }}"
+        name="{{ $name }}"
+        rows="{{ $rows }}"
+        {{ $attributes->class('form-input resize-y') }}
+    >{{ old($name, $value) }}</textarea>
 
-    {{-- WRAPPER --}}
-    <div class="relative">
-
-        {{-- TEXTAREA --}}
-        <textarea
-            name="{{ $name }}"
-            rows="{{ $rows }}"
-            placeholder="{{ $placeholder }}"
-            class="form-input pr-6 resize-y pt-3"
-        >{{ old($name, $value) }}</textarea>
-
-        {{-- CLEAR BUTTON --}}
-        <button
-            type="button"
-            onclick="this.previousElementSibling.value=''"
-            class="absolute top-3 right-3
-                   text-app-muted hover:text-app-text
-                   text-sm"
-            title="Clear"
-        >
-            ✕
-        </button>
-
-    </div>
-
-    {{-- ERROR --}}
     @error($name)
-        <p class="text-xs text-red-500">{{ $message }}</p>
+        <p class="mt-1 text-xs text-danger">{{ $message }}</p>
     @enderror
-
 </div>
-
