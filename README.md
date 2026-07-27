@@ -8,7 +8,6 @@
   <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8">
   <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Compose">
   <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
-  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
   <img src="https://img.shields.io/badge/ngrok-Tunnel-1F1E37?style=for-the-badge&logo=ngrok&logoColor=white" alt="ngrok">
   <img src="https://img.shields.io/badge/Leaflet-Maps-199900?style=for-the-badge&logo=leaflet&logoColor=white" alt="Leaflet">
   <img src="https://img.shields.io/badge/Midtrans-Snap-0361F0?style=for-the-badge" alt="Midtrans Snap">
@@ -422,9 +421,19 @@ Run the rest of the setup **inside the app container** — never on the host, si
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
 docker compose exec app php artisan storage:link
+docker compose exec app npm run build
 ```
 
+That last step is required, not optional — the site will 500 on every page (`Vite manifest not found`) until the frontend assets are built at least once. See [Frontend Build](#frontend-build) below for the day-to-day dev workflow (`npm run dev` with hot reload) once you're past initial setup.
+
 The app is now available at **http://localhost:8000**.
+
+The seeder creates two accounts you can log in with right away:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@gmail.com` | `admin123` |
+| User | `user@gmail.com` | `user123` |
 
 > Any future `composer` / `artisan` / `npm` command should be run the same way, prefixed with `docker compose exec app`.
 
