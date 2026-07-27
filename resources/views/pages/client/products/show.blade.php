@@ -1,3 +1,4 @@
+{{-- Product detail: image, pricing, buy actions and related products. --}}
 @extends('layouts.app')
 
 @section('title', $product->name)
@@ -27,10 +28,12 @@
 
         <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
 
-            {{-- IMAGE — shown in full, no crop --}}
+            {{-- IMAGE — capped height so tall portrait photos don't blow out the page; object-contain keeps the whole image visible either way, no crop --}}
             <div class="lg:sticky lg:top-24 lg:self-start">
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                     class="w-full rounded-2xl border border-app-border">
+                <div class="flex h-[420px] items-center justify-center overflow-hidden rounded-2xl border border-app-border bg-app-surface-2 lg:h-[480px]">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                         class="h-full w-full object-contain">
+                </div>
             </div>
 
             {{-- INFO --}}
@@ -53,20 +56,26 @@
                     <p class="mt-6 leading-relaxed text-app-muted">{{ $product->description }}</p>
                 @endif
 
-                {{-- ACTIONS --}}
-                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <form method="POST" action="{{ route('cart.store') }}" class="w-full">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="btn-outline w-full py-3.5">Add to Cart</button>
-                    </form>
+                {{-- ACTIONS — admin accounts manage the store, they don't shop in it --}}
+                @if (auth()->user()?->isAdmin())
+                    <div class="mt-8 rounded-xl border border-app-border bg-app-surface-2 px-4 py-3.5 text-center text-sm text-app-muted">
+                        Admin accounts can't purchase products.
+                    </div>
+                @else
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <form method="POST" action="{{ route('cart.store') }}" class="w-full">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn-outline w-full py-3.5">Add to Cart</button>
+                        </form>
 
-                    <form method="POST" action="{{ route('cart.buyNow') }}" class="w-full">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="btn-primary w-full py-3.5">Buy Now</button>
-                    </form>
-                </div>
+                        <form method="POST" action="{{ route('cart.buyNow') }}" class="w-full">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn-primary w-full py-3.5">Buy Now</button>
+                        </form>
+                    </div>
+                @endif
 
                 {{-- subtle trust line (no rigid box) --}}
                 <p class="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-app-muted">

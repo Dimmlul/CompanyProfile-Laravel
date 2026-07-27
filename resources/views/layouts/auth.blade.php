@@ -1,4 +1,4 @@
-<!-- resources/views/layouts/auth.blade.php -->
+{{-- Minimal layout for the login/register pages: just the page shell, no nav or sidebar. --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use App\Models\Product;
 use App\Models\Client;
-use App\Models\CompanyProfile;
 
 class HomeController extends Controller
 {
     /**
      * Display the public homepage with featured galleries, products and clients.
+     *
+     * Note: $companyProfile isn't fetched here — it's shared globally to every
+     * view by AppServiceProvider, with a safe empty-instance fallback.
      */
     public function index()
     {
@@ -19,14 +21,10 @@ class HomeController extends Controller
         $products = Product::where('is_active', true)->orderBy('order')->limit(6)->get();
         $clients = Client::where('is_active', true)->orderBy('order')->limit(8)->get();
 
-        // Single-record company profile.
-        $companyProfile = CompanyProfile::first();
-
         return view('pages.client.home.index', compact(
             'galleries',
             'products',
-            'clients',
-            'companyProfile'
+            'clients'
         ));
     }
 }

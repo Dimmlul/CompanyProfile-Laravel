@@ -7,7 +7,10 @@
 
 {{-- Labeled textarea with validation error. --}}
 <div class="space-y-1.5">
-    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">{{ $label }}</label>
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">
+        {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
+    </label>
 
     <textarea
         id="{{ $name }}"

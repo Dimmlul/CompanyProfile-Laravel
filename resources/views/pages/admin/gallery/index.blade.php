@@ -1,3 +1,4 @@
+{{-- Admin page listing gallery images in a grid with edit/delete actions and pagination. --}}
 @extends('layouts.admin')
 
 @section('title', 'Gallery')

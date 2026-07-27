@@ -19,44 +19,44 @@ class GallerySeeder extends Seeder
 
         // === COPY IMAGE SESUAI YANG DIPAKAI DI DB ===
         Storage::disk('public')->put(
-            'gallery/develop.png',
-            File::get(database_path('seeders/assets/gallery/develop.png'))
+            'gallery/develop.webp',
+            File::get(database_path('seeders/assets/gallery/develop.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/develop2.png',
-            File::get(database_path('seeders/assets/gallery/develop2.png'))
+            'gallery/develop2.webp',
+            File::get(database_path('seeders/assets/gallery/develop2.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/develop2.png',
-            File::get(database_path('seeders/assets/gallery/develop2.png'))
+            'gallery/develop2.webp',
+            File::get(database_path('seeders/assets/gallery/develop2.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/seminar.png',
-            File::get(database_path('seeders/assets/gallery/seminar.png'))
+            'gallery/seminar.webp',
+            File::get(database_path('seeders/assets/gallery/seminar.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/launch.png',
-            File::get(database_path('seeders/assets/gallery/launch.png'))
+            'gallery/launch.webp',
+            File::get(database_path('seeders/assets/gallery/launch.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/ui.png',
-            File::get(database_path('seeders/assets/gallery/ui.png'))
+            'gallery/ui.webp',
+            File::get(database_path('seeders/assets/gallery/ui.webp'))
         );
 
         Storage::disk('public')->put(
-            'gallery/startup.png',
-            File::get(database_path('seeders/assets/gallery/startup.png'))
+            'gallery/startup.webp',
+            File::get(database_path('seeders/assets/gallery/startup.webp'))
         );
 
         // === DATA (TIDAK DIUBAH) ===
         Gallery::create([
             'title' => 'Office Workspace',
-            'image' => 'gallery/develop.png',
+            'image' => 'gallery/develop.webp',
             'caption' => 'Modern office workspace at Nexora Studio.',
             'category' => 'activity',
             'order' => 1,
@@ -65,7 +65,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Team Brainstorming Session',
-            'image' => 'gallery/develop2.png',
+            'image' => 'gallery/develop2.webp',
             'caption' => 'Creative brainstorming session with the Nexora team.',
             'category' => 'activity',
             'order' => 2,
@@ -74,7 +74,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Client Presentation',
-            'image' => 'gallery/develop.png',
+            'image' => 'gallery/develop.webp',
             'caption' => 'Presenting digital solutions to clients.',
             'category' => 'activity',
             'order' => 3,
@@ -83,7 +83,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Design Review Process',
-            'image' => 'gallery/develop2.png',
+            'image' => 'gallery/develop2.webp',
             'caption' => 'UI/UX design review and feedback session.',
             'category' => 'design',
             'order' => 4,
@@ -92,7 +92,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Development Sprint',
-            'image' => 'gallery/seminar.png',
+            'image' => 'gallery/seminar.webp',
             'caption' => 'Agile development sprint in progress.',
             'category' => 'development',
             'order' => 5,
@@ -101,7 +101,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Product Launch Event',
-            'image' => 'gallery/launch.png',
+            'image' => 'gallery/launch.webp',
             'caption' => 'Launching a new digital product.',
             'category' => 'event',
             'order' => 6,
@@ -110,7 +110,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'UI Design Mockup',
-            'image' => 'gallery/ui.png',
+            'image' => 'gallery/ui.webp',
             'caption' => 'Preview of a modern UI design mockup.',
             'category' => 'design',
             'order' => 7,
@@ -119,7 +119,7 @@ class GallerySeeder extends Seeder
 
         Gallery::create([
             'title' => 'Company Team Building',
-            'image' => 'gallery/startup.png',
+            'image' => 'gallery/startup.webp',
             'caption' => 'Team building activity at Nexora Studio.',
             'category' => 'culture',
             'order' => 8,

@@ -25,7 +25,7 @@
                             </a>
                         @endif
                         @if (filled($companyProfile->phone))
-                            <a href="tel:{{ $companyProfile->phone }}" class="block text-app-muted transition hover:text-app-heading">
+                            <a href="callto:{{ $companyProfile->phone }}" class="block text-app-muted transition hover:text-app-heading">
                                 {{ $companyProfile->phone }}
                             </a>
                         @endif

@@ -1,3 +1,4 @@
+{{-- Order history list with payment status. --}}
 @extends('layouts.app')
 
 @section('title','Orders List')
@@ -32,6 +33,7 @@
 
                         <tbody>
                             @foreach($orders as $index => $order)
+                                {{-- A pending order expires 15 minutes after it was created --}}
                                 @php
                                     $expiredAt = $order->created_at->addMinutes(15);
                                     $isExpired = $order->payment_status === 'pending' && now()->greaterThan($expiredAt);

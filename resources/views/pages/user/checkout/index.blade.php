@@ -1,3 +1,4 @@
+{{-- Checkout step: review the cart summary and enter customer email before moving to payment. --}}
 @extends('layouts.app')
 
 @section('title', 'Checkout')

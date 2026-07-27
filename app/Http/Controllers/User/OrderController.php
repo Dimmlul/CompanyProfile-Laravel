@@ -84,6 +84,16 @@ class OrderController extends Controller
         $product = $item->product;
 
         /**
+         * Link-based delivery: redirect the buyer to the external URL
+         * (kept behind this gated route so the URL is never exposed unpaid).
+         */
+        if ($product->delivery_type === 'link') {
+            abort_if(! $product->download_url, 404);
+
+            return redirect()->away($product->download_url);
+        }
+
+        /**
          * Ensure the product uses file-based delivery.
          */
         abort_if($product->delivery_type !== 'file', 403);
@@ -93,8 +103,16 @@ class OrderController extends Controller
          */
         abort_if(! $product->download_path, 404);
 
+        /**
+         * Serve from the private disk first; fall back to the public disk
+         * for files uploaded before private storage was introduced.
+         */
+        $disk = Storage::disk('local')->exists($product->download_path) ? 'local' : 'public';
+
+        abort_if(! Storage::disk($disk)->exists($product->download_path), 404);
+
         return response()->download(
-            Storage::disk('public')->path($product->download_path)
+            Storage::disk($disk)->path($product->download_path)
         );
     }
 }

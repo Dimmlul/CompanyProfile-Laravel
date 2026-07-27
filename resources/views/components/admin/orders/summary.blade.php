@@ -1,5 +1,6 @@
 <!-- resources/views/components/admin/orders/summary.blade.php -->
 
+{{-- Order summary cards: customer info, total, and payment status badge. --}}
 @props(['order'])
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

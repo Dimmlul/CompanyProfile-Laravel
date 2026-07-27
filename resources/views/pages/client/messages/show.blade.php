@@ -1,3 +1,4 @@
+{{-- Guest chat conversation view: shows the message thread and lets the guest post a reply via AJAX. --}}
 @extends('layouts.app')
 
 @section('title', 'Support Chat')
@@ -8,7 +9,7 @@
 
         <x-back-button :href="route('client.messages.start')" label="Start a new chat" class="mb-6" />
 
-        <div class="surface overflow-hidden rounded-2xl">
+        <div class="surface overflow-hidden rounded-2xl" x-data="chatReply({ action: '{{ route('client.messages.reply', $token) }}' })">
 
             {{-- HEADER --}}
             <div class="flex items-center gap-3 border-b border-app-border p-5">
@@ -24,7 +25,7 @@
             </div>
 
             {{-- MESSAGES --}}
-            <div class="space-y-4 p-5 sm:p-6">
+            <div class="space-y-4 p-5 sm:p-6" x-ref="thread">
                 <x-chat-bubble own
                     name="You"
                     :time="$message->created_at->format('d M, H:i')"
@@ -43,19 +44,23 @@
                 @endforeach
             </div>
 
-            {{-- REPLY --}}
+            {{-- REPLY — submitted via AJAX (chatReply); method/action stay as a no-JS fallback --}}
             <div class="border-t border-app-border p-4">
-                <form method="POST" action="{{ route('client.messages.reply', $token) }}" enctype="multipart/form-data" class="space-y-3">
+                <form method="POST" action="{{ route('client.messages.reply', $token) }}" enctype="multipart/form-data"
+                      @submit.prevent="send" class="space-y-3">
                     @csrf
-                    <textarea name="message" rows="2" placeholder="Type your reply..."
-                              class="w-full rounded-xl border border-app-border bg-transparent px-4 py-3 text-sm text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none"></textarea>
+                    <textarea x-model="text" name="message" rows="2" placeholder="Type your reply..." :disabled="sending"
+                              class="w-full rounded-xl border border-app-border bg-transparent px-4 py-3 text-sm text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none disabled:opacity-60"></textarea>
 
-                    @error('message') <p class="text-sm text-danger">{{ $message }}</p> @enderror
+                    <p x-show="error" x-cloak x-text="error" class="text-sm text-danger"></p>
 
                     <div class="flex items-center justify-between gap-3">
-                        <input type="file" name="file"
+                        <input type="file" name="file" x-ref="file" :disabled="sending"
                                class="block max-w-[60%] text-xs text-app-muted file:mr-3 file:rounded-lg file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-brand-accent">
-                        <button class="btn-primary btn-sm">Send</button>
+                        <button type="submit" class="btn-primary btn-sm" :disabled="sending">
+                            <span x-show="!sending">Send</span>
+                            <span x-show="sending" x-cloak>Sending&hellip;</span>
+                        </button>
                     </div>
                 </form>
             </div>

@@ -1,4 +1,5 @@
 <!-- resources/views/layouts/admin.blade.php -->
+{{-- Admin panel shell: sidebar, header and always-dark admin-scope styling for every admin page. --}}
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>

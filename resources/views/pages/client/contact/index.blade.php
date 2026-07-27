@@ -1,3 +1,4 @@
+{{-- Contact page: company info, location map, and a contact form that emails the company. --}}
 @extends('layouts.app')
 
 @section('title', 'Contact Us')
@@ -91,6 +92,7 @@
 </section>
 @endsection
 
+{{-- Sends the contact form straight to EmailJS from the browser, bypassing the Laravel backend. --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>

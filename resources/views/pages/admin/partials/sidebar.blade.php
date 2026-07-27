@@ -1,3 +1,4 @@
+{{-- Admin sidebar: collapsible navigation. --}}
 @php
     use App\Models\CompanyProfile;
     $companyProfile = CompanyProfile::first();

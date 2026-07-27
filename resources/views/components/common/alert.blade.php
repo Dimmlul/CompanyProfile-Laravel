@@ -1,3 +1,4 @@
+{{-- Flash message alert box. --}}
 @props([
     'type' => 'error', // error | success | info
 ])

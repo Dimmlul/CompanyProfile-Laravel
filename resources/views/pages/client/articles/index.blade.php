@@ -1,3 +1,4 @@
+{{-- Articles listing page: paginated list of published articles with thumbnails and excerpts. --}}
 @extends('layouts.app')
 
 @section('title', 'Articles')
@@ -9,7 +10,7 @@
 
         {{-- HEADER --}}
         <div x-data x-reveal>
-            <h1 class="text-4xl font-bold tracking-tight text-app-heading sm:text-5xl">All Posts</h1>
+            <h1 class="text-4xl font-bold tracking-tight text-app-heading sm:text-5xl">Articles</h1>
             <p class="mt-3 text-app-muted">
                 Insights, guides, and thoughts on technology, design, and digital growth.
             </p>

@@ -1,3 +1,4 @@
+{{-- Admin page showing a single message thread and a reply form submitted via AJAX. --}}
 @extends('layouts.admin')
 
 @section('title', 'Message Detail')
@@ -9,7 +10,7 @@
     <x-back-button :href="route('admin.messages.index')" label="Back to inbox" />
 
     {{-- THREAD --}}
-    <div class="admin-card overflow-hidden">
+    <div class="admin-card overflow-hidden" x-data="chatReply({ action: '{{ route('admin.messages.reply', $message) }}' })">
         <div class="flex items-center gap-3 border-b border-app-border p-5">
             <span class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-soft text-brand-accent">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
@@ -25,7 +26,7 @@
         </div>
 
         {{-- MESSAGES --}}
-        <div class="space-y-4 p-5 sm:p-6">
+        <div class="space-y-4 p-5 sm:p-6" x-ref="thread">
             <x-chat-bubble
                 :name="$message->client_name ?? $message->user?->name ?? 'Client'"
                 :time="$message->created_at->format('d M, H:i')"
@@ -46,19 +47,23 @@
             @endforelse
         </div>
 
-        {{-- REPLY FORM --}}
+        {{-- REPLY FORM — submitted via AJAX (chatReply); method/action stay as a no-JS fallback --}}
         <div class="border-t border-app-border p-4">
-            <form method="POST" action="{{ route('admin.messages.reply', $message) }}" enctype="multipart/form-data" class="space-y-3">
+            <form method="POST" action="{{ route('admin.messages.reply', $message) }}" enctype="multipart/form-data"
+                  @submit.prevent="send" class="space-y-3">
                 @csrf
-                <textarea name="message" rows="3" placeholder="Reply to client..."
-                          class="w-full rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none">{{ old('message') }}</textarea>
+                <textarea x-model="text" name="message" rows="3" placeholder="Reply to client..." :disabled="sending"
+                          class="w-full rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none disabled:opacity-60"></textarea>
 
-                @error('message') <p class="text-sm text-danger">{{ $message }}</p> @enderror
+                <p x-show="error" x-cloak x-text="error" class="text-sm text-danger"></p>
 
                 <div class="flex items-center justify-between gap-3">
-                    <input type="file" name="file"
+                    <input type="file" name="file" x-ref="file" :disabled="sending"
                            class="block max-w-[60%] text-xs text-app-muted file:mr-3 file:rounded-lg file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-brand-accent">
-                    <button class="btn-primary btn-sm">Send Reply</button>
+                    <button type="submit" class="btn-primary btn-sm" :disabled="sending">
+                        <span x-show="!sending">Send Reply</span>
+                        <span x-show="sending" x-cloak>Sending&hellip;</span>
+                    </button>
                 </div>
             </form>
         </div>

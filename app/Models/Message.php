@@ -54,6 +54,18 @@ class Message extends Model
     }
 
     /**
+     * Get the most recent reply in this thread (used for inbox previews).
+     *
+     * Relationship:
+     * - Falls back to nothing if the thread has no replies yet,
+     *   in which case the caller should preview the root message itself.
+     */
+    public function latestReply()
+    {
+        return $this->hasOne(Message::class, 'parent_id')->latestOfMany();
+    }
+
+    /**
      * Get the parent message of this reply.
      *
      * Relationship:

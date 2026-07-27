@@ -1,3 +1,4 @@
+{{-- Dashboard stat tile: icon, title/subtitle, a big value, and optional "view all" / action slots. --}}
 @props([
     'title',
     'subtitle',

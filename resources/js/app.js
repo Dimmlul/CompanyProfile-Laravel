@@ -37,4 +37,55 @@ Alpine.directive('reveal', (el, { expression }) => {
     observer.observe(el);
 });
 
+/**
+ * chatReply — submits a chat reply form over AJAX so the page never reloads.
+ * On success the server sends back the rendered <x-chat-bubble> HTML for the
+ * new reply, which is appended straight into the thread.
+ *
+ * Shared by the guest, user and admin chat threads:
+ *   <div x-data="chatReply({ action: '...' })">
+ */
+window.chatReply = function ({ action }) {
+    return {
+        text: '',
+        sending: false,
+        error: null,
+
+        send() {
+            const file = this.$refs.file?.files?.[0] ?? null;
+
+            if (!this.text.trim() && !file) {
+                this.error = 'Type a message or attach a file.';
+                return;
+            }
+
+            this.sending = true;
+            this.error = null;
+
+            const formData = new FormData();
+            formData.append('message', this.text);
+            if (file) formData.append('file', file);
+
+            axios.post(action, formData, { headers: { Accept: 'application/json' } })
+                .then(({ data }) => {
+                    this.$refs.thread.insertAdjacentHTML('beforeend', data.html);
+                    this.text = '';
+                    if (this.$refs.file) this.$refs.file.value = '';
+
+                    this.$nextTick(() => {
+                        this.$refs.thread.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    });
+                })
+                .catch((err) => {
+                    this.error = err.response?.data?.message
+                        ?? err.response?.data?.errors?.message?.[0]
+                        ?? 'Failed to send. Please try again.';
+                })
+                .finally(() => {
+                    this.sending = false;
+                });
+        },
+    };
+};
+
 Alpine.start();

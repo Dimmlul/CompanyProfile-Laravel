@@ -1,3 +1,4 @@
+{{-- Site-wide footer: brand blurb, quick links, contact info, and social links pulled from the company profile. --}}
 <footer class="relative site-header border-t">
     <div
         class="mx-auto max-w-7xl px-6
@@ -96,7 +97,7 @@
                         <li>
                             <a
                                 href="https://www.google.com/maps/search/?api=1&query={{ urlencode($companyProfile->address) }}"
-                                target="_blank"
+                                target="_blank" rel="noopener noreferrer"
                                 class="{{ $linkBase }}"
                             >
                                 <span class="relative">
@@ -147,7 +148,7 @@
                             href="{{ filled($companyProfile->whatsapp)
                                 ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
                                 : '#' }}"
-                            target="_blank"
+                            target="_blank" rel="noopener noreferrer"
                             class="{{ $linkBase }}"
                         >
                             <span class="relative">
@@ -164,7 +165,7 @@
                                     ? $companyProfile->instagram
                                     : 'https://instagram.com/' . ltrim($companyProfile->instagram, '@'))
                                 : '#' }}"
-                            target="_blank"
+                            target="_blank" rel="noopener noreferrer"
                             class="{{ $linkBase }}"
                         >
                             <span class="relative">

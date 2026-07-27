@@ -19,8 +19,28 @@ class CompanyProfileController extends Controller
      */
     public function index()
     {
+        $companyProfile = CompanyProfile::first();
+
+        /**
+         * Fields that are directly rendered on the public homepage.
+         * Anything still blank here gets flagged so the admin knows
+         * the homepage will look incomplete until it's filled in.
+         */
+        $homepageFields = [
+            'company_name' => 'Company name',
+            'logo'         => 'Logo',
+            'about'        => 'About',
+            'vision'       => 'Vision',
+            'mission'      => 'Mission',
+        ];
+
+        $missingHomepageFields = collect($homepageFields)
+            ->filter(fn ($label, $field) => blank($companyProfile?->{$field}))
+            ->values();
+
         return view('pages.admin.company-profile.index', [
-            'companyProfile' => CompanyProfile::first(),
+            'companyProfile'         => $companyProfile,
+            'missingHomepageFields'  => $missingHomepageFields,
         ]);
     }
 
@@ -37,7 +57,7 @@ class CompanyProfileController extends Controller
     {
         $validated = $request->validate([
             'company_name' => 'nullable|string|max:255',
-            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,webp,svg|max:2048',
+            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
             'about'        => 'nullable|string',
             'vision'       => 'nullable|string',
             'mission'      => 'nullable|string',

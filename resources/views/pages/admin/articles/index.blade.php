@@ -1,5 +1,6 @@
 <!-- resources/views/pages/admin/articles/index.blade.php -->
 
+{{-- Admin page listing all articles with pagination and a link to create a new one. --}}
 @extends('layouts.admin')
 
 @section('title', 'Articles')

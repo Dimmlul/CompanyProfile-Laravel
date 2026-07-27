@@ -5,7 +5,10 @@
 
 {{-- Labeled file input with a branded "choose file" button. --}}
 <div class="space-y-1.5">
-    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">{{ $label }}</label>
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">
+        {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
+    </label>
 
     <input
         id="{{ $name }}"

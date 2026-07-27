@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -52,7 +53,7 @@ class ProductController extends Controller
             'name'          => 'required|string|max:255',
             'description'   => 'nullable|string',
             'content'       => 'required|string',
-            'image'         => 'nullable|image|max:2048',
+            'image'         => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'price'         => 'required|numeric|min:0',
             'is_active'     => 'required|in:0,1',
 
@@ -61,6 +62,23 @@ class ProductController extends Controller
             'file'          => 'nullable|file|mimes:zip,rar',
             'download_url'  => 'nullable|url',
         ]);
+
+        /**
+         * A product must actually have something to deliver, otherwise a
+         * customer could pay and receive nothing. There's no existing
+         * file/URL yet on create, so the matching one must be provided now.
+         */
+        if ($validated['delivery_type'] === 'file' && ! $request->hasFile('file')) {
+            throw ValidationException::withMessages([
+                'file' => 'Upload a template file, or switch delivery to External Link.',
+            ]);
+        }
+
+        if ($validated['delivery_type'] === 'link' && blank($validated['download_url'] ?? null)) {
+            throw ValidationException::withMessages([
+                'download_url' => 'Provide a download URL, or switch delivery to Upload File.',
+            ]);
+        }
 
         /**
          * Assign the next available order value.
@@ -90,8 +108,9 @@ class ProductController extends Controller
          *   Clear any stored file path and rely on the external URL.
          */
         if ($validated['delivery_type'] === 'file' && $request->hasFile('file')) {
+            // Paid files live on the private disk so they can't be downloaded without checkout.
             $validated['download_path'] = $request->file('file')
-                ->store('templates', 'public');
+                ->store('templates', 'local');
             $validated['download_url'] = null;
         }
 
@@ -134,7 +153,7 @@ class ProductController extends Controller
             'name'          => 'required|string|max:255',
             'description'   => 'nullable|string',
             'content'       => 'required|string',
-            'image'         => 'nullable|image|max:2048',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'price'         => 'required|numeric|min:0',
             'is_active'     => 'required|in:0,1',
             'order_action'  => 'nullable|in:keep,up,down,top,bottom',
@@ -144,6 +163,23 @@ class ProductController extends Controller
             'file'          => 'nullable|file|mimes:zip,rar',
             'download_url'  => 'nullable|url',
         ]);
+
+        /**
+         * A product must always have something to deliver. Unlike create,
+         * an existing file/URL already on the product also counts — the
+         * admin isn't forced to re-upload just to save an unrelated change.
+         */
+        if ($validated['delivery_type'] === 'file' && ! $request->hasFile('file') && ! $product->download_path) {
+            throw ValidationException::withMessages([
+                'file' => 'Upload a template file, or switch delivery to External Link.',
+            ]);
+        }
+
+        if ($validated['delivery_type'] === 'link' && blank($validated['download_url'] ?? null) && ! $product->download_url) {
+            throw ValidationException::withMessages([
+                'download_url' => 'Provide a download URL, or switch delivery to Upload File.',
+            ]);
+        }
 
         /**
          * Perform update operations within a database transaction
@@ -172,11 +208,14 @@ class ProductController extends Controller
              */
             if ($request->delivery_type === 'file' && $request->hasFile('file')) {
                 if ($product->download_path) {
+                    // Remove the old file from whichever disk it lives on (legacy files were public).
+                    Storage::disk('local')->delete($product->download_path);
                     Storage::disk('public')->delete($product->download_path);
                 }
 
+                // Paid files live on the private disk so they can't be downloaded without checkout.
                 $product->download_path = $request->file('file')
-                    ->store('templates', 'public');
+                    ->store('templates', 'local');
                 $product->download_url = null;
             }
 
@@ -215,11 +254,19 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        // Block deletion when the product is part of existing orders (protects purchase history);
+        // deactivate it instead so past buyers keep their records and downloads.
+        if ($product->orderItems()->exists()) {
+            return back()->with('error', 'This product has orders. Set it to Inactive instead of deleting.');
+        }
+
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
 
         if ($product->download_path) {
+            // Paid files may live on either disk (new = private, legacy = public).
+            Storage::disk('local')->delete($product->download_path);
             Storage::disk('public')->delete($product->download_path);
         }
 

@@ -1,3 +1,4 @@
+{{-- Admin product form with delivery type options. --}}
 @props([
     'action',
     'method' => 'POST',
@@ -27,6 +28,7 @@
             label="Product Name"
             name="name"
             :value="$product?->name"
+            required
         />
 
         {{-- DESCRIPTION --}}
@@ -52,6 +54,7 @@
         >
             <label class="text-sm font-medium text-app-heading">
                 Preview Image
+                @if ($method === 'POST') <span class="text-danger">*</span> @endif
             </label>
 
             <template x-if="preview">
@@ -66,7 +69,12 @@
                 name="image"
                 class="form-input"
                 @change="preview = URL.createObjectURL($event.target.files[0])"
+                @if ($method === 'POST') required @endif
             >
+
+            @error('image')
+                <p class="mt-1 text-xs text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- PRICE --}}
@@ -75,6 +83,7 @@
             name="price"
             type="number"
             :value="$product?->price"
+            required
         />
 
         {{-- DELIVERY TYPE --}}
@@ -110,14 +119,18 @@
         <div x-show="delivery === 'file'" x-transition>
             <label class="block text-sm font-medium text-app-heading mb-1">
                 Template File (ZIP / RAR)
+                @if (old('delivery_type', $product?->delivery_type ?? 'file') === 'file' && ! $product?->download_path)
+                    <span class="text-danger">*</span>
+                @endif
             </label>
+            <p class="mb-2 text-xs text-app-muted">Required for file delivery — a buyer can't download anything without it.</p>
 
             @if ($product?->download_path)
                 <p class="mb-2 text-xs text-app-muted">
                     Current file:
                     <a
                         href="{{ asset('storage/'.$product->download_path) }}"
-                        target="_blank"
+                        target="_blank" rel="noopener"
                         class="text-brand-accent underline"
                     >
                         Download
@@ -141,6 +154,7 @@
                 placeholder="https://drive.google.com / github / figma"
                 :value="$product?->download_url"
             />
+            <p class="mt-1 text-xs text-app-muted">Required for link delivery — a buyer can't access anything without it.</p>
         </div>
 
         {{-- STATUS --}}

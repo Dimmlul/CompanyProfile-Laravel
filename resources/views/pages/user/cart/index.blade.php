@@ -1,3 +1,4 @@
+{{-- Shopping cart: items, quantity stepper and order summary. --}}
 @extends('layouts.app')
 
 @section('title', 'My Cart')
@@ -17,6 +18,7 @@
             </div>
         @endif
 
+        {{-- Show empty-cart state, or the item list and order summary --}}
         @if ($carts->isEmpty())
             <x-empty-state
                 icon="M3 3h2l.6 3M7 13h10l4-8H5.6M7 13L5.8 18a1 1 0 001 1h10a1 1 0 001-1l-1.2-5M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"

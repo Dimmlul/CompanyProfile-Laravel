@@ -22,7 +22,7 @@
         {{-- Right: view site, theme, account --}}
         <div class="flex items-center gap-3">
             {{-- Open the public site in a new tab --}}
-            <a href="{{ route('home') }}" target="_blank"
+            <a href="{{ route('home') }}" target="_blank" rel="noopener"
                class="hidden h-10 items-center gap-2 rounded-lg border border-app-border bg-app-surface-2
                       px-3 text-sm text-app-text transition hover:text-app-heading sm:flex">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -1,3 +1,4 @@
+{{-- Payment step: shows the order total and opens the Midtrans Snap popup to pay. --}}
 @extends('layouts.app')
 
 @section('title','Complete Payment')
@@ -65,6 +66,7 @@
 @endsection
 
 @push('scripts')
+{{-- Midtrans Snap SDK, needed to open the payment popup below --}}
 <script
     src="https://app.sandbox.midtrans.com/snap/snap.js"
       data-client-key="{{ config('services.midtrans.client_key') }}">
@@ -97,6 +99,7 @@
             </span>
         `;
 
+        // Open the Snap popup and route the user based on the payment outcome
         snap.pay('{{ $order->payment_token }}', {
             onSuccess: function () {
                 window.location.href = "{{ route('orders.index') }}";
@@ -114,6 +117,7 @@
         });
     });
 
+    // Re-enable the pay button and restore its original label
     function resetButton() {
         snapOpened = false;
         payButton.disabled = false;

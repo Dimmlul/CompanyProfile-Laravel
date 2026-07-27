@@ -1,3 +1,4 @@
+{{-- User profile page: update account info and optionally change password. --}}
 @extends('layouts.app')
 
 @section('title', 'My Profile')

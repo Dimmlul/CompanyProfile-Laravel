@@ -1,6 +1,7 @@
 @props(['event'])
 
 {{-- Reusable event card (events grid + "other events"). --}}
+{{-- Show the event as "Upcoming" unless its start date is already in the past. --}}
 @php
     $isUpcoming = $event->start_date->isToday() || $event->start_date->isFuture();
 @endphp

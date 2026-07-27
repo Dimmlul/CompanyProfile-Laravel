@@ -1,3 +1,4 @@
+{{-- Sidebar navigation link with active state. --}}
 @props([
     'href',
     'active' => false,
@@ -15,7 +16,19 @@
 >
     <div class="flex items-center gap-3">
         @if ($icon)
-            <x-common.icon :name="$icon" class="h-5 w-5 shrink-0" />
+            <span class="relative shrink-0">
+                <x-common.icon :name="$icon" class="h-5 w-5" />
+
+                {{-- Dot indicator: the only visible cue when the sidebar is collapsed to
+                     icon-only width, since the text badge below is hidden in that state. --}}
+                @if (isset($badge))
+                    <span
+                        x-show="!$store.sidebar.isExpanded"
+                        x-cloak
+                        class="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-brand-main ring-2 ring-[var(--color-app-bg)]"
+                    ></span>
+                @endif
+            </span>
         @endif
 
         <span
@@ -29,7 +42,7 @@
         </span>
     </div>
 
-    {{-- BADGE --}}
+    {{-- BADGE (expanded state: full count pill) --}}
     @if (isset($badge))
         <span
             x-show="$store.sidebar.isExpanded"

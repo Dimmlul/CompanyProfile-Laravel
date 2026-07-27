@@ -1,3 +1,4 @@
+{{-- Admin client form (create, edit and quick-add). --}}
 @props([
     'action',
     'method' => 'POST',
@@ -16,14 +17,11 @@
             label="Client Name"
             name="name"
             :value="$client?->name"
+            required
         />
 
         {{-- LOGO --}}
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-app-heading">
-                Logo
-            </label>
-
             @if ($client?->logo)
                 <img
                     src="{{ asset('storage/'.$client->logo) }}"
@@ -31,7 +29,8 @@
                 >
             @endif
 
-            <input type="file" name="logo" class="form-input">
+            <x-common.form.file label="Logo" name="logo" />
+            <p class="text-xs text-app-muted">Optional — clients without a logo show as a plain initial on the homepage.</p>
         </div>
 
         <x-common.form.input

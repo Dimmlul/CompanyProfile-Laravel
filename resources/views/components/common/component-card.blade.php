@@ -1,5 +1,6 @@
 <!-- resources/views/components/common/component-card.blade.php -->
 
+{{-- Generic bordered card with an optional title/description header and a slot for the body content. --}}
 @props([
     'title' => null,
     'desc' => null,

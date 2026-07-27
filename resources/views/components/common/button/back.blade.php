@@ -1,4 +1,4 @@
-<!-- resources/views/components/common/button/back.blade.php -->
+{{-- A simple "← Back" link button, used to return to a previous admin page. --}}
 
 @props([
     'href'

@@ -1,4 +1,4 @@
-<!-- resources/views/pages/admin/articles/create.blade.php -->
+{{-- Admin page for creating a new article; reuses the shared article form component. --}}
 
 @extends('layouts.admin')
 

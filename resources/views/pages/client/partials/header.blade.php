@@ -1,3 +1,4 @@
+{{-- Site-wide header: logo, nav links, theme toggle, and auth/cart menu. --}}
 <header
     x-data="{ mobileOpen: false, userOpen: false }"
     class="sticky top-0 z-50 site-header border-b"

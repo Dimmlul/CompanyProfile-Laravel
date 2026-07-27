@@ -1,3 +1,4 @@
+{{-- Reusable Leaflet map: uses coordinates or geocodes an address. --}}
 @props([
     'lat' => null,
     'lng' => null,
@@ -7,6 +8,7 @@
     'height' => '340px',
 ])
 
+{{-- Build a unique element id for this map instance and a Google Maps link from coordinates or address. --}}
 @php
     $mapId = 'map-'.\Illuminate\Support\Str::random(8);
     $hasCoords = filled($lat) && filled($lng);
@@ -27,7 +29,7 @@
     </div>
 
     @if ($gmaps)
-        <a href="{{ $gmaps }}" target="_blank" rel="noopener"
+        <a href="{{ $gmaps }}" target="_blank" rel="noopener noreferrer"
            class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-accent hover:underline">
             Open in Google Maps
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">

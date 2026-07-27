@@ -1,3 +1,4 @@
+{{-- Admin: create an event. --}}
 @extends('layouts.admin')
 
 @section('title', 'Create Event')

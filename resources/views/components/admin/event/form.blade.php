@@ -1,3 +1,4 @@
+{{-- Admin event form (create, edit and quick-add). --}}
 @props([
     'action',
     'method' => 'POST',
@@ -43,10 +44,6 @@
 
     {{-- IMAGE --}}
     <div>
-        <label class="text-sm font-medium text-app-heading">
-            Image
-        </label>
-
         @if (!empty($event?->image))
             <div class="mb-3">
                 <img
@@ -56,7 +53,7 @@
             </div>
         @endif
 
-        <input type="file" name="image" class="form-input">
+        <x-common.form.file label="Image" name="image" />
     </div>
 
     {{-- LOCATION --}}
@@ -82,6 +79,7 @@
                 'start_date',
                 optional($event->start_date ?? null)->format('Y-m-d\TH:i')
             )"
+            required
         />
 
         <x-common.form.date-picker

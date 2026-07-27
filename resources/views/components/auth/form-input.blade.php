@@ -1,3 +1,4 @@
+{{-- Auth form input with validation error. --}}
 @props([
     'label',
     'name',

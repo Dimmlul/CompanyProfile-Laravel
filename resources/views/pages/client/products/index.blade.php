@@ -1,3 +1,4 @@
+{{-- Products listing page: newest products plus the full paginated catalog. --}}
 @extends('layouts.app')
 
 @section('title', 'Products')
@@ -20,7 +21,7 @@
             <div class="mb-20">
                 <div x-data x-reveal class="mb-8 flex items-end justify-between">
                     <h2 class="text-xl font-semibold text-app-heading">Newest</h2>
-                    <span class="text-sm text-app-muted">Fresh from the studio</span>
+                    <span class="text-sm text-app-muted">Newest products</span>
                 </div>
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($newestProducts as $product)

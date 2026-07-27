@@ -1,3 +1,4 @@
+{{-- Homepage: assembles the landing page sections. --}}
 @extends('layouts.app')
 
 @section('title', 'Home')

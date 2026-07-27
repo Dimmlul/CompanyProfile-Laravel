@@ -1,3 +1,4 @@
+{{-- Gallery page: filterable grid of photos with a click-to-open lightbox. --}}
 @extends('layouts.app')
 
 @section('title', 'Gallery')
@@ -8,6 +9,7 @@
     $categories = $galleries->pluck('category')->filter()->unique()->values();
 @endphp
 
+{{-- Alpine state: active category filter, and whether the lightbox is open plus which image it shows. --}}
 <section class="bg-app-bg py-20" x-data="{ cat: 'all', open: false, active: {} }">
     <div class="mx-auto max-w-7xl px-6">
 
@@ -59,10 +61,10 @@
          @keydown.escape.window="open = false" @click.self="open = false"
          class="fixed inset-0 z-[80] flex items-center justify-center bg-black/85 p-6 backdrop-blur-sm">
         <div class="relative w-full max-w-4xl">
+            {{-- Positioned on the image corner (not above it) so it's always on-screen, even on short mobile viewports --}}
             <button type="button" @click="open = false"
-                    class="absolute -top-9 right-0 inline-flex items-center gap-1.5 text-sm text-white/80 transition hover:text-white">
-                Close
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    class="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-black/80">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>

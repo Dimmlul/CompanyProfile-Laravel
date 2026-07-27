@@ -1,3 +1,4 @@
+{{-- Auth card title block. --}}
 @props(['title', 'subtitle'])
 
 <div class="mb-8 text-center">

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -145,20 +144,4 @@ class CartController extends Controller
         return redirect()->route('checkout.index');
     }
 
-    /**
-     * Display the payment page for a specific order.
-     *
-     * Responsibilities:
-     * - Ensure the order belongs to the authenticated user
-     * - Render the payment page for the selected order
-     */
-    public function payment(Order $order)
-    {
-        /**
-         * Prevent users from accessing other users' orders.
-         */
-        abort_if($order->user_id !== Auth::id(), 403);
-
-        return view('pages.user.checkout.payment', compact('order'));
-    }
 }

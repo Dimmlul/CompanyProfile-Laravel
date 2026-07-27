@@ -1,3 +1,4 @@
+{{-- Admin users table with actions. --}}
 @props(['users'])
 
 <div class="overflow-x-auto">

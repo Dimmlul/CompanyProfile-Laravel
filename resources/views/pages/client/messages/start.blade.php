@@ -1,3 +1,4 @@
+{{-- Guest chat entry form: starts a new support conversation without requiring login. --}}
 @extends('layouts.app')
 
 @section('title', 'Contact Support')

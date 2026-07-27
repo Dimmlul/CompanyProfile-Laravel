@@ -1,3 +1,4 @@
+{{-- Order detail page: shows purchased items, payment status and download/access links. --}}
 @extends('layouts.app')
 
 @section('title', 'Order ' . $order->order_number)
@@ -42,10 +43,11 @@
 
                             @if($order->payment_status === 'paid')
                                 <div class="flex flex-wrap gap-3 pt-4">
+                                    {{-- Both delivery types go through the gated download route (ownership + paid check) --}}
                                     @if($product->delivery_type === 'file' && $product->download_path)
-                                        <a href="{{ asset('storage/'.$product->download_path) }}" download class="btn-primary btn-sm">Download File</a>
-                                    @elseif($product->delivery_type === 'link')
-                                        <a href="{{ $product->download_url ?? 'https://github.com/' }}" target="_blank" class="btn-primary btn-sm">Open Link</a>
+                                        <a href="{{ route('orders.items.download', [$order, $item]) }}" class="btn-primary btn-sm">Download File</a>
+                                    @elseif($product->delivery_type === 'link' && $product->download_url)
+                                        <a href="{{ route('orders.items.download', [$order, $item]) }}" target="_blank" rel="noopener noreferrer" class="btn-primary btn-sm">Open Link</a>
                                     @else
                                         <span class="text-xs text-app-muted">Download not available yet</span>
                                     @endif

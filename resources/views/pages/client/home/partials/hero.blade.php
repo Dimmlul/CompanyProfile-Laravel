@@ -1,7 +1,11 @@
+{{-- Landing section: homepage hero banner with headline, CTAs, and a trusted-by logo strip. --}}
 @php
     // Use the newest gallery image as the hero visual, falling back to the static asset.
     $heroImage = optional($galleries->first())->image;
     $heroSrc = $heroImage ? asset('storage/'.$heroImage) : asset('images/hero.jpg');
+
+    // Only clients with a logo make sense in this compact trust strip.
+    $trustedLogos = $clients->filter(fn ($client) => filled($client->logo))->take(5);
 @endphp
 
 <section class="relative isolate overflow-hidden bg-app-bg glow-top">
@@ -9,8 +13,10 @@
     {{-- Faint blueprint grid, masked so it fades toward the edges --}}
     <div class="absolute inset-0 -z-10 bg-grid [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]"></div>
 
-    <div class="relative mx-auto grid max-w-7xl items-center gap-16 px-6 pt-36 pb-24
-                lg:grid-cols-[1.05fr_0.95fr] lg:pt-44 lg:pb-32">
+    {{-- min-h locks the hero to the viewport (minus the 4rem navbar) so it fills
+         a laptop screen exactly and never leaves a dead gap on larger monitors --}}
+    <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pt-24 pb-16
+                lg:min-h-[calc(100vh-4rem)] lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-10">
 
         {{-- ============ LEFT: copy ============ --}}
         <div>
@@ -36,16 +42,16 @@
                     ?? 'From idea to launch, we design and build modern, scalable products that help ambitious teams grow.' }}
             </p>
 
-            <div x-data x-reveal="{ delay: 240 }" class="mt-9 flex flex-wrap items-center gap-3">
+            <div x-data x-reveal="{ delay: 240 }" class="mt-8 flex flex-wrap items-center gap-3">
                 <a href="{{ route('contact') }}" class="btn-primary btn-lg">Start a project</a>
                 <a href="{{ route('products') }}" class="btn-outline btn-lg">Explore our work</a>
             </div>
 
-            @if ($clients->isNotEmpty())
-                <div x-data x-reveal="{ delay: 320 }" class="mt-14">
+            @if ($trustedLogos->isNotEmpty())
+                <div x-data x-reveal="{ delay: 320 }" class="mt-10">
                     <p class="text-xs uppercase tracking-widest text-app-muted/70">Trusted by teams at</p>
                     <div class="mt-5 flex flex-wrap items-center gap-x-9 gap-y-5">
-                        @foreach ($clients->take(5) as $client)
+                        @foreach ($trustedLogos as $client)
                             <img src="{{ asset('storage/'.$client->logo) }}" alt="{{ $client->name }}"
                                  class="h-7 w-auto opacity-50 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0">
                         @endforeach
@@ -59,9 +65,9 @@
             {{-- soft brand wash behind the frame --}}
             <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand-main/25 via-transparent to-transparent blur-2xl"></div>
 
-            <div class="relative overflow-hidden rounded-2xl border border-app-border shadow-2xl">
+            <div class="relative max-h-[420px] overflow-hidden rounded-2xl border border-app-border shadow-2xl xl:max-h-[480px]">
                 <img src="{{ $heroSrc }}" alt="{{ $companyProfile->company_name ?? 'Our work' }}"
-                     class="aspect-[4/3] w-full object-cover">
+                     class="aspect-[4/3] max-h-[420px] w-full object-cover xl:max-h-[480px]">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
             </div>
 

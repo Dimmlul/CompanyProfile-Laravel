@@ -1,3 +1,4 @@
+{{-- Admin article form (create, edit and quick-add). --}}
 @props([
     'article' => null,
     'action',
@@ -31,6 +32,7 @@
             name="content"
             rows="8"
             :value="$article?->content"
+            required
         />
 
         <x-common.form.file

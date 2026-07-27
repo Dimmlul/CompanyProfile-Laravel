@@ -13,7 +13,10 @@
 
 {{-- Labeled datetime field (uses the browser's native date/time picker). --}}
 <div class="space-y-1.5">
-    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">{{ $label }}</label>
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">
+        {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
+    </label>
 
     <input
         id="{{ $name }}"

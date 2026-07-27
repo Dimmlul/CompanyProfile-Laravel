@@ -38,7 +38,8 @@ class EventController extends Controller
             ->where('is_active', true)
             ->whereDate('start_date', '>=', $today)
             ->orderBy('start_date', 'asc')
-            ->paginate(6, ['*'], 'upcoming');
+            ->paginate(6, ['*'], 'upcoming')
+            ->withQueryString(); // keep the other list's page when navigating
 
         /**
          * ===============================
@@ -54,7 +55,8 @@ class EventController extends Controller
             ->where('is_active', true)
             ->whereDate('start_date', '<', $today)
             ->orderBy('start_date', 'desc')
-            ->paginate(6, ['*'], 'past');
+            ->paginate(6, ['*'], 'past')
+            ->withQueryString(); // keep the other list's page when navigating
 
         return view('pages.client.events.index', compact(
             'upcomingEvents',

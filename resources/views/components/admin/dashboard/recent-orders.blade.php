@@ -1,3 +1,4 @@
+{{-- Dashboard widget: table of the most recent orders with payment status and a link to each. --}}
 @props(['orders'])
 
 <div class="surface rounded-2xl p-6">
@@ -23,6 +24,7 @@
 
             <tbody>
                 @forelse ($orders as $order)
+                    {{-- Pick a badge color based on the order's payment status. --}}
                     @php
                         $statusClass = match ($order->payment_status) {
                             'paid'              => 'bg-green-500/15 text-green-600 dark:text-green-400',

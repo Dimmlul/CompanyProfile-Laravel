@@ -1,3 +1,4 @@
+{{-- Landing section: featured products grid. --}}
 <section class="bg-app-bg py-24 lg:py-28">
     <div class="mx-auto max-w-7xl px-6">
 
@@ -7,7 +8,7 @@
                 title="Products & services"
                 subtitle="Digital solutions built to support growth, performance, and long-term scalability." />
             <a href="{{ route('products') }}" class="btn-ghost btn-sm self-start sm:self-auto">
-                View all products &rarr;
+                View all products >
             </a>
         </div>
 

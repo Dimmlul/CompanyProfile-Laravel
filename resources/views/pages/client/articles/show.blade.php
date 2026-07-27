@@ -1,9 +1,11 @@
+{{-- Article detail page: full article content, author info, prev/next navigation, and related articles. --}}
 @extends('layouts.app')
 
 @section('title', $article->title)
 
 @section('content')
 
+{{-- Estimate reading time, derive the author's initial, and split the body into paragraphs. --}}
 @php
     $readMin = max(1, (int) ceil(str_word_count(strip_tags($article->content)) / 200));
     $initial = strtoupper(mb_substr($article->author ?? 'E', 0, 1));

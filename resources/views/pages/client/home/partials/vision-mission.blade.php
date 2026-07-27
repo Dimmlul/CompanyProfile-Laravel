@@ -1,54 +1,36 @@
+{{-- Landing section: vision/mission statement and a list of company strengths. --}}
 <section class="bg-app-bg py-24 lg:py-28">
-    <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-5xl px-6">
 
-        <x-section-heading x-data x-reveal class="mb-14"
-            eyebrow="What drives us"
-            title="Built on a clear direction"
-            subtitle="The principles behind every project we take on — from first call to final handover." />
+        <span x-data x-reveal class="eyebrow">What drives us</span>
 
-        {{-- Bento: tiles of different sizes for a more editorial layout --}}
-        <div x-data x-reveal class="grid gap-4 md:grid-cols-3 md:grid-rows-2">
+        {{-- The vision stated as a large pull quote, standing as this section's centerpiece
+             instead of the eyebrow/title/subtitle pattern used by the sections around it. --}}
+        <p x-data x-reveal="{ delay: 80 }"
+           class="mt-5 max-w-3xl text-3xl font-medium leading-[1.2] tracking-tight text-app-heading sm:text-4xl lg:text-[2.75rem]">
+            {{ filled($companyProfile->vision) ? $companyProfile->vision : 'To become a trusted digital partner for growing brands worldwide.' }}
+        </p>
 
-            {{-- Vision (wide) --}}
-            <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="text-xs font-semibold tracking-widest text-brand-accent">01</span>
-                    <span class="h-px flex-1 bg-app-border"></span>
-                    <span class="text-xs uppercase tracking-widest text-app-muted">Vision</span>
-                </div>
-                <h3 class="mb-3 text-2xl font-semibold text-app-heading">Where we're headed</h3>
-                <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->vision }}</p>
-            </article>
+        <div x-data x-reveal="{ delay: 160 }"
+             class="mt-14 grid gap-10 border-t border-app-border pt-10 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
 
-            {{-- Strengths (tall, right column) --}}
-            <article class="surface surface-hover rounded-2xl p-8 md:row-span-2">
-                <div class="mb-6 flex items-center gap-3">
-                    <span class="text-xs font-semibold tracking-widest text-brand-accent">03</span>
-                    <span class="h-px flex-1 bg-app-border"></span>
-                    <span class="text-xs uppercase tracking-widest text-app-muted">Strengths</span>
-                </div>
-                <ul class="space-y-5">
-                    @foreach (['Thoughtful execution', 'Scalable by design', 'Long-term partnership', 'Clear communication'] as $strength)
-                        <li class="flex items-start gap-3">
-                            <svg class="mt-0.5 h-5 w-5 flex-none text-brand-accent" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span class="text-sm font-medium text-app-heading">{{ $strength }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </article>
+            {{-- Mission, folded in as supporting text rather than a boxed twin of the vision --}}
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-widest text-app-muted">Mission</span>
+                <p class="mt-3 max-w-xl text-lg leading-relaxed text-app-muted">
+                    {{ filled($companyProfile->mission) ? $companyProfile->mission : 'To design and build digital products that solve real problems and deliver lasting value.' }}
+                </p>
+            </div>
 
-            {{-- Mission (wide) --}}
-            <article class="surface surface-hover rounded-2xl p-8 md:col-span-2">
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="text-xs font-semibold tracking-widest text-brand-accent">02</span>
-                    <span class="h-px flex-1 bg-app-border"></span>
-                    <span class="text-xs uppercase tracking-widest text-app-muted">Mission</span>
-                </div>
-                <h3 class="mb-3 text-2xl font-semibold text-app-heading">What we do every day</h3>
-                <p class="max-w-2xl leading-relaxed text-app-muted">{{ $companyProfile->mission }}</p>
-            </article>
+            {{-- Strengths as a divided ledger list — no icon-in-circle cards --}}
+            <ul>
+                @foreach (['Thoughtful execution', 'Scalable by design', 'Long-term partnership', 'Clear communication'] as $strength)
+                    <li @class(['flex items-baseline gap-4 py-3', 'border-t border-app-border' => !$loop->first])>
+                        <span class="font-mono text-xs text-app-muted">0{{ $loop->iteration }}</span>
+                        <span class="text-sm font-medium text-app-heading">{{ $strength }}</span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </section>

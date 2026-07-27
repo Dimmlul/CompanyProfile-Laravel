@@ -1,4 +1,4 @@
-<!-- resources/views/components/admin/orders/items-table.blade.php -->
+{{-- Renders an order's line items as a table (product, price, qty, subtotal). --}}
 
 @props(['items'])
 

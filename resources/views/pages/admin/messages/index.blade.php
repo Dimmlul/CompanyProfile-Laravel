@@ -1,3 +1,4 @@
+{{-- Admin inbox listing message threads from users and clients, with unread counts and pagination. --}}
 @extends('layouts.admin')
 
 @section('title', 'Messages')
@@ -15,11 +16,20 @@
     <div class="space-y-3">
         @forelse ($messages as $message)
             @php
-                $unread = ($message->unread_user_replies ?? 0) + ($message->unread_client_replies ?? 0);
+                // Count unread messages in this thread: the root message plus any unread replies.
+                $rootUnread = ! $message->is_read && in_array($message->sender, ['user', 'client'], true);
+                $unread = ($message->unread_user_replies ?? 0) + ($message->unread_client_replies ?? 0) + ($rootUnread ? 1 : 0);
+
                 $name = $message->sender === 'client'
                     ? ($message->client_name ?? 'Client')
                     : ($message->user?->name ?? 'User #'.$message->user_id);
                 $initial = strtoupper(mb_substr($name, 0, 1));
+
+                // Preview the latest message in the thread (a reply if there is one,
+                // otherwise the opening message) instead of always the first message.
+                $latest = $message->latestReply ?? $message;
+                $latestFrom = $latest->sender === 'admin' ? 'You' : $name;
+                $preview = $latest->message === '[Attachment]' ? '📎 Attachment' : $latest->message;
             @endphp
 
             <a href="{{ route('admin.messages.show', $message) }}"
@@ -38,8 +48,10 @@
                             {{ $message->sender === 'client' ? 'Client' : 'User' }}
                         </span>
                     </div>
-                    <p class="mt-0.5 text-sm text-app-muted">{{ $name }}</p>
-                    <p class="mt-1 line-clamp-1 text-sm text-app-muted">{{ $message->message }}</p>
+                    {{-- Just the latest message, one line — who's talking + what they last said --}}
+                    <p class="mt-1 truncate text-sm text-app-muted">
+                        <span class="font-medium text-app-heading">{{ $latestFrom }}:</span> {{ $preview }}
+                    </p>
                 </div>
 
                 {{-- meta --}}
@@ -60,7 +72,7 @@
         @endforelse
     </div>
 
-    {{-- PAGINATION --}}
+    {{-- PAGINATION: only show links when there's more than one page --}}
     @if ($messages->hasPages())
         <div class="pt-2">{{ $messages->links() }}</div>
     @endif

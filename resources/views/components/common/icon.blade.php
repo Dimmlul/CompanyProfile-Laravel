@@ -1,3 +1,4 @@
+{{-- Icon sprite: renders an inline SVG icon selected by the $name prop. --}}
 @props([
     'name',
     'class' => 'h-5 w-5'

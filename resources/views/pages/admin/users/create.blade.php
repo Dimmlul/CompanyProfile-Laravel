@@ -1,3 +1,4 @@
+{{-- Admin page for creating a new system user. --}}
 @extends('layouts.admin')
 
 @section('title', 'Create User')

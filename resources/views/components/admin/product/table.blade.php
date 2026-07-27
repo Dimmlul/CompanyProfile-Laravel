@@ -1,3 +1,4 @@
+{{-- Admin products table with reorder and actions. --}}
 @props(['products'])
 
 @php use Illuminate\Support\Str; @endphp

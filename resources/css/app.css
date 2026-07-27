@@ -182,8 +182,8 @@
 /* ===================================================================
 | THEME OVERRIDES (unlayered so they reliably win over @theme :root)
 | -------------------------------------------------------------------
-| - .dark        → public site dark theme (toggled on <html>)
-| - .admin-scope → admin panel, always dark regardless of the toggle
+| - .dark        > public site dark theme (toggled on <html>)
+| - .admin-scope > admin panel, always dark regardless of the toggle
 =================================================================== */
 .dark {
     --color-app-bg:        #0a0e1a;
@@ -322,14 +322,14 @@
         border-color: color-mix(in srgb, var(--color-app-text) 24%, transparent);
     }
 
-    /* Ghost — low-emphasis / tertiary */
+    /* Ghost — low-emphasis / tertiary, same accent blue as inline "view more" links */
     .btn-ghost {
         background-color: transparent;
-        color: var(--color-app-muted);
+        color: var(--color-brand-accent);
     }
     .btn-ghost:hover {
-        background-color: color-mix(in srgb, var(--color-app-text) 8%, transparent);
-        color: var(--color-app-heading);
+        background-color: var(--color-brand-soft);
+        color: var(--color-brand-accent);
     }
 
     /* Admin — neutral subtle button used inside the panel */
@@ -579,6 +579,16 @@
         @apply absolute right-3 top-1/2 -translate-y-1/2
                text-app-muted hover:text-app-text
                transition cursor-pointer;
+    }
+
+    /* Hides the scrollbar on horizontal snap-scroll carousels (mobile galleries etc.)
+       while keeping the element scrollable by touch/drag. */
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
     }
 }
 

@@ -1,3 +1,4 @@
+{{-- Main public-site layout: page shell with header, footer, theme toggle and floating support chat. --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

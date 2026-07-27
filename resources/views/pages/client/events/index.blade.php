@@ -1,3 +1,4 @@
+{{-- Events listing page: grid of upcoming events and an archive of past events. --}}
 @extends('layouts.app')
 
 @section('title', 'Events')

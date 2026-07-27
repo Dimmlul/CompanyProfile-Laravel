@@ -1,5 +1,21 @@
 # 🚀 Company Profile & Digital Product Platform (Laravel)
 
+<p>
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.4">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4">
+  <img src="https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpinedotjs&logoColor=white" alt="Alpine.js">
+  <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8">
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Compose">
+  <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
+  <img src="https://img.shields.io/badge/ngrok-Tunnel-1F1E37?style=for-the-badge&logo=ngrok&logoColor=white" alt="ngrok">
+  <img src="https://img.shields.io/badge/Leaflet-Maps-199900?style=for-the-badge&logo=leaflet&logoColor=white" alt="Leaflet">
+  <img src="https://img.shields.io/badge/Midtrans-Snap-0361F0?style=for-the-badge" alt="Midtrans Snap">
+  <img src="https://img.shields.io/badge/EmailJS-Contact-FF6C37?style=for-the-badge" alt="EmailJS">
+</p>
+
+
 A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**.
 
 This platform combines a **company profile website** with a **digital product marketplace**, allowing businesses to showcase their services and sell downloadable digital products within a single system.
@@ -30,7 +46,7 @@ The application includes:
 | <img src="docs/images/Products.png" width="300"> | <img src="docs/images/Cart.png" width="300"> | <img src="docs/images/Checkout.png" width="300"> |
 
 <p align="center">
-User purchase flow: <b>Product → Cart → Checkout</b>
+User purchase flow: <b>Product > Cart > Checkout</b>
 </p>
 
 ## Admin Dashboard
@@ -46,7 +62,6 @@ User purchase flow: <b>Product → Cart → Checkout</b>
 * [Main Features](#main-features)
 * [Application Areas](#application-areas)
 * [Menu and Feature Explanation](#menu-and-feature-explanation)
-* [Tech Stack](#tech-stack)
 * [Project Structure](#project-structure)
 * [Installation Guide](#installation-guide)
 * [Frontend Build](#frontend-build)
@@ -332,21 +347,6 @@ Admins can view and reply to user messages.
 
 ---
 
-# Tech Stack
-
-| Layer      | Technology              |
-| ---------- | ----------------------- |
-| Backend    | Laravel 12              |
-| Frontend   | Blade + Tailwind CSS v4 |
-| Database   | MySQL                   |
-| Payment    | Midtrans Snap           |
-| Contact    | EmailJS                 |
-| Build Tool | Vite                    |
-| Tunnel     | Ngrok                   |
-| Storage    | Laravel Filesystem      |
-
----
-
 # Project Structure
 
 ```
@@ -391,6 +391,8 @@ docs/
 
 # Installation Guide
 
+The project runs entirely through **Docker Compose** (PHP-FPM app container, Nginx, MySQL) — no local PHP/MySQL install needed.
+
 Clone repository:
 
 ```bash
@@ -398,71 +400,62 @@ git clone https://github.com/Dimmlul/CompanyProfile-Laravel
 cd CompanyProfile-Laravel
 ```
 
-Install dependencies:
-
-```bash
-composer install
-npm install
-```
-
 Setup environment:
 
 ```bash
 cp .env.example .env
-php artisan key:generate
 ```
 
-Configure database inside `.env`.
-
-Run migrations:
+Build and start the containers:
 
 ```bash
-php artisan migrate
-php artisan db:seed
+docker compose up -d --build
 ```
 
-Create storage link:
+Run the rest of the setup **inside the app container** — never on the host, since the host and container PHP versions differ and running Composer/Artisan on the host can corrupt `bootstrap/cache`:
 
 ```bash
-php artisan storage:link
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan storage:link
 ```
 
-Run development server:
+The app is now available at **http://localhost:8000**.
 
-```bash
-php artisan serve
-```
+> Any future `composer` / `artisan` / `npm` command should be run the same way, prefixed with `docker compose exec app`.
 
 ---
 
 # Frontend Build
 
-Development:
+From inside the container:
 
 ```bash
-npm run dev
-```
-
-Production build:
-
-```bash
-npm run build
+docker compose exec app npm install
+docker compose exec app npm run dev    # development (Vite HMR, port 5173)
+docker compose exec app npm run build  # production build
 ```
 
 ---
 
 # Ngrok Setup
 
-Run:
+The app defaults to plain local access (`http://localhost:8000`). To share it publicly via ngrok:
 
 ```bash
 ngrok http 8000
 ```
 
-Update `.env`:
+Then switch the app into ngrok mode with the included helper script, which auto-detects the tunnel URL and updates `.env` + clears caches for you:
 
+```bash
+./env-mode.sh ngrok
 ```
-APP_URL=https://xxxx.ngrok-free.dev
+
+Switch back to local mode anytime with:
+
+```bash
+./env-mode.sh local
 ```
 
 ---
@@ -534,11 +527,14 @@ EMAILJS_TEMPLATE_ID=xxxx
 
 Security measures implemented include:
 
-* CSRF protection
-* Authenticated routes
-* Role-based admin access
-* Order ownership validation
-* Protected digital downloads
+* CSRF protection (Midtrans webhook is the only signed exception)
+* Baseline security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`)
+* Authenticated routes with role-based admin access
+* Image upload validation restricted to safe raster formats (SVG excluded, prevents stored-XSS via embedded scripts)
+* Midtrans callback signature verification (`hash_equals`) plus amount-tampering checks
+* Order ownership validation and protected, payment-gated digital downloads (private disk)
+* Session cookies scoped `Secure` + `HttpOnly` when served over HTTPS
+* Minimum 8-character password policy
 
 ---
 

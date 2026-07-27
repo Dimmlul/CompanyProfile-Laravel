@@ -1,3 +1,4 @@
+{{-- User's inbox: lists their support conversations with the admin team. --}}
 @extends('layouts.app')
 
 @section('title', 'My Messages')

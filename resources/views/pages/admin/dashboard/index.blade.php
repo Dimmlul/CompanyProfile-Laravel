@@ -1,3 +1,4 @@
+{{-- Admin dashboard showing content stats, quick-add actions, and recent orders. --}}
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')

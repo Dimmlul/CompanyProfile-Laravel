@@ -1,3 +1,4 @@
+{{-- Admin: clients list. --}}
 @extends('layouts.admin')
 
 @section('title', 'Clients')

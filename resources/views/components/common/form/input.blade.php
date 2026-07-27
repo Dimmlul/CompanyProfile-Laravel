@@ -7,7 +7,10 @@
 
 {{-- Labeled text input. Extra attributes (placeholder, required, min, step...) pass through. --}}
 <div class="space-y-1.5">
-    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">{{ $label }}</label>
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">
+        {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
+    </label>
 
     <input
         id="{{ $name }}"

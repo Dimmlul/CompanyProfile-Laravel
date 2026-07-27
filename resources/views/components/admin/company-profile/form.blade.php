@@ -1,5 +1,6 @@
 <!-- resources/views/components/admin/company-profile/form.blade.php -->
 
+{{-- Admin form for editing the site's single company profile record (details, contact info, location). --}}
 @props([
     'companyProfile' => null
 ])
@@ -58,7 +59,7 @@
                 <x-common.form.input label="Longitude" name="longitude" type="number" step="any" placeholder="106.8456" :value="$companyProfile?->longitude" />
             </div>
             <p class="mt-1.5 text-xs text-app-muted">
-                Optional. In Google Maps, right-click the location &rarr; click the latitude, longitude numbers to copy them.
+                Optional. In Google Maps, right-click the location > click the latitude, longitude numbers to copy them.
             </p>
         </div>
 

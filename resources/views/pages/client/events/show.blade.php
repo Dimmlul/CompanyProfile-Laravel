@@ -1,3 +1,4 @@
+{{-- Event detail: banner, details card, map and related events. --}}
 @extends('layouts.app')
 
 @section('title', $event->title)
@@ -112,7 +113,7 @@
                     @endif
 
                     @if ($isUpcoming)
-                        <a href="{{ $calendarUrl }}" target="_blank" rel="noopener" class="btn-primary w-full">
+                        <a href="{{ $calendarUrl }}" target="_blank" rel="noopener noreferrer" class="btn-primary w-full">
                             Add to calendar
                         </a>
                     @endif

@@ -48,10 +48,10 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'     => 'nullable|string|max:255',
+            'title'     => 'required|string|max:255',
             'caption'   => 'nullable|string',
             'category'  => 'nullable|string|max:100',
-            'image'     => 'required|image|max:2048',
+            'image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'is_active' => 'required|in:0,1',
         ]);
 
@@ -101,11 +101,11 @@ class GalleryController extends Controller
     public function update(Request $request, Gallery $gallery)
     {
         $validated = $request->validate([
-            'title'        => 'nullable|string|max:255',
+            'title'        => 'required|string|max:255',
             'caption'      => 'nullable|string',
             'category'     => 'nullable|string|max:100',
             'is_active'    => 'required|in:0,1',
-            'image'        => 'nullable|image|max:2048',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'order_action' => 'nullable|in:top,up,down,bottom',
         ]);
 

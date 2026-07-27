@@ -1,3 +1,4 @@
+{{-- Breadcrumb navigation trail. --}}
 @props([
     'items' => [],   // [ ['label' => '...', 'href' => '...'(optional)], ... ] — last item is the current page
 ])

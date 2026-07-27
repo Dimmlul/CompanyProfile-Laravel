@@ -1,5 +1,8 @@
+{{-- Floating support widget: lets visitors chat with an admin, message on WhatsApp, or email via the contact page. --}}
 @php
+    // Read the guest's chat session token and figure out link targets for the buttons below.
     $chatToken = request()->cookie('support_chat_token');
+    $isAdmin = auth()->check() && auth()->user()->isAdmin();
 
     $waLink = filled($companyProfile->whatsapp)
         ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
@@ -10,7 +13,7 @@
     x-data="{ open: false }"
     @click.outside="open = false"
     @keydown.escape.window="open = false"
-    class="fixed bottom-24 right-8 z-[9999]"
+    class="fixed bottom-20 right-4 z-[9999] sm:bottom-24 sm:right-8"
 >
     {{-- Toggle button --}}
     <button
@@ -33,7 +36,7 @@
         x-show="open"
         x-transition
         x-cloak
-        class="surface absolute bottom-full right-0 mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl"
+        class="surface absolute bottom-full right-0 mb-3 w-[min(20rem,calc(100vw-2rem))] overflow-hidden rounded-2xl shadow-2xl"
     >
         <div class="flex items-center justify-between border-b border-app-border px-5 py-4">
             <div>
@@ -46,34 +49,38 @@
         </div>
 
         <div class="space-y-3 px-5 py-4">
-            {{-- Live chat with admin --}}
-            <a
-                href="{{ $chatToken ? route('client.messages.show', $chatToken) : route('client.messages.start') }}"
-                class="flex items-center justify-center gap-3 rounded-xl bg-brand-main py-3 text-sm font-semibold text-white transition"
-            >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
-                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
-                </svg>
-                {{ $chatToken ? 'Continue Chat' : 'Chat with Admin' }}
-            </a>
-
-            {{-- Logged-in users: jump to their message history --}}
-            @auth
-                <a href="{{ route('user.messages.index') }}"
-                   class="flex items-center justify-center gap-3 rounded-xl bg-app-surface-2 py-3 text-sm font-medium text-app-heading transition hover:opacity-90">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 6h16M4 12h16M4 18h10"/>
+            {{-- Live chat with admin — admins manage the inbox, they don't chat into it themselves --}}
+            @unless ($isAdmin)
+                <a
+                    href="{{ $chatToken ? route('client.messages.show', $chatToken) : route('client.messages.start') }}"
+                    class="flex items-center justify-center gap-3 rounded-xl bg-brand-main py-3 text-sm font-semibold text-white transition"
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
                     </svg>
-                    My messages
+                    {{ $chatToken ? 'Continue Chat' : 'Chat with Admin' }}
                 </a>
-            @endauth
+
+                {{-- Logged-in (non-admin) users: jump to their message history --}}
+                @auth
+                    <a href="{{ route('user.messages.index') }}"
+                       class="flex items-center justify-center gap-3 rounded-xl bg-app-surface-2 py-3 text-sm font-medium text-app-heading transition hover:opacity-90">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 6h16M4 12h16M4 18h10"/>
+                        </svg>
+                        My messages
+                    </a>
+                @endauth
+            @endunless
 
             {{-- WhatsApp --}}
             <a
                 href="{{ $waLink ?? '#' }}"
-                @if($waLink) target="_blank" rel="noopener" @endif
+                {{-- noreferrer (not just noopener): stops the current page's URL — which may
+                     contain a guest chat token — from leaking to WhatsApp via the Referer header --}}
+                @if($waLink) target="_blank" rel="noopener noreferrer" @endif
                 class="flex items-center justify-center gap-3 rounded-xl bg-[#25D366] py-3 text-sm font-semibold
                        text-white transition hover:opacity-95 {{ $waLink ? '' : 'pointer-events-none opacity-50' }}"
             >

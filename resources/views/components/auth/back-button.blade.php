@@ -1,3 +1,4 @@
+{{-- Auth pages: back-to-home button. --}}
 @props(['href'])
 
 <a href="{{ $href }}"
