@@ -1,5 +1,3 @@
-<!-- resources/views/components/admin/dashboard/quick-add.blade.php -->
-
 {{-- Dashboard button that opens a modal with the create form for the given resource $type. --}}
 @props([
     'type',

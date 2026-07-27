@@ -1,5 +1,3 @@
-<!-- resources/views/pages/admin/orders/index.blade.php -->
-
 {{-- Admin page listing all customer orders with their items, totals, and payment status. --}}
 @extends('layouts.admin')
 

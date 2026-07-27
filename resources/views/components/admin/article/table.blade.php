@@ -1,5 +1,3 @@
-<!-- resources/views/components/admin/article/table.blade.php -->
-
 {{-- Admin articles table: lists articles with thumbnail, status, dates and edit/delete actions. --}}
 @props([
     'articles'

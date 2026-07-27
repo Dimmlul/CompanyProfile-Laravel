@@ -20,10 +20,12 @@
                 <x-common.icon :name="$icon" class="h-5 w-5" />
 
                 {{-- Dot indicator: the only visible cue when the sidebar is collapsed to
-                     icon-only width, since the text badge below is hidden in that state. --}}
+                     icon-only width, since the text badge below is hidden in that state.
+                     Not shown on mobile — the drawer is either fully open (full badge below)
+                     or fully closed (nothing on screen at all). --}}
                 @if (isset($badge))
                     <span
-                        x-show="!$store.sidebar.isExpanded"
+                        x-show="!$store.sidebar.isExpanded && !$store.sidebar.isMobileOpen"
                         x-cloak
                         class="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-brand-main ring-2 ring-[var(--color-app-bg)]"
                     ></span>
@@ -34,8 +36,8 @@
         <span
             class="whitespace-nowrap transition-opacity duration-200"
             :class="{
-                'opacity-100': $store.sidebar.isExpanded,
-                'opacity-0': !$store.sidebar.isExpanded
+                'opacity-100': $store.sidebar.isExpanded || $store.sidebar.isMobileOpen,
+                'opacity-0': !($store.sidebar.isExpanded || $store.sidebar.isMobileOpen)
             }"
         >
             {{ $slot }}
@@ -45,7 +47,7 @@
     {{-- BADGE (expanded state: full count pill) --}}
     @if (isset($badge))
         <span
-            x-show="$store.sidebar.isExpanded"
+            x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
             class="ml-auto rounded-full
                    bg-indigo-500/20
                    px-2 py-0.5

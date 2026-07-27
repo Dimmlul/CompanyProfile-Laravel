@@ -1,5 +1,3 @@
-<!-- resources/views/components/admin/company-profile/form.blade.php -->
-
 {{-- Admin form for editing the site's single company profile record (details, contact info, location). --}}
 @props([
     'companyProfile' => null

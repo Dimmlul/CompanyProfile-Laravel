@@ -1,5 +1,3 @@
-<!-- resources/views/pages/admin/orders/show.blade.php -->
-
 {{-- Admin page showing full detail for a single order: summary, items, and payment info. --}}
 @extends('layouts.admin')
 
