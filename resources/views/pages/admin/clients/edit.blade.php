@@ -1,3 +1,4 @@
+{{-- Admin: edit a client. --}}
 @extends('layouts.admin')
 
 @section('title', 'Edit Client')

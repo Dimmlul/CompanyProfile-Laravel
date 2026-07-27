@@ -1,4 +1,4 @@
-<!-- resources/views/components/common/table/simple.blade.php -->
+{{-- Reusable admin table shell: renders headers, leaves row markup to the caller's slot. --}}
 
 @props([
     'headers' => [],

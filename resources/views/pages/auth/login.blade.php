@@ -1,3 +1,4 @@
+{{-- Login page. --}}
 @extends('layouts.auth')
 
 @section('title', 'Login')

@@ -1,28 +1,21 @@
-<!-- resources/views/components/admin/dashboard/stat-card.blade.php -->
-
+{{-- Dashboard stat tile: icon, title/subtitle, a big value, and optional "view all" / action slots. --}}
 @props([
     'title',
     'subtitle',
     'value',
 ])
 
-<div class="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
+<div class="surface surface-hover rounded-2xl p-6">
 
     {{-- HEADER --}}
     <div class="flex items-start justify-between">
         <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center
-                        rounded-xl bg-white/10 text-lg">
-                {{ $icon ?? '📊' }}
-            </div>
-
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-soft text-brand-accent">
+                {{ $icon }}
+            </span>
             <div>
-                <p class="text-sm font-medium text-app-text">
-                    {{ $title }}
-                </p>
-                <p class="text-xs text-app-muted">
-                    {{ $subtitle }}
-                </p>
+                <p class="text-sm font-medium text-app-heading">{{ $title }}</p>
+                <p class="text-xs text-app-muted">{{ $subtitle }}</p>
             </div>
         </div>
 
@@ -30,12 +23,8 @@
     </div>
 
     {{-- VALUE + ACTION --}}
-    <div class="flex items-center justify-between">
-        <p class="text-3xl font-semibold text-app-text">
-            {{ $value }}
-        </p>
-
+    <div class="mt-6 flex items-end justify-between">
+        <p class="text-3xl font-semibold tracking-tight text-app-heading">{{ $value }}</p>
         {{ $action ?? '' }}
     </div>
-
 </div>

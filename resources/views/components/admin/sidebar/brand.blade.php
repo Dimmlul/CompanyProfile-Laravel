@@ -1,3 +1,4 @@
+{{-- Sidebar header: company logo and name. --}}
 @props(['companyProfile'])
 
 <div
@@ -17,7 +18,6 @@
 
     <span
         x-show="$store.sidebar.isExpanded || $store.sidebar.isMobileOpen"
-        x-transition.opacity
         class="text-lg font-semibold truncate"
     >
         {{ $companyProfile->company_name ?? 'Admin Panel' }}

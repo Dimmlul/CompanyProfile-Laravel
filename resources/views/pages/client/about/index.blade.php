@@ -1,3 +1,4 @@
+{{-- About page: company story, vision and mission, contact CTA. --}}
 @extends('layouts.app')
 
 @section('title', 'About Us')
@@ -5,203 +6,94 @@
 @section('content')
 
 {{-- ================= HERO ================= --}}
-<section class="relative bg-app-bg border-b border-white/5">
-    <div class="mx-auto max-w-7xl px-6 py-24">
+<section class="relative isolate overflow-hidden bg-app-bg glow-top">
+    <div class="absolute inset-0 -z-10 bg-grid [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"></div>
 
-        <div class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+    <div class="mx-auto max-w-7xl px-6 pt-20 pb-16 lg:py-16">
+        <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
 
-            {{-- LEFT : TEXT --}}
-            <div class="max-w-3xl">
-                <span class="mb-4 inline-block text-sm font-medium tracking-wide text-indigo-400">
-                    About Us
-                </span>
-
-                <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-white">
+            {{-- Copy --}}
+            <div>
+                <span x-data x-reveal class="eyebrow">About us</span>
+                <h1 x-data x-reveal="{ delay: 80 }"
+                    class="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight text-app-heading sm:text-5xl lg:text-6xl">
                     {{ $companyProfile->company_name ?? 'Our Company' }}
                 </h1>
-
-                <p class="mt-6 text-base leading-relaxed text-app-muted">
+                <p x-data x-reveal="{ delay: 160 }" class="mt-6 max-w-xl text-lg leading-relaxed text-app-muted">
                     {!! nl2br(e(
                         $companyProfile->about ??
-                        'We are a digital studio focused on building meaningful and scalable digital solutions that support long-term business growth.'
+                        'A digital studio building meaningful, scalable products for teams that care about doing things well.'
                     )) !!}
                 </p>
+                <div x-data x-reveal="{ delay: 240 }" class="mt-8 flex flex-wrap gap-3">
+                    <a href="{{ route('contact') }}" class="btn-primary btn-lg">Work with us</a>
+                    <a href="{{ route('products') }}" class="btn-outline btn-lg">See our work</a>
+                </div>
             </div>
 
-            {{-- RIGHT : LOGO --}}
-            <div class="flex justify-center md:justify-end">
-                @if(!empty($companyProfile->logo))
-                    <div class="flex h-40 w-40 items-center justify-center rounded-2xl
-                                bg-slate-900/60 border border-white/10 p-6">
-                        <img
-                            src="{{ asset('storage/' . $companyProfile->logo) }}"
-                            alt="{{ $companyProfile->company_name }} Logo"
-                            class="max-h-full max-w-full object-contain"
-                        >
-                    </div>
-                @else
-                    {{-- Fallback --}}
-                    <div class="flex h-40 w-40 items-center justify-center rounded-2xl
-                                bg-slate-900/40 border border-white/10 text-sm text-app-muted">
-                        Company Logo
-                    </div>
-                @endif
+            {{-- Real gallery shot; boxed at 4:3 to match typical landscape photo framing so object-cover doesn't crop too aggressively --}}
+            <div x-data x-reveal="{ delay: 200 }" class="relative mx-auto w-full max-w-lg lg:ml-auto lg:mr-0">
+                <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand-main/20 via-transparent to-transparent blur-2xl"></div>
+                <div class="overflow-hidden rounded-2xl border border-app-border shadow-2xl">
+                    <img src="{{ $aboutImage ? asset('storage/'.$aboutImage) : asset('images/hero.jpg') }}"
+                         alt="{{ $companyProfile->company_name ?? 'Our team' }}"
+                         class="aspect-[4/3] w-full object-cover">
+                </div>
             </div>
-
-        </div>
-
-    </div>
-</section>
-
-
-{{-- ================= WHO WE ARE ================= --}}
-<section class="bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6 py-24">
-
-        <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
-
-            {{-- Main --}}
-            <div class="md:col-span-2 rounded-2xl bg-slate-900/60 border border-white/10 p-10">
-                <h2 class="mb-6 text-2xl font-semibold text-white">
-                    Who We Are
-                </h2>
-
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->who_we_are ??
-                        'We are a multidisciplinary digital studio that collaborates with businesses to design, build, and scale digital products. Our team combines strategic thinking, design excellence, and technical expertise to deliver solutions that solve real-world challenges.'
-                    )) !!}
-                </p>
-            </div>
-
-            {{-- Focus --}}
-            <div class="rounded-2xl bg-slate-900/60 border border-white/10 p-8">
-                <h3 class="mb-6 text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                    Our Focus
-                </h3>
-
-                <ul class="space-y-6 text-sm text-app-muted">
-
-                    <li class="flex gap-4">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-indigo-400"></span>
-                        <div>
-                            <span class="block font-medium text-white">
-                                Scalable Systems
-                            </span>
-                            We build systems that are designed to grow, focusing on performance,
-                            security, and maintainable architecture.
-                        </div>
-                    </li>
-
-                    <li class="flex gap-4">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-indigo-400"></span>
-                        <div>
-                            <span class="block font-medium text-white">
-                                User-Centered Design
-                            </span>
-                            Every interface is crafted with clarity, usability, and accessibility
-                            as top priorities.
-                        </div>
-                    </li>
-
-                    <li class="flex gap-4">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-indigo-400"></span>
-                        <div>
-                            <span class="block font-medium text-white">
-                                Long-Term Strategy
-                            </span>
-                            We help businesses make digital decisions that remain effective
-                            beyond short-term trends.
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-
         </div>
     </div>
 </section>
 
-{{-- ================= VISION & MISSION ================= --}}
-<section class="bg-gradient-to-b from-slate-900/40 to-transparent">
-    <div class="mx-auto max-w-7xl px-6 py-24">
 
-        <h2 class="mb-12 text-3xl font-semibold text-white">
-            Vision & Mission
-        </h2>
+{{-- ================= STORY ================= --}}
+<section class="bg-app-bg py-20 lg:py-24">
+    <div class="mx-auto max-w-4xl px-6">
+        <p x-data x-reveal class="text-xl leading-relaxed text-app-text sm:text-2xl">
+            {!! nl2br(e(
+                $companyProfile->who_we_are ??
+                'We are a multidisciplinary studio that partners with businesses to design, build, and scale digital products. We bring together strategy, design, and engineering to ship work that solves real problems — and keeps working long after launch.'
+            )) !!}
+        </p>
 
-        <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
+        {{-- Vision as a pull quote breaking up the narrative, editorial-style --}}
+        <blockquote x-data x-reveal class="my-12 border-l-2 border-brand-main pl-6 lg:my-16 lg:pl-8">
+            <p class="text-2xl font-medium leading-snug text-app-heading sm:text-3xl">
+                {{ $companyProfile->vision
+                    ?? 'To be a trusted digital partner that helps businesses grow through purposeful, lasting technology.' }}
+            </p>
+            <cite class="mt-4 block text-sm not-italic text-app-muted">&mdash; Our vision</cite>
+        </blockquote>
 
-            {{-- Vision --}}
-            <div class="relative rounded-2xl bg-slate-900/60 border border-white/10 p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-indigo-500"></span>
-
-                <h3 class="mb-4 text-xl font-semibold text-white">
-                    Vision
-                </h3>
-
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->vision ??
-                        'To become a trusted digital partner that empowers businesses through purposeful, adaptable, and sustainable technology solutions.'
-                    )) !!}
-                </p>
-            </div>
-
-            {{-- Mission --}}
-            <div class="relative rounded-2xl bg-slate-900/60 border border-white/10 p-10">
-                <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-cyan-400"></span>
-
-                <h3 class="mb-4 text-xl font-semibold text-white">
-                    Mission
-                </h3>
-
-                <p class="leading-relaxed text-app-muted">
-                    {!! nl2br(e(
-                        $companyProfile->mission ??
-                        'Our mission is to design and develop digital products that solve real business challenges while delivering meaningful user experiences and long-term value.'
-                    )) !!}
-                </p>
-            </div>
-
-        </div>
+        <p x-data x-reveal class="text-lg leading-relaxed text-app-muted">
+            {{ $companyProfile->mission
+                ?? 'To design and build digital products that solve real problems and deliver meaningful, long-term value.' }}
+        </p>
     </div>
 </section>
 
-{{-- ================= COMPANY INFO ================= --}}
-<section class="bg-app-bg">
-    <div class="mx-auto max-w-7xl px-6 py-24">
 
-        <h2 class="mb-10 text-3xl font-semibold text-white">
-            Company Information
-        </h2>
-
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-
-            @php
-                $items = [
-                    ['label' => 'Address', 'value' => $companyProfile->address ?? null],
-                    ['label' => 'Phone', 'value' => $companyProfile->phone ?? null],
-                    ['label' => 'Fax', 'value' => $companyProfile->fax ?? null],
-                    ['label' => 'Email', 'value' => $companyProfile->email ?? null],
-                ];
-            @endphp
-
-            @foreach ($items as $item)
-                @if ($item['value'])
-                    <div class="rounded-xl bg-slate-900/60 border border-white/10 p-6">
-                        <span class="mb-2 block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                            {{ $item['label'] }}
-                        </span>
-                        <p class="text-sm text-app-muted">
-                            {{ $item['value'] }}
-                        </p>
-                    </div>
-                @endif
-            @endforeach
-
-        </div>
+{{-- ================= CTA + CONTACT ================= --}}
+<x-cta eyebrow="Say hello"
+       title="Let's build something together"
+       subtitle="Tell us about your project — we'll get back to you within one business day.">
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="{{ route('contact') }}" class="btn-primary btn-lg">Start a conversation</a>
+        <a href="{{ route('products') }}" class="btn-outline btn-lg">See our work</a>
     </div>
-</section>
+
+    @if (filled($companyProfile->email) || filled($companyProfile->phone))
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-app-muted">
+            @if (filled($companyProfile->email))
+                <a href="mailto:{{ $companyProfile->email }}" class="transition hover:text-app-heading">{{ $companyProfile->email }}</a>
+            @endif
+            @if (filled($companyProfile->phone))
+                <a href="tel:{{ $companyProfile->phone }}" class="transition hover:text-app-heading">{{ $companyProfile->phone }}</a>
+            @endif
+            @if (filled($companyProfile->address))
+                <span>{{ $companyProfile->address }}</span>
+            @endif
+        </div>
+    @endif
+</x-cta>
 
 @endsection

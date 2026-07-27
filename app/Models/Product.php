@@ -54,6 +54,14 @@ class Product extends Model
         return 'slug';
     }
 
+    /**
+     * Order items that reference this product (used to protect purchase history on delete).
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     /* =====================
      | HELPER METHODS
      ===================== */

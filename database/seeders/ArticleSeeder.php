@@ -19,14 +19,14 @@ class ArticleSeeder extends Seeder
         }
 
         // Copy assets
-        Storage::disk('public')->put('articles/1.jpeg', File::get(database_path('seeders/assets/articles/1.jpeg')));
-        Storage::disk('public')->put('articles/2.jpg', File::get(database_path('seeders/assets/articles/2.jpg')));
+        Storage::disk('public')->put('articles/1.webp', File::get(database_path('seeders/assets/articles/1.webp')));
+        Storage::disk('public')->put('articles/2.webp', File::get(database_path('seeders/assets/articles/2.webp')));
         Storage::disk('public')->put('articles/3.webp', File::get(database_path('seeders/assets/articles/3.webp')));
-        Storage::disk('public')->put('articles/4.png', File::get(database_path('seeders/assets/articles/4.png')));
-        Storage::disk('public')->put('articles/5.png', File::get(database_path('seeders/assets/articles/5.png')));
-        Storage::disk('public')->put('articles/6.jpg', File::get(database_path('seeders/assets/articles/6.jpg')));
+        Storage::disk('public')->put('articles/4.webp', File::get(database_path('seeders/assets/articles/4.webp')));
+        Storage::disk('public')->put('articles/5.webp', File::get(database_path('seeders/assets/articles/5.webp')));
+        Storage::disk('public')->put('articles/6.webp', File::get(database_path('seeders/assets/articles/6.webp')));
         Storage::disk('public')->put('articles/7.webp', File::get(database_path('seeders/assets/articles/7.webp')));
-        Storage::disk('public')->put('articles/8.png', File::get(database_path('seeders/assets/articles/8.png')));
+        Storage::disk('public')->put('articles/8.webp', File::get(database_path('seeders/assets/articles/8.webp')));
 
         /*
         |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ As customer behavior evolves, expectations increase. Mobile responsiveness, fast
 Digital presence also supports data-driven decision making. Analytics tools allow businesses to track behavior, measure performance, and optimize strategies. These insights lead to continuous improvement.
 
 Ultimately, companies that invest in digital presence position themselves for long-term growth. Visibility, trust, and accessibility online are critical for staying relevant in a digital-first economy.",
-            'thumbnail' => 'articles/1.jpeg',
+            'thumbnail' => 'articles/1.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(10),
@@ -78,7 +78,7 @@ Trust is often lost faster than it is built. A single broken interaction or conf
 User-centered design also shows respect for the audience. When products are built around real user needs, they feel intuitive and thoughtful. This emotional connection strengthens trust.
 
 In the long term, businesses that prioritize UI/UX design create products users return to. Trust built through experience becomes a strong competitive advantage.",
-            'thumbnail' => 'articles/2.jpg',
+            'thumbnail' => 'articles/2.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(12),
@@ -134,7 +134,7 @@ Cost considerations also influence decisions. Some stacks require higher infrast
 Scalability should be planned from the beginning. A good stack allows startups to grow without major changes. This protects early investments.
 
 Ultimately, the right tech stack supports both short-term execution and long-term vision. Thoughtful decisions lay a strong foundation for success.",
-            'thumbnail' => 'articles/4.png',
+            'thumbnail' => 'articles/4.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(18),
@@ -162,7 +162,7 @@ Mobile optimization is critical. Many users access landing pages on mobile devic
 Testing and optimization are ongoing processes. A/B testing helps identify what works best. Small improvements can produce significant results.
 
 Well-designed landing pages turn traffic into results. They maximize marketing efforts and improve overall campaign performance.",
-            'thumbnail' => 'articles/5.png',
+            'thumbnail' => 'articles/5.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(20),
@@ -190,7 +190,7 @@ Change management is essential during transformation. Teams must be trained and 
 Security and reliability should not be overlooked. Digital systems must be protected. Trust is critical for customer relationships.
 
 SMEs that embrace digital transformation build resilience. They become more adaptable and future-ready.",
-            'thumbnail' => 'articles/6.jpg',
+            'thumbnail' => 'articles/6.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(22),
@@ -246,7 +246,7 @@ Cross-platform experiences are increasingly important. Users expect seamless int
 Teams must remain adaptable. Continuous learning helps teams stay relevant. Flexibility drives innovation.
 
 Businesses that understand future trends build stronger products. Preparation ensures long-term competitiveness.",
-            'thumbnail' => 'articles/8.png',
+            'thumbnail' => 'articles/8.webp',
             'author' => 'Nexora Studio Digital',
             'is_published' => true,
             'published_at' => Carbon::now()->subDays(30),

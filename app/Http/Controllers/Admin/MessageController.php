@@ -25,6 +25,7 @@ class MessageController extends Controller
     {
         return view('pages.admin.messages.index', [
             'messages' => Message::whereNull('parent_id')
+                ->with('latestReply')
                 ->withCount([
                     /**
                      * Count unread replies sent by authenticated users.
@@ -62,6 +63,15 @@ class MessageController extends Controller
      */
     public function show(Message $message)
     {
+        /**
+         * Mark the thread's own first message as read too, not just its
+         * replies — otherwise a freshly-started (never-replied-to) chat
+         * would keep counting toward the sidebar's unread badge forever.
+         */
+        if (! $message->is_read && in_array($message->sender, ['user', 'client'], true)) {
+            $message->update(['is_read' => true]);
+        }
+
         /**
          * Mark all unread replies from non-admin senders as read.
          * This includes both user and client replies.
@@ -101,7 +111,7 @@ class MessageController extends Controller
     {
         $request->validate([
             'message' => 'nullable|string|max:3000',
-            'file'    => 'nullable|file|max:5120', // 5MB max
+            'file'    => 'nullable|file|mimes:jpg,jpeg,png,webp,gif,pdf,doc,docx,xls,xlsx,zip|max:5120', // 5MB, safe types only
         ]);
 
         /**
@@ -109,6 +119,10 @@ class MessageController extends Controller
          * A reply must contain either a text message or a file attachment.
          */
         if (! $request->filled('message') && ! $request->hasFile('file')) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Message or file is required.'], 422);
+            }
+
             return back()
                 ->withErrors(['message' => 'Message or file is required.'])
                 ->withInput();
@@ -137,7 +151,7 @@ class MessageController extends Controller
          * - The reply always belongs to an existing thread
          * - User or client context is preserved from the parent message
          */
-        Message::create([
+        $reply = Message::create([
             'parent_id'       => $message->id,
             'sender'          => 'admin',
 
@@ -155,6 +169,23 @@ class MessageController extends Controller
             'attachment_type' => $type,
             'is_read'         => false,
         ]);
+
+        /**
+         * AJAX requests get back the rendered bubble HTML so the thread can
+         * be updated in place, without a full page reload.
+         */
+        if ($request->expectsJson()) {
+            return response()->json([
+                'html' => view('components.chat-bubble', [
+                    'own'            => true,
+                    'name'           => 'You (Admin)',
+                    'time'           => $reply->created_at->format('d M, H:i'),
+                    'message'        => $reply->message,
+                    'attachment'     => $reply->attachment,
+                    'attachmentType' => $reply->attachment_type,
+                ])->render(),
+            ]);
+        }
 
         return back()->with('success', 'Reply sent.');
     }

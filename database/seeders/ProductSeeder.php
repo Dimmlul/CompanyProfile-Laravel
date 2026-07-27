@@ -17,14 +17,14 @@ class ProductSeeder extends Seeder
             Storage::disk('public')->makeDirectory($dir);
         }
 
-        Storage::disk('public')->put('products/comprof.png', File::get(database_path('seeders/assets/products/comprof.png')));
-        Storage::disk('public')->put('products/ecom.jpeg', File::get(database_path('seeders/assets/products/ecom.jpeg')));
-        Storage::disk('public')->put('products/custom.jpeg', File::get(database_path('seeders/assets/products/custom.jpeg')));
-        Storage::disk('public')->put('products/landing.jpeg', File::get(database_path('seeders/assets/products/landing.jpeg')));
-        Storage::disk('public')->put('products/ui.png', File::get(database_path('seeders/assets/products/ui.png')));
-        Storage::disk('public')->put('products/admin.jpeg', File::get(database_path('seeders/assets/products/admin.jpeg')));
-        Storage::disk('public')->put('products/digital.jpeg', File::get(database_path('seeders/assets/products/digital.jpeg')));
-        Storage::disk('public')->put('products/maintain.jpg', File::get(database_path('seeders/assets/products/maintain.jpg')));
+        Storage::disk('public')->put('products/comprof.webp', File::get(database_path('seeders/assets/products/comprof.webp')));
+        Storage::disk('public')->put('products/ecom.webp', File::get(database_path('seeders/assets/products/ecom.webp')));
+        Storage::disk('public')->put('products/custom.webp', File::get(database_path('seeders/assets/products/custom.webp')));
+        Storage::disk('public')->put('products/landing.webp', File::get(database_path('seeders/assets/products/landing.webp')));
+        Storage::disk('public')->put('products/ui.webp', File::get(database_path('seeders/assets/products/ui.webp')));
+        Storage::disk('public')->put('products/admin.webp', File::get(database_path('seeders/assets/products/admin.webp')));
+        Storage::disk('public')->put('products/digital.webp', File::get(database_path('seeders/assets/products/digital.webp')));
+        Storage::disk('public')->put('products/maintain.webp', File::get(database_path('seeders/assets/products/maintain.webp')));
 
         $link = 'https://dribbble.com/shots/popular/';
 
@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
             'name' => 'Company Profile Website',
             'description' => 'Professional company profile website.',
             'content' => 'A modern website to represent your brand identity.',
-            'image' => 'products/comprof.png',
+            'image' => 'products/comprof.webp',
             'price' => 2500000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
             'name' => 'E-Commerce Platform',
             'description' => 'Custom e-commerce solution.',
             'content' => 'Sell products online with a scalable platform.',
-            'image' => 'products/ecom.jpeg',
+            'image' => 'products/ecom.webp',
             'price' => 7500000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -56,7 +56,7 @@ class ProductSeeder extends Seeder
             'name' => 'Custom Web Application',
             'description' => 'Tailored web application development.',
             'content' => 'Custom-built solutions for business processes.',
-            'image' => 'products/custom.jpeg',
+            'image' => 'products/custom.webp',
             'price' => 12000000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
             'name' => 'Landing Page Campaign',
             'description' => 'High-converting landing page.',
             'content' => 'Optimized landing pages for marketing campaigns.',
-            'image' => 'products/landing.jpeg',
+            'image' => 'products/landing.webp',
             'price' => 1800000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -80,7 +80,7 @@ class ProductSeeder extends Seeder
             'name' => 'UI/UX Design System',
             'description' => 'Complete UI/UX design system.',
             'content' => 'Design consistency for digital products.',
-            'image' => 'products/ui.png',
+            'image' => 'products/ui.webp',
             'price' => 4500000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -92,7 +92,7 @@ class ProductSeeder extends Seeder
             'name' => 'Admin Dashboard System',
             'description' => 'Custom admin dashboard.',
             'content' => 'Manage data efficiently with a dashboard system.',
-            'image' => 'products/admin.jpeg',
+            'image' => 'products/admin.webp',
             'price' => 6500000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -104,7 +104,7 @@ class ProductSeeder extends Seeder
             'name' => 'Digital Branding Package',
             'description' => 'Branding for digital products.',
             'content' => 'Build a strong and consistent digital brand.',
-            'image' => 'products/digital.jpeg',
+            'image' => 'products/digital.webp',
             'price' => 3500000,
             'delivery_type' => 'link',
             'download_url' => $link,
@@ -116,7 +116,7 @@ class ProductSeeder extends Seeder
             'name' => 'Website Maintenance Service',
             'description' => 'Ongoing website maintenance.',
             'content' => 'Ensure website performance and security.',
-            'image' => 'products/maintain.jpg',
+            'image' => 'products/maintain.webp',
             'price' => 1500000,
             'delivery_type' => 'link',
             'download_url' => $link,

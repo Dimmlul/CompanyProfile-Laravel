@@ -1,3 +1,4 @@
+{{-- Admin page listing all products with pagination and a link to create a new one. --}}
 @extends('layouts.admin')
 
 @section('title', 'Products')

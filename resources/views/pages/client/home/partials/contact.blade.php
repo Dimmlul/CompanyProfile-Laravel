@@ -1,43 +1,28 @@
-<section class="relative overflow-hidden bg-app-bg py-24">
-    <div class="mx-auto max-w-6xl px-6">
+{{-- Landing section: closing call-to-action banner. --}}
+@php
+    $waLink = filled($companyProfile->whatsapp)
+        ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
+        : null;
+@endphp
 
-        {{-- Card Wrapper --}}
-        <div class="relative rounded-3xl border border-white/10
-                    bg-gradient-to-br from-slate-900/70 to-slate-950/80
-                    p-10 md:p-14 text-center">
-
-            {{-- Soft Glow --}}
-            <div class="pointer-events-none absolute inset-0 -z-10
-                        bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_60%)]">
-            </div>
-
-            {{-- Accent --}}
-            <div class="mx-auto mb-6 h-1 w-20 rounded-full bg-indigo-500/70"></div>
-
-            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-text">
-                Let’s Build Something Meaningful Together
-            </h2>
-
-            <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-app-muted">
-                Whether you’re planning a new digital product, refining an existing
-                platform, or looking for a long-term technology partner —
-                let’s start the conversation.
-            </p>
-
-            {{-- Button --}}
-            <div class="mt-12">
-                <a
-                    href="{{ route('contact') }}"
-                    class="inline-flex items-center justify-center rounded-xl
-                           bg-indigo-500 px-10 py-4
-                           text-white font-medium
-                           shadow-lg shadow-indigo-500/20
-                           hover:bg-indigo-400 transition"
-                >
-                    Start Conversation
-                </a>
-            </div>
-
-        </div>
+<x-cta eyebrow="Let's talk"
+       title="Have a project in mind?"
+       subtitle="Tell us what you're building. We'll get back to you within one business day.">
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a href="{{ route('contact') }}" class="btn-primary btn-lg">Start a conversation</a>
+        @if ($waLink)
+            <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-outline btn-lg">Chat on WhatsApp</a>
+        @endif
     </div>
-</section>
+
+    @if (filled($companyProfile->email) || filled($companyProfile->phone))
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-app-muted">
+            @if (filled($companyProfile->email))
+                <a href="mailto:{{ $companyProfile->email }}" class="transition hover:text-app-heading">{{ $companyProfile->email }}</a>
+            @endif
+            @if (filled($companyProfile->phone))
+                <a href="tel:{{ $companyProfile->phone }}" class="transition hover:text-app-heading">{{ $companyProfile->phone }}</a>
+            @endif
+        </div>
+    @endif
+</x-cta>

@@ -1,3 +1,4 @@
+{{-- Registration page. --}}
 @extends('layouts.auth')
 
 @section('title', 'Register')

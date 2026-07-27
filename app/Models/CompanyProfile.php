@@ -26,6 +26,8 @@ class CompanyProfile extends Model
         'vision',
         'mission',
         'address',
+        'latitude',
+        'longitude',
         'phone',
         'whatsapp',
         'instagram',

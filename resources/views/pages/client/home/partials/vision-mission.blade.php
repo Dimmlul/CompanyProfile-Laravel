@@ -1,96 +1,36 @@
-{{-- ================= VISION, MISSION & ADVANTAGES ================= --}}
-<section
-    x-data="scrollProgress"
-    class="relative bg-gradient-to-b from-slate-900/40 to-transparent overflow-hidden"
->
-    <div class="mx-auto max-w-7xl px-6 py-28">
+{{-- Landing section: vision/mission statement and a list of company strengths. --}}
+<section class="bg-app-bg py-24 lg:py-28">
+    <div class="mx-auto max-w-5xl px-6">
 
-        {{-- HEADER --}}
-        <div
-            :style="`
-                opacity: ${progress};
-                transform: translateY(${(1 - progress) * 40}px);
-            `"
-            class="mb-16 max-w-3xl transition-[opacity,transform] duration-200"
-        >
-            <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                Direction & Values
-            </span>
+        <span x-data x-reveal class="eyebrow">What drives us</span>
 
-            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-white">
-                Vision, Mission & Our Strengths
-            </h2>
+        {{-- The vision stated as a large pull quote, standing as this section's centerpiece
+             instead of the eyebrow/title/subtitle pattern used by the sections around it. --}}
+        <p x-data x-reveal="{ delay: 80 }"
+           class="mt-5 max-w-3xl text-3xl font-medium leading-[1.2] tracking-tight text-app-heading sm:text-4xl lg:text-[2.75rem]">
+            {{ filled($companyProfile->vision) ? $companyProfile->vision : 'To become a trusted digital partner for growing brands worldwide.' }}
+        </p>
 
-            <p class="mt-4 text-app-muted leading-relaxed">
-                Our vision and mission guide every decision we make.
-            </p>
-        </div>
+        <div x-data x-reveal="{ delay: 160 }"
+             class="mt-14 grid gap-10 border-t border-app-border pt-10 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
 
-        {{-- GRID --}}
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-3">
-
-            {{-- VISION --}}
-            <div
-                :style="`
-                    opacity: ${Math.min(progress * 1.2, 1)};
-                    transform:
-                        translateY(${(1 - progress) * 60}px)
-                        scale(${0.96 + progress * 0.04});
-                `"
-                class="transition-[opacity,transform] duration-200"
-            >
-                <div class="relative rounded-2xl bg-slate-900/60 border border-white/10 p-10 h-full">
-                    <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-indigo-500"></span>
-                    <h3 class="mb-4 text-xl font-semibold text-white">Our Vision</h3>
-                    <p class="text-app-muted leading-relaxed">
-                        {{ $companyProfile->vision }}
-                    </p>
-                </div>
+            {{-- Mission, folded in as supporting text rather than a boxed twin of the vision --}}
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-widest text-app-muted">Mission</span>
+                <p class="mt-3 max-w-xl text-lg leading-relaxed text-app-muted">
+                    {{ filled($companyProfile->mission) ? $companyProfile->mission : 'To design and build digital products that solve real problems and deliver lasting value.' }}
+                </p>
             </div>
 
-            {{-- MISSION --}}
-            <div
-                :style="`
-                    opacity: ${Math.min((progress - 0.1) * 1.3, 1)};
-                    transform:
-                        translateY(${(1 - progress) * 70}px)
-                        scale(${0.96 + progress * 0.04});
-                `"
-                class="transition-[opacity,transform] duration-200"
-            >
-                <div class="relative rounded-2xl bg-slate-900/60 border border-white/10 p-10 h-full">
-                    <span class="absolute left-0 top-0 h-full w-1 rounded-l-2xl bg-cyan-400"></span>
-                    <h3 class="mb-4 text-xl font-semibold text-white">Our Mission</h3>
-                    <p class="text-app-muted leading-relaxed">
-                        {{ $companyProfile->mission }}
-                    </p>
-                </div>
-            </div>
-
-            {{-- ADVANTAGES --}}
-            <div
-                :style="`
-                    opacity: ${Math.min((progress - 0.2) * 1.4, 1)};
-                    transform:
-                        translateY(${(1 - progress) * 80}px)
-                        scale(${0.96 + progress * 0.04});
-                `"
-                class="transition-[opacity,transform] duration-200"
-            >
-                <div class="rounded-2xl bg-slate-900/60 border border-white/10 p-10 h-full">
-                    <h3 class="mb-6 text-xs font-semibold uppercase tracking-widest text-indigo-400">
-                        Our Advantages
-                    </h3>
-
-                    <ul class="space-y-6 text-sm text-app-muted">
-                        <li><span class="text-white font-medium">Thoughtful Execution</span></li>
-                        <li><span class="text-white font-medium">Scalable by Design</span></li>
-                        <li><span class="text-white font-medium">Long-Term Partnership</span></li>
-                        <li><span class="text-white font-medium">Clear Communication</span></li>
-                    </ul>
-                </div>
-            </div>
-
+            {{-- Strengths as a divided ledger list — no icon-in-circle cards --}}
+            <ul>
+                @foreach (['Thoughtful execution', 'Scalable by design', 'Long-term partnership', 'Clear communication'] as $strength)
+                    <li @class(['flex items-baseline gap-4 py-3', 'border-t border-app-border' => !$loop->first])>
+                        <span class="font-mono text-xs text-app-muted">0{{ $loop->iteration }}</span>
+                        <span class="text-sm font-medium text-app-heading">{{ $strength }}</span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </section>

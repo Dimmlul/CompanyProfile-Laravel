@@ -3,41 +3,24 @@
     'name',
     'value' => '',
     'type' => 'text',
-    'placeholder' => null,
 ])
 
-<div class="space-y-2">
-    <label class="block text-sm font-medium text-app-text">
+{{-- Labeled text input. Extra attributes (placeholder, required, min, step...) pass through. --}}
+<div class="space-y-1.5">
+    <label for="{{ $name }}" class="block text-sm font-medium text-app-heading">
         {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
     </label>
 
-    <div
-        x-data="{ val: @js(old($name, $value)) }"
-        class="relative"
+    <input
+        id="{{ $name }}"
+        type="{{ $type }}"
+        name="{{ $name }}"
+        value="{{ old($name, $value) }}"
+        {{ $attributes->class('form-input') }}
     >
-        <input
-            x-model="val"
-            type="{{ $type }}"
-            name="{{ $name }}"
-            placeholder="{{ $placeholder }}"
-            class="form-input pr-10"
-        >
-
-        {{-- CLEAR BUTTON --}}
-        <button
-            type="button"
-            x-show="val !== ''"
-            @click="val = ''"
-            class="absolute right-3 top-1/2 -translate-y-1/2
-                   text-app-muted hover:text-app-text
-                   transition"
-            tabindex="-1"
-        >
-            ✕
-        </button>
-    </div>
 
     @error($name)
-        <p class="text-xs text-red-500">{{ $message }}</p>
+        <p class="mt-1 text-xs text-danger">{{ $message }}</p>
     @enderror
 </div>

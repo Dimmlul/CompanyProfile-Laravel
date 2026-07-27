@@ -50,7 +50,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
             'role'     => 'required|in:user,admin',
         ]);
 
@@ -106,7 +106,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => "required|email|unique:users,email,{$user->id}",
-            'password' => 'nullable|min:6',
+            'password' => 'nullable|min:8',
             'role'     => 'required|in:user,admin',
         ]);
 

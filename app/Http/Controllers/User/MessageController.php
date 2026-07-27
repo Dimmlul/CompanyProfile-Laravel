@@ -88,8 +88,20 @@ class MessageController extends Controller
 
         $request->validate([
             'message' => 'nullable|string|max:3000',
-            'file'    => 'nullable|file|max:5120', // 5MB maximum
+            'file'    => 'nullable|file|mimes:jpg,jpeg,png,webp,gif,pdf,doc,docx,xls,xlsx,zip|max:5120', // 5MB, safe types only
         ]);
+
+        /**
+         * Safety check:
+         * A reply must contain either a text message or a file attachment.
+         */
+        if (! $request->filled('message') && ! $request->hasFile('file')) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Type a message or attach a file.'], 422);
+            }
+
+            return back()->withErrors(['message' => 'Message or file required']);
+        }
 
         $path = null;
         $type = null;
@@ -108,7 +120,7 @@ class MessageController extends Controller
         /**
          * Create a user reply attached to the existing message thread.
          */
-        Message::create([
+        $reply = Message::create([
             'parent_id'        => $message->id,
             'sender'           => 'user',
             'user_id'          => Auth::id(),
@@ -117,6 +129,23 @@ class MessageController extends Controller
             'attachment_type'  => $type,
             'is_read'          => false,
         ]);
+
+        /**
+         * AJAX requests get back the rendered bubble HTML so the thread can
+         * be updated in place, without a full page reload.
+         */
+        if ($request->expectsJson()) {
+            return response()->json([
+                'html' => view('components.chat-bubble', [
+                    'own'            => true,
+                    'name'           => 'You',
+                    'time'           => $reply->created_at->format('d M, H:i'),
+                    'message'        => $reply->message,
+                    'attachment'     => $reply->attachment,
+                    'attachmentType' => $reply->attachment_type,
+                ])->render(),
+            ]);
+        }
 
         return back()->with('success', 'Reply sent.');
     }

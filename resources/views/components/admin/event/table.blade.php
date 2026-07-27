@@ -1,3 +1,4 @@
+{{-- Admin events table with actions. --}}
 @props(['events'])
 
 <div class="overflow-x-auto">

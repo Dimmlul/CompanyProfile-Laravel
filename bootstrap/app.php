@@ -12,10 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
-        // TRUST PROXIES (ngrok)
-        $middleware->trustProxies(
-            at: \App\Http\Middleware\TrustProxies::class
-        );
+        // Trust all proxies (dev behind Docker/ngrok); restrict to real proxy IPs in production.
+        // Note: `at:` expects proxy IPs — the previous value was a non-existent middleware class name.
+        $middleware->trustProxies(at: '*');
+
+        // Baseline security headers (clickjacking / MIME-sniffing protection) on every response.
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 
         // CSRF EXCEPTION
         $middleware->validateCsrfTokens(except: [
@@ -24,7 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         //  ROUTE MIDDLEWARE
         $middleware->alias([
-            'admin' => \App\Http\Middleware\IsAdmin::class,
+            'admin'      => \App\Http\Middleware\IsAdmin::class,
+            'not-admin'  => \App\Http\Middleware\BlockAdminShopping::class,
         ]);
     })
 

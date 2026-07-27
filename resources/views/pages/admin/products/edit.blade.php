@@ -1,3 +1,4 @@
+{{-- Admin page for editing an existing product; reuses the shared product form component. --}}
 @extends('layouts.admin')
 
 @section('title', 'Edit Product')

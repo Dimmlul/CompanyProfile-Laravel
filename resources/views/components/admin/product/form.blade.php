@@ -1,3 +1,4 @@
+{{-- Admin product form with delivery type options. --}}
 @props([
     'action',
     'method' => 'POST',
@@ -27,6 +28,7 @@
             label="Product Name"
             name="name"
             :value="$product?->name"
+            required
         />
 
         {{-- DESCRIPTION --}}
@@ -50,14 +52,15 @@
             x-data="{ preview: '{{ $product?->image ? asset('storage/'.$product->image) : '' }}' }"
             class="space-y-2"
         >
-            <label class="text-sm font-medium text-app-text">
+            <label class="text-sm font-medium text-app-heading">
                 Preview Image
+                @if ($method === 'POST') <span class="text-danger">*</span> @endif
             </label>
 
             <template x-if="preview">
                 <img
                     :src="preview"
-                    class="h-24 w-32 rounded-lg object-cover border border-white/10"
+                    class="h-24 w-32 rounded-lg object-cover border border-app-border"
                 >
             </template>
 
@@ -66,7 +69,12 @@
                 name="image"
                 class="form-input"
                 @change="preview = URL.createObjectURL($event.target.files[0])"
+                @if ($method === 'POST') required @endif
             >
+
+            @error('image')
+                <p class="mt-1 text-xs text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- PRICE --}}
@@ -75,11 +83,12 @@
             name="price"
             type="number"
             :value="$product?->price"
+            required
         />
 
         {{-- DELIVERY TYPE --}}
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-app-text">
+            <label class="block text-sm font-medium text-app-heading">
                 Delivery Type
             </label>
 
@@ -108,17 +117,21 @@
 
         {{-- FILE UPLOAD --}}
         <div x-show="delivery === 'file'" x-transition>
-            <label class="block text-sm font-medium text-app-text mb-1">
+            <label class="block text-sm font-medium text-app-heading mb-1">
                 Template File (ZIP / RAR)
+                @if (old('delivery_type', $product?->delivery_type ?? 'file') === 'file' && ! $product?->download_path)
+                    <span class="text-danger">*</span>
+                @endif
             </label>
+            <p class="mb-2 text-xs text-app-muted">Required for file delivery — a buyer can't download anything without it.</p>
 
             @if ($product?->download_path)
                 <p class="mb-2 text-xs text-app-muted">
                     Current file:
                     <a
                         href="{{ asset('storage/'.$product->download_path) }}"
-                        target="_blank"
-                        class="text-indigo-400 underline"
+                        target="_blank" rel="noopener"
+                        class="text-brand-accent underline"
                     >
                         Download
                     </a>
@@ -141,11 +154,12 @@
                 placeholder="https://drive.google.com / github / figma"
                 :value="$product?->download_url"
             />
+            <p class="mt-1 text-xs text-app-muted">Required for link delivery — a buyer can't access anything without it.</p>
         </div>
 
         {{-- STATUS --}}
         <div>
-            <label class="block text-sm font-medium text-app-text mb-2">
+            <label class="block text-sm font-medium text-app-heading mb-2">
                 Status
             </label>
 
@@ -175,7 +189,7 @@
         {{-- ORDER --}}
         @if ($showOrder)
             <div>
-                <label class="block text-sm font-medium text-app-text mb-2">
+                <label class="block text-sm font-medium text-app-heading mb-2">
                     Order Position
                 </label>
 

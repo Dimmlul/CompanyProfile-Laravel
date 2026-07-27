@@ -1,3 +1,4 @@
+{{-- Admin user form (create and edit). --}}
 @props([
     'user' => null,
     'action',

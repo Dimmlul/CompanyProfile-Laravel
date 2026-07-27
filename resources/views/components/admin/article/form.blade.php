@@ -1,3 +1,4 @@
+{{-- Admin article form (create, edit and quick-add). --}}
 @props([
     'article' => null,
     'action',
@@ -31,6 +32,7 @@
             name="content"
             rows="8"
             :value="$article?->content"
+            required
         />
 
         <x-common.form.file
@@ -41,7 +43,7 @@
         @if ($article?->thumbnail)
             <img
                 src="{{ asset('storage/'.$article->thumbnail) }}"
-                class="h-24 rounded-lg border border-white/10 object-cover"
+                class="h-24 rounded-lg border border-app-border object-cover"
             >
         @endif
 

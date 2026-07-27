@@ -1,4 +1,4 @@
-<!-- resources/views/components/admin/orders/payment-info.blade.php -->
+{{-- Shows an order's Midtrans transaction ID and creation date. --}}
 
 @props(['order'])
 

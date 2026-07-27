@@ -1,3 +1,4 @@
+{{-- Admin client form (create, edit and quick-add). --}}
 @props([
     'action',
     'method' => 'POST',
@@ -16,22 +17,20 @@
             label="Client Name"
             name="name"
             :value="$client?->name"
+            required
         />
 
         {{-- LOGO --}}
         <div class="space-y-2">
-            <label class="block text-sm font-medium text-app-text">
-                Logo
-            </label>
-
             @if ($client?->logo)
                 <img
                     src="{{ asset('storage/'.$client->logo) }}"
-                    class="h-16 object-contain rounded border border-white/10"
+                    class="h-16 object-contain rounded border border-app-border"
                 >
             @endif
 
-            <input type="file" name="logo" class="form-input">
+            <x-common.form.file label="Logo" name="logo" />
+            <p class="text-xs text-app-muted">Optional — clients without a logo show as a plain initial on the homepage.</p>
         </div>
 
         <x-common.form.input
@@ -50,7 +49,7 @@
 
         {{-- STATUS --}}
         <div>
-            <label class="block text-sm font-medium text-app-text mb-2">
+            <label class="block text-sm font-medium text-app-heading mb-2">
                 Status
             </label>
 
@@ -72,7 +71,7 @@
         {{-- ORDER POSITION (EDIT ONLY) --}}
         @if ($method !== 'POST')
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-app-text">
+                <label class="block text-sm font-medium text-app-heading">
                     Order Position
                 </label>
 

@@ -1,5 +1,4 @@
-<!-- resources/views/components/admin/article/table.blade.php -->
-
+{{-- Admin articles table: lists articles with thumbnail, status, dates and edit/delete actions. --}}
 @props([
     'articles'
 ])
@@ -46,7 +45,7 @@
                     </td>
 
                     {{-- TITLE --}}
-                    <td class="font-medium text-app-text">
+                    <td class="font-medium text-app-heading">
                         {{ $article->title }}
                     </td>
 

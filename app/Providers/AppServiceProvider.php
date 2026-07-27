@@ -37,10 +37,14 @@ public function boot(): void
          * =============================
          * GLOBAL COMPANY PROFILE
          * =============================
+         * Falls back to an empty (unsaved) instance instead of null, so every
+         * view can safely do $companyProfile->field on a brand-new install
+         * (before the admin has ever saved the company profile) without a
+         * "Attempt to read property on null" error.
          */
         $view->with(
             'companyProfile',
-            CompanyProfile::first()
+            CompanyProfile::first() ?? new CompanyProfile()
         );
 
         /**
@@ -64,12 +68,23 @@ public function boot(): void
          * =============================
          * ADMIN INBOX BADGE (SIDEBAR)
          * =============================
+         * Counts threads that still need admin attention: either the very
+         * first message of a brand-new conversation hasn't been opened yet,
+         * or the thread has unread follow-up replies. (Previously this only
+         * counted unread replies, so a fresh chat with no reply yet never
+         * triggered the badge.)
          */
         if (Auth::check() && Auth::user()->isAdmin()) {
             $unreadInboxCount = Message::whereNull('parent_id')
-                ->whereHas('replies', function ($q) {
-                    $q->whereIn('sender', ['user', 'client'])
-                      ->where('is_read', false);
+                ->where(function ($q) {
+                    $q->where(function ($root) {
+                            $root->whereIn('sender', ['user', 'client'])
+                                 ->where('is_read', false);
+                        })
+                        ->orWhereHas('replies', function ($reply) {
+                            $reply->whereIn('sender', ['user', 'client'])
+                                  ->where('is_read', false);
+                        });
                 })
                 ->count();
 
@@ -78,9 +93,12 @@ public function boot(): void
     });
 
     /**
-     * Force HTTPS
+     * Force HTTPS only when the app is actually reachable over HTTPS
+     * (production, or local tunneled through ngrok). Forcing it while
+     * serving plain local HTTP breaks every generated link/asset URL,
+     * since there's no TLS listener to answer them.
      */
-    if (app()->environment('production', 'local')) {
+    if (str_starts_with(config('app.url'), 'https://')) {
         URL::forceScheme('https');
     }
 }

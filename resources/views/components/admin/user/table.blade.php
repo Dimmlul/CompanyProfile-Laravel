@@ -1,3 +1,4 @@
+{{-- Admin users table with actions. --}}
 @props(['users'])
 
 <div class="overflow-x-auto">
@@ -19,7 +20,7 @@
                 <tr>
 
                     {{-- NAME --}}
-                    <td class="font-medium text-app-text">
+                    <td class="font-medium text-app-heading">
                         {{ $user->name }}
                     </td>
 

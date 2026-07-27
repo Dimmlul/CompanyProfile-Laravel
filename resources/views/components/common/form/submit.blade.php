@@ -1,4 +1,4 @@
-<!-- resources/views/components/common/form/submit.blade.php -->
+{{-- Standard form submit button with a customizable label. --}}
 
 @props([
     'label' => 'Save'

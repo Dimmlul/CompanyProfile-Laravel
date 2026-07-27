@@ -1,3 +1,4 @@
+{{-- Admin: edit an article. --}}
 @extends('layouts.admin')
 
 @section('title','Edit Article')

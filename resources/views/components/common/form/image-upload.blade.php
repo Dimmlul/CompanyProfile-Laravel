@@ -1,3 +1,4 @@
+{{-- Labeled image upload with preview. --}}
 @props([
     'label',
     'name',
@@ -8,6 +9,7 @@
 <div class="space-y-2">
     <label class="block text-sm font-medium text-app-text">
         {{ $label }}
+        @if ($attributes->get('required')) <span class="text-danger">*</span> @endif
     </label>
 
     <div
@@ -48,15 +50,15 @@
                 const file = $event.target.files[0];
                 if (file) preview = URL.createObjectURL(file)
             "
-            class="block w-full text-sm
+            {{ $attributes->class('block w-full text-sm
                    file:mr-4
                    file:rounded-lg
                    file:border-0
-                   file:bg-btn-primary
+                   file:bg-brand-main
                    file:px-4 file:py-2
                    file:text-sm file:font-medium
-                   file:text-btn-text
-                   hover:file:bg-btn-primary-hover"
+                   file:text-brand-text
+                   hover:file:bg-brand-hover') }}
         >
     </div>
 

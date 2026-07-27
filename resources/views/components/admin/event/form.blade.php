@@ -1,3 +1,4 @@
+{{-- Admin event form (create, edit and quick-add). --}}
 @props([
     'action',
     'method' => 'POST',
@@ -43,20 +44,16 @@
 
     {{-- IMAGE --}}
     <div>
-        <label class="text-sm font-medium text-app-text">
-            Image
-        </label>
-
         @if (!empty($event?->image))
             <div class="mb-3">
                 <img
                     src="{{ asset('storage/'.$event->image) }}"
-                    class="h-32 rounded-lg border border-white/10 object-cover"
+                    class="h-32 rounded-lg border border-app-border object-cover"
                 >
             </div>
         @endif
 
-        <input type="file" name="image" class="form-input">
+        <x-common.form.file label="Image" name="image" />
     </div>
 
     {{-- LOCATION --}}
@@ -65,6 +62,12 @@
         name="location"
         :value="old('location', $event->location ?? '')"
     />
+
+    {{-- Map coordinates (optional — shows a map on the event page) --}}
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <x-common.form.input label="Latitude" name="latitude" type="number" step="any" placeholder="-6.2088" :value="old('latitude', $event->latitude ?? '')" />
+        <x-common.form.input label="Longitude" name="longitude" type="number" step="any" placeholder="106.8456" :value="old('longitude', $event->longitude ?? '')" />
+    </div>
 
     {{-- DATES --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -76,6 +79,7 @@
                 'start_date',
                 optional($event->start_date ?? null)->format('Y-m-d\TH:i')
             )"
+            required
         />
 
         <x-common.form.date-picker
@@ -91,7 +95,7 @@
 
     {{-- STATUS --}}
     <div>
-        <label class="mb-2 block text-sm font-medium text-app-text">
+        <label class="mb-2 block text-sm font-medium text-app-heading">
             Status
         </label>
 

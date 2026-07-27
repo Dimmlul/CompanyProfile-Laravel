@@ -1,3 +1,4 @@
+{{-- Admin: events list. --}}
 @extends('layouts.admin')
 
 @section('title', 'Events')

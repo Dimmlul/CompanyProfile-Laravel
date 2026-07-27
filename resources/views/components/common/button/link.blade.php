@@ -1,4 +1,4 @@
-<!-- resources/views/components/common/button/link.blade.php -->
+{{-- Generic styled link button; content is passed in via the component slot. --}}
 
 @props([
     'href',

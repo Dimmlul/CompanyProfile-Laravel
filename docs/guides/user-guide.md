@@ -1,126 +1,112 @@
 # User Guide
 
-This guide explains how users interact with the platform to purchase digital products.
+How to browse, buy, and manage digital products as a customer on this platform.
+
+**In this guide:** [Create an account](#create-an-account) · [Browse products](#browse-products) · [Add to cart or buy now](#add-to-cart-or-buy-now) · [Checkout & payment](#checkout--payment) · [Track your order](#track-your-order) · [Download your purchase](#download-your-purchase) · [Message the admin](#message-the-admin) · [Manage your profile](#manage-your-profile)
 
 ---
 
-## Register Account
+## Create an account
 
-Users must register before purchasing products.
+1. Open the site and click **Register**
+2. Fill in your **name**, **email**, and a **password** (8+ characters)
+3. Submit — you're redirected to the login page
+4. Log in at `/login` with the same email and password
 
-Steps:
+See the [Authentication Guide](authentication.md) for the full login/session details.
 
-1. Open the website
-2. Click **Register**
-3. Enter:
-   - Name
-   - Email
-   - Password
-4. Submit the form
-
-After registering, login via:
-
-/login
+> Tip: use the sun/moon icon in the navbar anytime to switch between light and dark mode — your choice is remembered on your next visit.
 
 ---
 
-## Browse Products
+## Browse products
 
-Users can browse digital products on the **Products page**.
+The **Products** page lists everything available. Each listing shows:
 
-Each product contains:
-
-- Title
-- Description
+- Title and short description
 - Price
 - Preview image
 
----
-
-## Add Product to Cart
-
-Steps:
-
-1. Open product detail page
-2. Click **Add to Cart**
-3. Product will appear in cart
-
-Users can:
-
-- Remove products
-- View cart items
+Click any product to see its full detail page — pricing, delivery type ("instant file download" or "access via link"), and full description.
 
 ---
 
-## Checkout
+## Add to cart or buy now
 
-Steps:
+On a product's detail page you have two options:
 
-1. Open **Cart**
-2. Click **Proceed to Checkout**
-3. Midtrans payment popup will appear
+| Button | What it does |
+|---|---|
+| **Add to Cart** | Adds the product to your cart so you can keep browsing and buy multiple items together |
+| **Buy Now** | Adds it to your cart *and* jumps straight to checkout — the fast path if you already know what you want |
+
+From the **Cart** page, you can:
+
+- Adjust quantity
+- Remove an item
+- Proceed to checkout when ready
 
 ---
 
-## Payment
+## Checkout & payment
 
-Payment is handled by **Midtrans Snap**.
+1. From the cart, click **Proceed to Secure Payment**
+2. Review your order summary and confirm your email
+3. This creates an order (status: `pending`) and opens the **Midtrans Snap** payment popup
+4. Choose a payment method and complete the payment
 
-Available methods depend on Midtrans configuration:
+Available methods depend on what's enabled on the store's Midtrans account, but typically include:
 
-- Bank Transfer
-- Virtual Account
-- E-Wallet
+- Bank transfer / virtual account (BCA, Mandiri, BNI, BRI, ...)
 - QRIS
-- Credit Card
+- E-wallets (GoPay, ShopeePay, ...)
+- Credit/debit card
+
+Once Midtrans confirms the payment, your order status updates automatically — you don't need to refresh or do anything else.
 
 ---
 
-## Order Status
+## Track your order
 
-Orders may have the following statuses:
+Order statuses you might see under **Orders**:
 
-| Status | Description |
-|------|-------------|
-| pending | Waiting for payment |
-| paid | Payment completed |
-| expired | Payment expired |
-| failed | Payment failed |
+| Status | Meaning |
+|---|---|
+| `pending` | Waiting for payment |
+| `paid` | Payment confirmed — download unlocked |
+| `expired` | The payment window closed before you paid |
+| `failed` | The payment attempt didn't go through |
+
+Open any order to see its items, total, and current status.
 
 ---
 
-## Download Purchased Products
+## Download your purchase
 
-After successful payment:
+Once an order shows **paid**:
 
 1. Go to **Orders**
-2. Open **Order Detail**
-3. Download file or open product link
+2. Open the order detail
+3. Click the download button (for file-delivery products) or the access link (for link-delivery products, e.g. a Figma/Drive/GitHub URL)
 
-Downloads are only available for **paid orders**.
+Downloads only unlock after payment is confirmed — there's no way to access them from a pending or unpaid order.
 
 ---
 
-## Messaging Admin
+## Message the admin
 
-Users can send inquiries to administrators.
-
-Steps:
+Have a question about a product or an order? Use the built-in messaging system:
 
 1. Open **Messages**
-2. Write message
-3. Send
-
-Admins can reply through the admin panel.
+2. Write your message and send it
+3. The admin team replies from their side, and you'll see the reply in the same thread
 
 ---
 
-## Update Profile
+## Manage your profile
 
-Users can update personal information from the **Profile page**.
-
-Editable fields include:
+From the **Profile** page you can update:
 
 - Name
 - Email
-- Password
+- Password (leave blank to keep your current one)

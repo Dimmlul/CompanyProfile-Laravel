@@ -40,7 +40,7 @@ class AuthController extends Controller
      * - Attempt user authentication
      * - Regenerate the session to prevent session fixation
      * - Redirect users based on their role
-     *   (admin → admin dashboard, user → homepage)
+     *   (admin > admin dashboard, user > homepage)
      */
     public function login(Request $request)
     {
@@ -92,7 +92,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6', 'confirmed'],
+            'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
         /**

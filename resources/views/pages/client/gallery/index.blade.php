@@ -1,82 +1,79 @@
+{{-- Gallery page: filterable grid of photos with a click-to-open lightbox. --}}
 @extends('layouts.app')
 
 @section('title', 'Gallery')
 
 @section('content')
 
-<section class="py-20 bg-app-bg">
+@php
+    $categories = $galleries->pluck('category')->filter()->unique()->values();
+@endphp
+
+{{-- Alpine state: active category filter, and whether the lightbox is open plus which image it shows. --}}
+<section class="bg-app-bg py-20" x-data="{ cat: 'all', open: false, active: {} }">
     <div class="mx-auto max-w-7xl px-6">
 
-        {{-- ================= HEADER ================= --}}
-        <div class="mb-14 text-center">
-            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-app-text">
-                Gallery
-            </h1>
-            <p class="mt-3 max-w-xl mx-auto text-sm text-app-muted">
-                A collection of our activities, moments, and documentation
-            </p>
+        {{-- HEADER --}}
+        <div x-data x-reveal class="mb-10 max-w-2xl">
+            <span class="eyebrow">Gallery</span>
+            <h1 class="section-title">Moments &amp; documentation</h1>
+            <p class="section-subtitle">A look at our activities, projects, and behind-the-scenes.</p>
         </div>
 
-        {{-- ================= GALLERY GRID ================= --}}
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-                   gap-6"
-        >
-
-            @foreach ($galleries as $gallery)
-
-                <div
-                    class="group relative overflow-hidden rounded-2xl
-                           border border-white/10
-                           bg-[#020617]
-                           transition
-                           hover:border-white/20"
-                >
-
-                    {{-- IMAGE --}}
-                    <img
-                        src="{{ asset('storage/'.$gallery->image) }}"
-                        alt="{{ $gallery->title }}"
-                        class="h-60 w-full object-cover
-                               transition-transform duration-700 ease-out
-                               group-hover:scale-105"
-                    >
-
-                    {{-- OVERLAY --}}
-                    <div
-                        class="absolute inset-0
-                               flex flex-col justify-end
-                               p-5
-                               bg-gradient-to-t
-                               from-black/80 via-black/40 to-transparent
-                               opacity-0
-                               transition-opacity duration-300
-                               group-hover:opacity-100"
-                    >
-                        <h3 class="text-sm font-semibold text-white leading-snug">
-                            {{ $gallery->title }}
-                        </h3>
-
-                        @if ($gallery->caption)
-                            <p class="mt-1 text-xs text-white/80 line-clamp-2">
-                                {{ $gallery->caption }}
-                            </p>
-                        @endif
-                    </div>
-
-                </div>
-
-            @endforeach
-
-        </div>
-
-        {{-- EMPTY STATE --}}
-        @if ($galleries->isEmpty())
-            <div class="mt-16 text-center text-sm text-app-muted">
-                No gallery items available.
+        {{-- FILTER --}}
+        @if ($categories->isNotEmpty())
+            <div class="mb-10 flex flex-wrap gap-2">
+                <button type="button" @click="cat = 'all'"
+                        :class="cat === 'all' ? 'btn-primary btn-sm' : 'btn-outline btn-sm'">All</button>
+                @foreach ($categories as $c)
+                    <button type="button" @click="cat = @js($c)"
+                            :class="cat === @js($c) ? 'btn-primary btn-sm' : 'btn-outline btn-sm'">{{ ucfirst($c) }}</button>
+                @endforeach
             </div>
         @endif
 
+        {{-- GRID --}}
+        @if ($galleries->isEmpty())
+            <div class="surface rounded-2xl p-12 text-center text-app-muted">No gallery items yet.</div>
+        @else
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                @foreach ($galleries as $gallery)
+                    <button type="button"
+                            x-show="cat === 'all' || cat === @js($gallery->category)" x-transition
+                            @click="open = true; active = { img: @js(asset('storage/'.$gallery->image)), title: @js($gallery->title), caption: @js($gallery->caption) }"
+                            class="group surface relative aspect-square overflow-hidden rounded-2xl text-left">
+                        <img src="{{ asset('storage/'.$gallery->image) }}" alt="{{ $gallery->title }}"
+                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/10 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <p class="text-sm font-semibold text-white">{{ $gallery->title }}</p>
+                            @if ($gallery->caption)
+                                <p class="line-clamp-1 text-xs text-white/70">{{ $gallery->caption }}</p>
+                            @endif
+                        </div>
+                    </button>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    {{-- LIGHTBOX --}}
+    <div x-show="open" x-transition.opacity x-cloak
+         @keydown.escape.window="open = false" @click.self="open = false"
+         class="fixed inset-0 z-[80] flex items-center justify-center bg-black/85 p-6 backdrop-blur-sm">
+        <div class="relative w-full max-w-4xl">
+            {{-- Positioned on the image corner (not above it) so it's always on-screen, even on short mobile viewports --}}
+            <button type="button" @click="open = false"
+                    class="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-black/80">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <img :src="active.img" :alt="active.title" class="max-h-[80vh] w-full rounded-2xl object-contain">
+            <div class="mt-3 text-center">
+                <p class="text-sm font-medium text-white" x-text="active.title"></p>
+                <p class="text-xs text-white/60" x-text="active.caption"></p>
+            </div>
+        </div>
     </div>
 </section>
 

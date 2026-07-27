@@ -45,12 +45,16 @@ class MessageController extends Controller
 
         /**
          * Create the root message for the client thread.
+         * When the visitor is logged in, link the thread to their account
+         * so it also appears in their Messages history.
          */
-        Message::create([
+        $message = Message::create([
             'sender'       => 'client',
+            'user_id'      => auth()->id(),
             'client_token' => $token,
             'client_name'  => $request->name,
             'client_email' => $request->email,
+            'subject'      => 'Support chat',
             'message'      => $request->message,
             'is_read'      => false,
         ]);
@@ -62,6 +66,14 @@ class MessageController extends Controller
         cookie()->queue(
             cookie('support_chat_token', $token, 60 * 24 * 30)
         );
+
+        /**
+         * Logged-in users continue inside their Messages history;
+         * guests use the token-based thread view.
+         */
+        if (auth()->check()) {
+            return redirect()->route('user.messages.show', $message);
+        }
 
         return redirect()->route('client.messages.show', $token);
     }
@@ -128,7 +140,7 @@ class MessageController extends Controller
     {
         $request->validate([
             'message' => 'nullable|string|max:3000',
-            'file'    => 'nullable|file|max:5120',
+            'file'    => 'nullable|file|mimes:jpg,jpeg,png,webp,gif,pdf,doc,docx,xls,xlsx,zip|max:5120',
         ]);
 
         /**
@@ -136,6 +148,10 @@ class MessageController extends Controller
          * A reply must contain either a text message or a file attachment.
          */
         if (! $request->filled('message') && ! $request->hasFile('file')) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Type a message or attach a file.'], 422);
+            }
+
             return back()->withErrors(['message' => 'Message or file required']);
         }
 
@@ -162,9 +178,10 @@ class MessageController extends Controller
         /**
          * Create the client reply and attach it to the existing thread.
          */
-        Message::create([
+        $reply = Message::create([
             'parent_id'       => $root->id,
             'sender'          => 'client',
+            'user_id'         => $root->user_id,
             'client_token'    => $root->client_token,
             'client_name'     => $root->client_name,
             'client_email'    => $root->client_email,
@@ -172,6 +189,23 @@ class MessageController extends Controller
             'attachment'      => $path,
             'attachment_type' => $type,
         ]);
+
+        /**
+         * AJAX requests get back the rendered bubble HTML so the thread can
+         * be updated in place, without a full page reload.
+         */
+        if ($request->expectsJson()) {
+            return response()->json([
+                'html' => view('components.chat-bubble', [
+                    'own'            => true,
+                    'name'           => 'You',
+                    'time'           => $reply->created_at->format('d M, H:i'),
+                    'message'        => $reply->message,
+                    'attachment'     => $reply->attachment,
+                    'attachmentType' => $reply->attachment_type,
+                ])->render(),
+            ]);
+        }
 
         return back();
     }

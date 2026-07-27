@@ -1,7 +1,5 @@
-<footer
-    class="relative bg-[rgba(2,6,23,0.65)]
-           backdrop-blur-md border-t border-white/10"
->
+{{-- Site-wide footer: brand blurb, quick links, contact info, and social links pulled from the company profile. --}}
+<footer class="relative site-header border-t">
     <div
         class="mx-auto max-w-7xl px-6
                min-h-[45vh]
@@ -27,14 +25,14 @@
                     @else
                         <div
                             class="flex h-10 w-10 items-center justify-center
-                                   rounded-lg bg-btn-primary text-btn-text
+                                   rounded-lg bg-brand-main text-brand-text
                                    font-semibold"
                         >
                             {{ Str::substr($companyProfile->company_name ?? 'N', 0, 1) }}
                         </div>
                     @endif
 
-                    <span class="text-lg font-semibold text-white">
+                    <span class="text-lg font-semibold text-app-heading">
                         {{ $companyProfile->company_name ?? 'Nexora Studio Digital' }}
                     </span>
                 </div>
@@ -47,11 +45,11 @@
 
             <!-- ================= COMPANY LINKS ================= -->
             <div>
-                <h4 class="text-sm font-semibold text-white">Company</h4>
+                <h4 class="text-sm font-semibold text-app-heading">Company</h4>
 
                 @php
-                    $linkBase = 'group flex items-center gap-3 text-app-muted transition hover:text-white';
-                    $underline = 'absolute left-0 -bottom-1 h-[1px] w-0 bg-indigo-400 transition-all duration-300 group-hover:w-full';
+                    $linkBase = 'group flex items-center gap-3 text-app-muted transition hover:text-app-heading';
+                    $underline = 'absolute left-0 -bottom-1 h-[1px] w-0 bg-brand-accent transition-all duration-300 group-hover:w-full';
                 @endphp
 
                 <ul class="mt-5 space-y-4 text-sm">
@@ -92,14 +90,14 @@
 
             <!-- ================= CONTACT ================= -->
             <div class="md:justify-self-end">
-                <h4 class="text-sm font-semibold text-white">Contact</h4>
+                <h4 class="text-sm font-semibold text-app-heading">Contact</h4>
 
                 <ul class="mt-5 space-y-4 text-sm">
                     @if (filled($companyProfile->address))
                         <li>
                             <a
                                 href="https://www.google.com/maps/search/?api=1&query={{ urlencode($companyProfile->address) }}"
-                                target="_blank"
+                                target="_blank" rel="noopener noreferrer"
                                 class="{{ $linkBase }}"
                             >
                                 <span class="relative">
@@ -142,7 +140,7 @@
 
             <!-- ================= SOCIAL ================= -->
             <div>
-                <h4 class="text-sm font-semibold text-white">Social Media</h4>
+                <h4 class="text-sm font-semibold text-app-heading">Social Media</h4>
 
                 <ul class="mt-5 space-y-4 text-sm">
                     <li>
@@ -150,7 +148,7 @@
                             href="{{ filled($companyProfile->whatsapp)
                                 ? 'https://wa.me/' . preg_replace('/\D/', '', $companyProfile->whatsapp)
                                 : '#' }}"
-                            target="_blank"
+                            target="_blank" rel="noopener noreferrer"
                             class="{{ $linkBase }}"
                         >
                             <span class="relative">
@@ -167,7 +165,7 @@
                                     ? $companyProfile->instagram
                                     : 'https://instagram.com/' . ltrim($companyProfile->instagram, '@'))
                                 : '#' }}"
-                            target="_blank"
+                            target="_blank" rel="noopener noreferrer"
                             class="{{ $linkBase }}"
                         >
                             <span class="relative">
@@ -183,11 +181,11 @@
 
         <!-- ================= BOTTOM ================= -->
         <div
-            class="pt-8 mt-14 border-t border-white/10
+            class="pt-8 mt-14 border-t border-app-border
                    text-center text-xs text-app-muted"
         >
             © {{ date('Y') }}
-            <span class="font-medium text-white">
+            <span class="font-medium text-app-heading">
                 {{ $companyProfile->company_name ?? 'Nexora Studio Digital' }}
             </span>.
             All rights reserved.

@@ -1,3 +1,4 @@
+{{-- Contact page: company info, location map, and a contact form that emails the company. --}}
 @extends('layouts.app')
 
 @section('title', 'Contact Us')
@@ -8,15 +9,10 @@
 
         {{-- HEADING --}}
         <div class="mb-16 max-w-2xl">
-            <h1 class="text-4xl font-semibold text-white">
-                Get in Touch
-            </h1>
-            <p class="mt-4 text-app-muted leading-relaxed">
-                Have a project in mind or just want to say hello?
-                Our team at
-                <span class="font-medium text-white">
-                    {{ $companyProfile->company_name }}
-                </span>
+            <h1 class="text-4xl font-semibold text-app-heading">Get in Touch</h1>
+            <p class="mt-4 leading-relaxed text-app-muted">
+                Have a project in mind or just want to say hello? Our team at
+                <span class="font-medium text-app-heading">{{ $companyProfile->company_name }}</span>
                 would love to hear from you.
             </p>
         </div>
@@ -25,153 +21,82 @@
 
             {{-- COMPANY INFO --}}
             <div class="space-y-8">
-
-                {{-- ABOUT --}}
                 <div class="text-sm leading-relaxed text-app-muted">
                     {{ $companyProfile->about }}
                 </div>
 
-                {{-- DIVIDER --}}
-                <div class="h-px w-full bg-white/10"></div>
+                <div class="h-px w-full bg-app-border"></div>
 
-                {{-- CONTACT DETAILS --}}
                 <div class="grid grid-cols-1 gap-5 text-sm">
-
-                    {{-- ADDRESS --}}
                     <div>
-                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
-                            Address
-                        </p>
-                        <p class="font-medium text-white leading-relaxed">
-                            {{ $companyProfile->address }}
-                        </p>
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">Address</p>
+                        <p class="font-medium leading-relaxed text-app-heading">{{ $companyProfile->address }}</p>
                     </div>
-
-                    {{-- EMAIL --}}
                     <div>
-                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
-                            Email
-                        </p>
-                        <a
-                            href="mailto:{{ $companyProfile->email }}"
-                            class="font-medium text-white hover:underline"
-                        >
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">Email</p>
+                        <a href="mailto:{{ $companyProfile->email }}" class="font-medium text-app-heading hover:underline">
                             {{ $companyProfile->email }}
                         </a>
                     </div>
-
-                    {{-- PHONE --}}
                     <div>
-                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
-                            Phone
-                        </p>
-                        <a
-                            href="tel:{{ $companyProfile->phone }}"
-                            class="font-medium text-white hover:underline"
-                        >
+                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">Phone</p>
+                        <a href="tel:{{ $companyProfile->phone }}" class="font-medium text-app-heading hover:underline">
                             {{ $companyProfile->phone }}
                         </a>
                     </div>
-
-                    {{-- FAX --}}
                     @if(!empty($companyProfile->fax))
-                    <div>
-                        <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">
-                            Fax
-                        </p>
-                        <p class="font-medium text-white">
-                            {{ $companyProfile->fax }}
-                        </p>
-                    </div>
+                        <div>
+                            <p class="mb-1 text-xs uppercase tracking-wide text-app-muted">Fax</p>
+                            <p class="font-medium text-app-heading">{{ $companyProfile->fax }}</p>
+                        </div>
                     @endif
-
                 </div>
+
+                {{-- Location map (Leaflet) --}}
+                @if (filled($companyProfile->address) || (filled($companyProfile->latitude) && filled($companyProfile->longitude)))
+                    <div>
+                        <p class="mb-2 text-xs uppercase tracking-wide text-app-muted">Find us</p>
+                        <x-map
+                            :lat="$companyProfile->latitude"
+                            :lng="$companyProfile->longitude"
+                            :address="$companyProfile->address"
+                            :label="$companyProfile->company_name" />
+                    </div>
+                @endif
             </div>
 
             {{-- CONTACT FORM --}}
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur">
-                <h3 class="mb-6 text-lg font-semibold text-white">
-                    Send Us a Message
-                </h3>
+            <div class="surface rounded-2xl p-8">
+                <h3 class="mb-6 text-lg font-semibold text-app-heading">Send Us a Message</h3>
 
                 <form id="contact-form" class="space-y-5">
+                    <input type="hidden" name="to_email" value="{{ $companyProfile->email }}">
 
-                    {{-- TARGET EMAIL --}}
-                    <input
-                        type="hidden"
-                        name="to_email"
-                        value="{{ $companyProfile->email }}"
-                    >
+                    @php
+                        $field = 'w-full rounded-lg border border-app-border bg-transparent px-4 py-3 text-sm
+                                  text-app-heading placeholder:text-app-muted focus:border-brand-main focus:outline-none';
+                    @endphp
 
-                    {{-- NAME --}}
-                    <input
-                        type="text"
-                        name="from_name"
-                        placeholder="Your Name"
-                        required
-                        class="w-full rounded-lg border border-white/10 bg-transparent
-                               px-4 py-3 text-sm text-white
-                               placeholder:text-app-muted focus:outline-none"
-                    >
+                    <input type="text" name="from_name" placeholder="Your Name" required class="{{ $field }}">
+                    <input type="email" name="from_email" placeholder="Email Address" required class="{{ $field }}">
+                    <input type="text" name="subject" placeholder="Subject" required class="{{ $field }}">
+                    <textarea name="message" rows="4" placeholder="Your Message" required class="{{ $field }}"></textarea>
 
-                    {{-- EMAIL --}}
-                    <input
-                        type="email"
-                        name="from_email"
-                        placeholder="Email Address"
-                        required
-                        class="w-full rounded-lg border border-white/10 bg-transparent
-                               px-4 py-3 text-sm text-white
-                               placeholder:text-app-muted focus:outline-none"
-                    >
-
-                    {{-- SUBJECT --}}
-                    <input
-                        type="text"
-                        name="subject"
-                        placeholder="Subject"
-                        required
-                        class="w-full rounded-lg border border-white/10 bg-transparent
-                               px-4 py-3 text-sm text-white
-                               placeholder:text-app-muted focus:outline-none"
-                    >
-
-                    {{-- MESSAGE --}}
-                    <textarea
-                        name="message"
-                        rows="4"
-                        placeholder="Your Message"
-                        required
-                        class="w-full rounded-lg border border-white/10 bg-transparent
-                               px-4 py-3 text-sm text-white
-                               placeholder:text-app-muted focus:outline-none"
-                    ></textarea>
-
-                    {{-- SUBMIT --}}
-                    <button
-                        type="submit"
-                        class="w-full rounded-lg bg-white py-3
-                               text-sm font-semibold text-gray-900
-                               transition hover:bg-gray-200"
-                    >
-                        Send Message
-                    </button>
+                    <button type="submit" class="btn-primary w-full">Send Message</button>
 
                     <p id="form-status" class="text-sm text-app-muted"></p>
                 </form>
             </div>
-
         </div>
     </div>
 </section>
 @endsection
 
+{{-- Sends the contact form straight to EmailJS from the browser, bypassing the Laravel backend. --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
     emailjs.init('{{ config('services.emailjs.public_key') }}');
 
     const form   = document.getElementById('contact-form');
@@ -179,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-
         status.textContent = 'Sending message...';
 
         emailjs.sendForm(

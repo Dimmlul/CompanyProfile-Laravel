@@ -1,5 +1,7 @@
+{{-- Custom 404 error page. --}}
 @extends('layouts.app')
 
+{{-- Shared error page: picks a title/message based on the HTTP status code so one view covers 403/404/419/500 --}}
 @php
     $status = $exception->getStatusCode();
 

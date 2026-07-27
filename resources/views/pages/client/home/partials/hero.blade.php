@@ -1,113 +1,84 @@
-<section
-    x-data="heroReveal()"
-    x-init="init()"
-    class="relative min-h-screen w-full overflow-hidden bg-app-bg"
->
-    {{-- ================= BACKGROUND ================= --}}
-    <div class="absolute inset-0 -z-10">
-        <img
-            src="{{ asset('images/hero.jpg') }}"
-            alt="{{ $companyProfile->company_name ?? 'Company Hero Image' }}"
-            class="h-full w-full object-cover opacity-40 scale-105"
-        >
+{{-- Landing section: homepage hero banner with headline, CTAs, and a trusted-by logo strip. --}}
+@php
+    // Use the newest gallery image as the hero visual, falling back to the static asset.
+    $heroImage = optional($galleries->first())->image;
+    $heroSrc = $heroImage ? asset('storage/'.$heroImage) : asset('images/hero.jpg');
 
-        <div class="absolute inset-0 bg-gradient-to-b
-                    from-app-bg/90 via-app-bg/70 to-app-bg">
-        </div>
-    </div>
+    // Only clients with a logo make sense in this compact trust strip.
+    $trustedLogos = $clients->filter(fn ($client) => filled($client->logo))->take(5);
+@endphp
 
-    {{-- ================= CONTENT ================= --}}
-    <div
-        class="relative mx-auto max-w-7xl px-6
-               min-h-screen
-               flex flex-col items-center justify-center
-               text-center"
-    >
+<section class="relative isolate overflow-hidden bg-app-bg glow-top">
 
-        {{-- OFFSET FOR FLOATING NAVBAR --}}
-        <div class="pt-28"></div>
+    {{-- Faint blueprint grid, masked so it fades toward the edges --}}
+    <div class="absolute inset-0 -z-10 bg-grid [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]"></div>
 
-        {{-- BADGE --}}
-        <div
-            x-ref="badge"
-            class="mb-6 inline-flex items-center gap-2
-                   rounded-full border border-white/10
-                   bg-white/5 px-4 py-1.5
-                   text-xs uppercase tracking-wider text-app-muted
-                   opacity-100 translate-y-0"
-        >
-            <svg class="h-4 w-4 text-indigo-400"
-                 fill="none" stroke="currentColor"
-                 stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
+    {{-- min-h locks the hero to the viewport (minus the 4rem navbar) so it fills
+         a laptop screen exactly and never leaves a dead gap on larger monitors --}}
+    <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pt-24 pb-16
+                lg:min-h-[calc(100vh-4rem)] lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-10">
 
-            {{ $companyProfile->tagline ?? 'Digital Solutions for Growing Brands' }}
-        </div>
-
-        {{-- TITLE --}}
-        <h1
-            x-ref="title"
-            class="mx-auto max-w-4xl
-                   text-4xl md:text-5xl lg:text-6xl
-                   font-semibold tracking-tight text-white
-                   opacity-100 translate-y-0"
-        >
-            Build Powerful Digital Experiences
-            <br class="hidden sm:block">
-            with
-            <span class="text-indigo-400">
-                {{ $companyProfile->company_name ?? 'Our Company' }}
-            </span>
-        </h1>
-
-        {{-- DESCRIPTION --}}
-        <p
-            x-ref="desc"
-            class="mx-auto mt-6 max-w-2xl
-                   text-base leading-relaxed text-app-muted
-                   opacity-100 translate-y-0"
-        >
-            {{ $companyProfile->about
-                ?? 'We help businesses and organizations build modern, scalable, and reliable digital products for long-term growth.' }}
-        </p>
-
-        {{-- CTA --}}
-        <div
-            x-ref="cta"
-            class="mt-10 flex flex-col items-center gap-4 sm:flex-row
-                   opacity-100 translate-y-0"
-        >
-            {{-- PRIMARY --}}
-            <a href="{{ route('contact') }}"
-               class="inline-flex h-12 items-center justify-center
-                      rounded-full bg-white px-7
-                      text-sm font-semibold text-gray-900
-                      transition-all duration-200
-                      hover:bg-gray-200 hover:-translate-y-0.5">
-                Get in Touch
-            </a>
-
-            {{-- SECONDARY --}}
-            <a href="{{ route('products') }}"
-               class="inline-flex h-12 items-center justify-center gap-2
-                      rounded-full border border-white/15
-                      bg-white/5 px-7
-                      text-sm font-medium text-app-text
-                      backdrop-blur
-                      transition-all duration-200
-                      hover:bg-white/10 hover:border-white/25 hover:-translate-y-0.5">
-                View Our Products
-                <svg class="h-4 w-4"
-                     fill="none" stroke="currentColor"
-                     stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M9 5l7 7-7 7"/>
+        {{-- ============ LEFT: copy ============ --}}
+        <div>
+            <a href="{{ route('events') }}" x-data x-reveal
+               class="group surface inline-flex items-center gap-2 rounded-full
+                      px-3 py-1 text-xs text-app-muted backdrop-blur transition hover:border-app-text/25">
+                <span class="rounded-full bg-brand-main px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">New</span>
+                See what we're building
+                <svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none"
+                     stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                 </svg>
             </a>
+
+            <h1 x-data x-reveal="{ delay: 80 }"
+                class="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight text-app-heading sm:text-5xl lg:text-[3.5rem]">
+                We craft digital products that
+                <span class="text-brand-accent">move brands forward</span>
+            </h1>
+
+            <p x-data x-reveal="{ delay: 160 }" class="mt-6 max-w-xl text-base leading-relaxed text-app-muted">
+                {{ $companyProfile->about
+                    ?? 'From idea to launch, we design and build modern, scalable products that help ambitious teams grow.' }}
+            </p>
+
+            <div x-data x-reveal="{ delay: 240 }" class="mt-8 flex flex-wrap items-center gap-3">
+                <a href="{{ route('contact') }}" class="btn-primary btn-lg">Start a project</a>
+                <a href="{{ route('products') }}" class="btn-outline btn-lg">Explore our work</a>
+            </div>
+
+            @if ($trustedLogos->isNotEmpty())
+                <div x-data x-reveal="{ delay: 320 }" class="mt-10">
+                    <p class="text-xs uppercase tracking-widest text-app-muted/70">Trusted by teams at</p>
+                    <div class="mt-5 flex flex-wrap items-center gap-x-9 gap-y-5">
+                        @foreach ($trustedLogos as $client)
+                            <img src="{{ asset('storage/'.$client->logo) }}" alt="{{ $client->name }}"
+                                 class="h-7 w-auto opacity-50 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0">
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
 
-        <div class="pb-24"></div>
+        {{-- ============ RIGHT: framed visual ============ --}}
+        <div x-data x-reveal="{ delay: 200 }" class="relative mx-auto w-full max-w-xl lg:mx-0">
+            {{-- soft brand wash behind the frame --}}
+            <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand-main/25 via-transparent to-transparent blur-2xl"></div>
+
+            <div class="relative max-h-[420px] overflow-hidden rounded-2xl border border-app-border shadow-2xl xl:max-h-[480px]">
+                <img src="{{ $heroSrc }}" alt="{{ $companyProfile->company_name ?? 'Our work' }}"
+                     class="aspect-[4/3] max-h-[420px] w-full object-cover xl:max-h-[480px]">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+            </div>
+
+            {{-- availability chip --}}
+            <div class="surface absolute -bottom-5 -left-5 flex items-center gap-2.5 rounded-xl px-4 py-3 shadow-xl backdrop-blur">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400/70"></span>
+                    <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400"></span>
+                </span>
+                <span class="text-sm font-medium text-app-heading">Available for new projects</span>
+            </div>
+        </div>
     </div>
 </section>

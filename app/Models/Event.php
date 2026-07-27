@@ -23,6 +23,8 @@ class Event extends Model
         'content',
         'image',
         'location',
+        'latitude',
+        'longitude',
         'start_date',
         'end_date',
         'is_active',

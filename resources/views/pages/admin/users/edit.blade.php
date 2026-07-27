@@ -1,3 +1,4 @@
+{{-- Admin page for editing an existing system user. --}}
 @extends('layouts.admin')
 
 @section('title', 'Edit User')
