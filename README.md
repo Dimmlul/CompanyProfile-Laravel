@@ -14,6 +14,9 @@
   <img src="https://img.shields.io/badge/EmailJS-Contact-FF6C37?style=for-the-badge" alt="EmailJS">
 </p>
 
+<p>
+  <img src="https://komarev.com/ghpvc/?username=Dimmlul&repo=CompanyProfile-Laravel&label=Visitors&color=4f46e5&style=flat" alt="Visitors">
+</p>
 
 A **full-featured Company Profile & Digital Product Platform** built with **Laravel 12**.
 
@@ -54,7 +57,7 @@ User purchase flow: <b>Product > Cart > Checkout</b>
 </p>
 
 <p align="center">
-  <a href="docs/SHOWCASE.md"><b>See more screenshots ></b></a> — every page, public site through admin panel
+  <a href="docs/SHOWCASE.md"><b>See more screenshots</b></a>
 </p>
 
 ---
@@ -555,7 +558,7 @@ Security measures implemented include:
 
 Additional documentation available in the **docs folder**:
 
-- [Screenshot Showcase](docs/SHOWCASE.md) — every page, public site through admin panel
+- [Screenshot Showcase](docs/SHOWCASE.md)
 - [Authentication Guide](docs/guides/authentication.md)
 - [User Guide](docs/guides/user-guide.md)
 - [Admin Guide](docs/guides/admin-guide.md)
