@@ -1,4 +1,4 @@
-# 🚀 Company Profile & Digital Product Platform (Laravel)
+# Company Profile & Digital Product Platform
 
 <p>
   <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
@@ -52,6 +52,10 @@ User purchase flow: <b>Product > Cart > Checkout</b>
 ## Admin Dashboard
 <p align="center">
   <img src="docs/images/AdminDashboard.png" width="900">
+</p>
+
+<p align="center">
+  <a href="docs/SHOWCASE.md"><b>See more screenshots ></b></a> — every page, public site through admin panel
 </p>
 
 ---
@@ -542,6 +546,7 @@ Security measures implemented include:
 
 Additional documentation available in the **docs folder**:
 
+- [Screenshot Showcase](docs/SHOWCASE.md) — every page, public site through admin panel
 - [Authentication Guide](docs/guides/authentication.md)
 - [User Guide](docs/guides/user-guide.md)
 - [Admin Guide](docs/guides/admin-guide.md)
